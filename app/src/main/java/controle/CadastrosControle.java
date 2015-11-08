@@ -97,6 +97,10 @@ public class CadastrosControle {
 		return daoUsuario.editar(o);
 	}
 
+	public     boolean validarLogin(UsuarioVO  o) throws Exception{
+		return daoUsuario.validarLogin(o);
+	}
+
 
 
 	//itemINspecao

@@ -1,38 +1,133 @@
 package com.bsi.pontua;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import testes.Testes;
+import controle.CadastrosControle;
+import vo.UsuarioVO;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button btnLogar;
+    Button btnSair;
+    EditText edtUsuario;
+    EditText edtSenha;
+
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+
+        //new testexx().execute("");
+        final Button btnLogar = (Button) findViewById(R.id.btnLogar);
+        final Button btnSair = (Button) findViewById(R.id.btnSair);
 
 
-        new testexx().execute("");
+        btnSair.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+
+        btnLogar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                validarLogin();
+            }
+        });
+
 
     }
 
-    class testexx extends AsyncTask<String, Integer, String> {
+
+
+    @Override
+    public void onPause(){
+        //evita erro de leak
+        super.onPause();
+        if(progress != null) {
+            progress.dismiss();
+            progress=null;
+        }
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        //evita erro de leak
+        super.onStop();
+
+        if(progress != null) {
+            progress.dismiss();
+            progress=null;
+        }
+
+    }
 
 
 
+    void inicializaProgressBar(){
+
+        if(progress==null){
+
+            progress = new ProgressDialog(MainActivity.this);
+            progress.setTitle("");
+            progress.setMessage("Por favor aguarde...");
+            progress.setIndeterminate(true);
+            progress.setCancelable(false);
+
+        }
+    }
+
+    void validarLogin(){
+
+        final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
+        final EditText edtSenha = (EditText) findViewById(R.id.edtSenha);
+
+        if(edtUsuario.getText().length()==0 || edtSenha.getText().length()==0 ){
+            Toast.makeText(getApplicationContext(), "Informe o login e senha!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+
+            String[] paramns = new String[]{edtUsuario.getText().toString().trim(),  edtSenha.getText().toString().trim() };
+            new validarLoginTask().execute(paramns );
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    class validarLoginTask extends AsyncTask<String, Integer, String> {
+
+        AlertDialog.Builder  alertDialog;
 
         @Override
         protected void onPreExecute() {
-            final TextView lbl = (TextView) findViewById(R.id.txt1);
-            lbl.setText("WAIT");
+
+
+            inicializaProgressBar();
+            progress.show();
+
         }
 
 
@@ -40,11 +135,25 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... param) {
 
 
-
-            Testes test = new Testes();
+            String retorno="";
+            CadastrosControle cc = new CadastrosControle();
 
             try {
-                return  test.Testar();
+
+                UsuarioVO o = new UsuarioVO();
+                o.setNome(param[0]);
+                o.setSenha(param[1]);
+
+
+                if(cc.validarLogin(o)){
+                  retorno="OK";
+                }
+                else
+                {
+                    retorno="";
+                }
+
+                return  retorno;
 
 
             }catch (Exception e){
@@ -56,20 +165,40 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        /*
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            mProgressBar.setProgress(values[0]);
-        }
-        */
 
         @Override
         protected void onPostExecute(String result) {
 
 
 
-            final TextView lbl = (TextView) findViewById(R.id.txt1);
-lbl.setText(result);
+            if(result=="OK"){
+
+                //abre menu inicial
+                final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
+
+                Intent myIntent = new Intent(MainActivity.this, Menu2.class);
+                Bundle b = new Bundle();
+                b.putString("usuario", edtUsuario.getText().toString().trim());
+
+                myIntent.putExtras(b); //Put your id to your next Intent
+                startActivity(myIntent);
+
+                if (progress!=null && progress.isShowing()) {
+                    progress.dismiss();
+                }
+
+
+            }
+            else
+            {
+                if (progress!=null && progress.isShowing()) {
+                    progress.dismiss();
+                }
+                Toast.makeText(getApplicationContext(), "Dados inválidos, acesso negado!", Toast.LENGTH_SHORT).show();
+            }
+
+
+
 
         }
 
@@ -78,26 +207,4 @@ lbl.setText(result);
 
 
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

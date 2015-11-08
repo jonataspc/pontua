@@ -26,7 +26,7 @@ public class Conexao {
 	 * @throws SQLException
 	 */
 	public static Connection obterConexao() throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://192.168.4.135:3307/pontua_bsi", "root", "123");
+		return DriverManager.getConnection("jdbc:mysql://192.168.25.11:3307/pontua_bsi", "root", "123");
 	}
 
 }
