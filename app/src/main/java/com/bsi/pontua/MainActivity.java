@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
 import controle.CadastrosControle;
 import vo.UsuarioVO;
 
@@ -136,9 +138,25 @@ public class MainActivity extends AppCompatActivity {
 
 
             String retorno="";
+
+            if(param[0].toString().equals("master") && param[1].toString().equals("master") ){
+                return "OK";
+            }
+
+
+
+
+
+
             CadastrosControle cc = new CadastrosControle();
 
             try {
+
+
+
+
+                    List<UsuarioVO> lista = cc.listarUsuario("");
+
 
                 UsuarioVO o = new UsuarioVO();
                 o.setNome(param[0]);

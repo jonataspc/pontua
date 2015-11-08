@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,7 +125,15 @@ public class UsuarioDAO {
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO usuario (id_entidade, nome, senha, nivel_acesso) VALUES (?, ?, ?, ?) ;", Statement.RETURN_GENERATED_KEYS);
 
-            st.setInt(1, c.getEntidade().getId());
+            if(c.getEntidade()==null){
+                st.setNull(1, Types.INTEGER);
+            }
+            else
+            {
+                st.setInt(1, c.getEntidade().getId());
+            }
+
+
             st.setString(2, c.getNome());
             st.setString(3, c.getSenha());
             st.setString(4, c.getNivelAcesso());
@@ -155,7 +164,15 @@ public class UsuarioDAO {
 
             PreparedStatement st = conn.prepareStatement("UPDATE usuario SET id_entidade=?, nome=?, senha=?, nivel_acesso=? WHERE id=?");
 
-            st.setInt(1, c.getEntidade().getId());
+            if(c.getEntidade()==null){
+                st.setNull(1, Types.INTEGER);
+            }
+            else
+            {
+                st.setInt(1, c.getEntidade().getId());
+            }
+
+
             st.setString(2, c.getNome());
             st.setString(3, c.getSenha());
             st.setString(4, c.getNivelAcesso());
