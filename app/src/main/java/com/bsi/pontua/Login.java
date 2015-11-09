@@ -2,7 +2,9 @@ package com.bsi.pontua;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +18,15 @@ import java.util.List;
 import controle.CadastrosControle;
 import vo.UsuarioVO;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
+
+    public static Context contextOfApplication;
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
+
+
 
     Button btnLogar;
     Button btnSair;
@@ -30,9 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        contextOfApplication = getApplicationContext();
+
+
         //new testexx().execute("");
         final Button btnLogar = (Button) findViewById(R.id.btnLogar);
         final Button btnSair = (Button) findViewById(R.id.btnSair);
+
 
 
         btnSair.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        final EditText edtServidor = (EditText) findViewById(R.id.edtServidor);
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        String  serverIP = settings.getString("ServerIP", "192.168.25.1:3307");
+        edtServidor.setText(serverIP);
 
     }
 
@@ -87,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(progress==null){
 
-            progress = new ProgressDialog(MainActivity.this);
+            progress = new ProgressDialog(Login.this);
             progress.setTitle("");
             progress.setMessage("Por favor aguarde...");
             progress.setIndeterminate(true);
@@ -105,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Informe o login e senha!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //salva o servidor
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("ServerIP", ((EditText) findViewById(R.id.edtServidor)).getText().toString());
+        editor.commit();
+
 
         try {
 
@@ -144,19 +170,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
-
-
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-
-
-
-                    List<UsuarioVO> lista = cc.listarUsuario("");
-
+                List<UsuarioVO> lista = cc.listarUsuario("");
 
                 UsuarioVO o = new UsuarioVO();
                 o.setNome(param[0]);
@@ -194,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 //abre menu inicial
                 final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
 
-                Intent myIntent = new Intent(MainActivity.this, Menu2.class);
+                Intent myIntent = new Intent(Login.this, Menu2.class);
                 Bundle b = new Bundle();
                 b.putString("usuario", edtUsuario.getText().toString().trim());
 

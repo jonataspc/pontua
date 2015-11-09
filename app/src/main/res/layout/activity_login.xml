@@ -26,19 +26,67 @@
         android:textSize="20sp"
         android:maxLines="1"
         android:maxLength="20"
-        android:layout_marginTop="50dp"
+        android:password="true"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/edtUsuario"
-        android:layout_alignParentEnd="true"
-        android:password="true" />
+        android:layout_alignParentStart="true" />
+
+
+
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edtServidorPn"
+
+        android:hint="Servidor"
+        android:textSize="20sp"
+        android:maxLines="1"
+        android:maxLength="20"
+
+        android:layout_below="@+id/edtSenha"
+        android:layout_marginTop="25dp"
+
+        >
+
+
+        <TextView
+            android:id="@+id/text_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="Servidor"
+            android:textSize="18sp"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+            />
+
+        <EditText
+            android:layout_marginLeft="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_alignParentRight="true"
+
+            android:id="@+id/edtServidor"
+            android:layout_gravity="center"
+            />
+
+    </RelativeLayout>
+
+
+
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logar"
         android:id="@+id/btnLogar"
-        android:layout_marginTop="48dp"
-        android:layout_marginStart="47dp"
-        android:layout_below="@+id/edtSenha"
+        android:layout_marginStart="31dp"
+        android:layout_below="@+id/edtServidorPn"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -49,4 +97,8 @@
         android:layout_marginEnd="56dp"
         android:layout_alignTop="@+id/btnLogar"
         android:layout_alignEnd="@+id/edtSenha" />
+
+
+
+
 </RelativeLayout>

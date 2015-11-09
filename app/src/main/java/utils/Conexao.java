@@ -1,8 +1,15 @@
 package utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.bsi.pontua.Login;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.util.Properties;
 
 /**
 
@@ -21,12 +28,18 @@ public class Conexao {
 
 	/**
 	 * Obtem conexao com banco de dados
-	 * 
-	 * @return Conex�o obtida
-	 * @throws SQLException
 	 */
 	public static Connection obterConexao() throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://192.168.25.11:3307/pontua_bsi", "root", "123");
+
+        Context applicationContext = Login.getContextOfApplication();
+        SharedPreferences settings = applicationContext.getSharedPreferences("settings", 0);
+        String  mySqlserver = settings.getString("ServerIP", "192.168.25.1:3307");
+
+        DriverManager.setLoginTimeout(15);
+        return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/pontua_bsi?connectTimeout=15000", "root", "123" );
+
+        //ssl: &verifyServerCertificate=false&useSSL=true&requireSSL=true
+
 	}
 
 }
