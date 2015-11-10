@@ -30,6 +30,12 @@
         </activity>
         <activity android:name=".CadastroUsuariosNovoEditar" >
         </activity>
+        <activity android:name=".activity_cadastro_eventos" >
+        </activity>
+        <activity android:name=".CadastroEventos" >
+        </activity>
+        <activity android:name=".CadastroEventosNovoEditar" >
+        </activity>
     </application>
 
 </manifest>

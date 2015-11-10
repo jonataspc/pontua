@@ -17,10 +17,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.List;
-import controle.CadastrosControle;
-import vo.UsuarioVO;
 
-public class CadastroUsuarios extends AppCompatActivity {
+import controle.CadastrosControle;
+import vo.EventoVO;
+
+public class CadastroEventos extends AppCompatActivity {
+
 
     ProgressDialog progress;
 
@@ -48,7 +50,7 @@ public class CadastroUsuarios extends AppCompatActivity {
     void inicializaProgressBar() {
 
         if (progress == null) {
-            progress = new ProgressDialog(CadastroUsuarios.this);
+            progress = new ProgressDialog(CadastroEventos.this);
             progress.setTitle("");
             progress.setMessage("Aguarde...");
             progress.setIndeterminate(true);
@@ -56,30 +58,30 @@ public class CadastroUsuarios extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_usuarios);
+        setContentView(R.layout.activity_cadastro_eventos);
 
-        final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEvento);
-        final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEvento);
-        final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
-        final ImageButton ibtCadUsuarioRefresh = (ImageButton) findViewById(R.id.ibtCadUsuarioRefresh);
+
+        final Button btnNovoEvento = (Button) findViewById(R.id.btnNovoEvento);
+        final Button btnEditarEvento = (Button) findViewById(R.id.btnEditarEvento);
+        final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
+        final ImageButton ibtCadEventoRefresh = (ImageButton) findViewById(R.id.ibtCadEventoRefresh);
         final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
 
-        ibtCadUsuarioRefresh.setOnClickListener(new View.OnClickListener() {
+        ibtCadEventoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //atualiza lista de usuarios
+                //atualiza lista de Eventos
                 new popularSpinnerTask().execute("");
             }
         });
 
-        btnNovoUsuario.setOnClickListener(new View.OnClickListener() {
+        btnNovoEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(CadastroUsuarios.this, CadastroUsuariosNovoEditar.class);
+                Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
                 Bundle b = new Bundle();
                 b.putString("registro", null);
                 myIntent.putExtras(b); //Put your id to your next Intent
@@ -87,11 +89,11 @@ public class CadastroUsuarios extends AppCompatActivity {
             }
         });
 
-        btnEditarUsuario.setOnClickListener(new View.OnClickListener() {
+        btnEditarEvento.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(CadastroUsuarios.this, CadastroUsuariosNovoEditar.class);
+                Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
                 Bundle b = new Bundle();
                 b.putString("registro", dropdown.getSelectedItem().toString().substring(1, 6));
                 myIntent.putExtras(b); //Put your id to your next Intent
@@ -99,11 +101,11 @@ public class CadastroUsuarios extends AppCompatActivity {
             }
         });
 
-        btnExcluirUsuario.setOnClickListener(new View.OnClickListener() {
+        btnExcluirEvento.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(CadastroUsuarios.this)
+                new AlertDialog.Builder(CadastroEventos.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("")
                         .setMessage("Deseja realmente excluir o registro selecionado?")
@@ -123,17 +125,18 @@ public class CadastroUsuarios extends AppCompatActivity {
         });
 
 
-        //atualiza lista de usuarios
+        //atualiza lista de Eventos
         new popularSpinnerTask().execute("");
-
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                //atualiza lista de usuarios
+                //atualiza lista de Eventos
                 new popularSpinnerTask().execute("");
             }
         }
@@ -148,13 +151,13 @@ public class CadastroUsuarios extends AppCompatActivity {
         }
 
         @Override
-        protected List<UsuarioVO> doInBackground(String... param) {
+        protected List<EventoVO> doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                List<UsuarioVO> lista = cc.listarUsuario("");
+                List<EventoVO> lista = cc.listarEvento("");
                 return lista;
 
             } catch (Exception e) {
@@ -171,44 +174,44 @@ public class CadastroUsuarios extends AppCompatActivity {
             //popula o spinner
             Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
 
-            List<UsuarioVO> lista = result;
+            List<EventoVO> lista = result;
             String[] items = new String[lista.size()];
 
             int cont = 0;
-            for (UsuarioVO item : lista) {
+            for (EventoVO item : lista) {
                 items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
                 cont++;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroUsuarios.this, android.R.layout.simple_spinner_dropdown_item, items);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroEventos.this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdown.setAdapter(adapter);
 
-            final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEvento);
-            final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEvento);
-            final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
+            final Button btnNovoEvento = (Button) findViewById(R.id.btnNovoEvento);
+            final Button btnEditarEvento = (Button) findViewById(R.id.btnEditarEvento);
+            final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
 
             dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    btnEditarUsuario.setEnabled(true);
-                    btnExcluirUsuario.setEnabled(true);
-                    btnEditarUsuario.setClickable(true);
-                    btnExcluirUsuario.setClickable(true);
+                    btnEditarEvento.setEnabled(true);
+                    btnExcluirEvento.setEnabled(true);
+                    btnEditarEvento.setClickable(true);
+                    btnExcluirEvento.setClickable(true);
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
-                    btnEditarUsuario.setEnabled(false);
-                    btnExcluirUsuario.setEnabled(false);
-                    btnEditarUsuario.setClickable(false);
-                    btnExcluirUsuario.setClickable(false);
+                    btnEditarEvento.setEnabled(false);
+                    btnExcluirEvento.setEnabled(false);
+                    btnEditarEvento.setClickable(false);
+                    btnExcluirEvento.setClickable(false);
                 }
             });
 
-            btnEditarUsuario.setEnabled(false);
-            btnExcluirUsuario.setEnabled(false);
-            btnEditarUsuario.setClickable(false);
-            btnExcluirUsuario.setClickable(false);
+            btnEditarEvento.setEnabled(false);
+            btnExcluirEvento.setEnabled(false);
+            btnEditarEvento.setClickable(false);
+            btnExcluirEvento.setClickable(false);
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
@@ -225,9 +228,9 @@ public class CadastroUsuarios extends AppCompatActivity {
 
             try {
 
-                UsuarioVO o = new UsuarioVO();
+                EventoVO o = new EventoVO();
                 o.setId(Integer.parseInt(param[0]));
-                cc.excluirUsuario(o);
+                cc.excluirEvento(o);
 
                 return true;
 
@@ -243,7 +246,7 @@ public class CadastroUsuarios extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
 
             if (result) {
-                //atualiza lista de usuarios
+                //atualiza lista de Eventos
                 new popularSpinnerTask().execute("");
                 Toast.makeText(getApplicationContext(), "Registro removido com sucesso!", Toast.LENGTH_SHORT).show();
             } else {
@@ -253,5 +256,4 @@ public class CadastroUsuarios extends AppCompatActivity {
         }
 
     }
-
 }

@@ -28,16 +28,24 @@ public class Menu2 extends AppCompatActivity {
         ((TextView) findViewById(R.id.txtUsuario)).setText(usuario);
 
 
-
-        final Button btnCadastroUsuarios = (Button) findViewById(R.id.btnCadastroUsuarios);
-
-
-
-        btnCadastroUsuarios.setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.btnCadastroUsuarios)).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu2.this, CadastroUsuarios.class);
+                Bundle b = new Bundle();
+                //b.putString("usuario", edtUsuario.getText().toString().trim());
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+
+        });
+
+        ((Button) findViewById(R.id.btnCadastroEventos)).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu2.this, CadastroEventos.class);
                 Bundle b = new Bundle();
                 //b.putString("usuario", edtUsuario.getText().toString().trim());
                 myIntent.putExtras(b);

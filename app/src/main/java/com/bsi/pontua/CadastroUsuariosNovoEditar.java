@@ -20,7 +20,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_usuarios_novo);
+        setContentView(R.layout.activity_cadastro_usuarios_novo_editar);
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
         final EditText txtNovoUsuario = (EditText) findViewById(R.id.txtNovoUsuario);
