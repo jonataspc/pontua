@@ -36,6 +36,8 @@
         </activity>
         <activity android:name=".CadastroEventosNovoEditar" >
         </activity>
+        <activity android:name=".CadastroEntidades" >
+        </activity>
     </application>
 
 </manifest>

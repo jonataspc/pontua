@@ -60,6 +60,13 @@
                 android:text="Cadastro de eventos"
                 android:id="@+id/btnCadastroEventos" />
 
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Cadastro de entidades"
+                android:id="@+id/btnCadastroEntidades" />
+
         </LinearLayout>
     </ScrollView>
 

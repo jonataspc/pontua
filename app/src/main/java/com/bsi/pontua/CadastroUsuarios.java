@@ -62,11 +62,11 @@ public class CadastroUsuarios extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuarios);
 
-        final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEvento);
-        final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEvento);
+        final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEntidade);
+        final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEntidade);
         final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
         final ImageButton ibtCadUsuarioRefresh = (ImageButton) findViewById(R.id.ibtCadUsuarioRefresh);
-        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+        final Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
 
         ibtCadUsuarioRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +169,7 @@ public class CadastroUsuarios extends AppCompatActivity {
         protected void onPostExecute(List result) {
 
             //popula o spinner
-            Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+            Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
 
             List<UsuarioVO> lista = result;
             String[] items = new String[lista.size()];
@@ -183,8 +183,8 @@ public class CadastroUsuarios extends AppCompatActivity {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroUsuarios.this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdown.setAdapter(adapter);
 
-            final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEvento);
-            final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEvento);
+            final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovoEntidade);
+            final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditarEntidade);
             final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
 
             dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
