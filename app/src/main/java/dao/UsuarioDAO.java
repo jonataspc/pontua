@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.EntidadeVO;
 import vo.UsuarioVO;
 
 public class UsuarioDAO {
@@ -41,6 +42,37 @@ public class UsuarioDAO {
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public UsuarioVO obterPorEntidade(EntidadeVO e) {
+
+        try {
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM usuario WHERE id_entidade=?");
+            st.setInt(1, e.getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            UsuarioVO o = new UsuarioVO();
+
+            EntidadeDAO entidadeDAO = new EntidadeDAO();
+
+            while (resultado.next()) {
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("nome"));
+                o.setSenha(resultado.getString("senha"));
+                o.setNivelAcesso(resultado.getString("nivel_acesso"));
+                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
+            }
+
+            conn.close();
+            return o;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return null;
     }

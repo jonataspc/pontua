@@ -215,7 +215,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             try {
 
                 UsuarioVO o = new UsuarioVO();
-                o.setEntidade(null);
+                o.setEntidade(null); //TODO: tratar entidade aqui!!!
                 o.setNome(param[0]);
                 o.setSenha(param[1]);
                 o.setNivelAcesso(param[2]);

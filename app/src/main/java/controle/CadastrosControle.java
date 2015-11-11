@@ -93,6 +93,10 @@ public class CadastrosControle {
 		return daoUsuario.obterPorCodigo(a);
 	}
 
+	public     UsuarioVO obterUsuarioPorEntidade(EntidadeVO e) throws Exception{
+		return daoUsuario.obterPorEntidade(e);
+	}
+
 	public     boolean editarUsuario(UsuarioVO  o) throws Exception{
 		return daoUsuario.editar(o);
 	}

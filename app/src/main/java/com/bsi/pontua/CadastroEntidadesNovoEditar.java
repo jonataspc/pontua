@@ -133,21 +133,48 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         }
     }
 
+    class ConjuntoEntidadeUsuario{
+        private EntidadeVO entidade;
+        private UsuarioVO usuario;
 
-    class carregarRegistroTask extends AsyncTask<String, Integer, EntidadeVO> {
+        public EntidadeVO getEntidade() {
+            return entidade;
+        }
+
+        public void setEntidade(EntidadeVO e) {
+            this.entidade = e;
+        }
+
+        public UsuarioVO getUsuario() {
+            return usuario;
+        }
+
+        public void setUsuario(UsuarioVO e) {
+            this.usuario = e;
+        }
+
+    }
+
+
+    class carregarRegistroTask extends AsyncTask<String, Integer, ConjuntoEntidadeUsuario> {
 
         @Override
-        protected EntidadeVO doInBackground(String... param) {
+        protected ConjuntoEntidadeUsuario doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
+            ConjuntoEntidadeUsuario retorno = new ConjuntoEntidadeUsuario();
 
             try {
 
                 EntidadeVO o = new EntidadeVO();
-
                 o = cc.obterEntidadePorId(Integer.parseInt(param[0]));
 
-                return o;
+                UsuarioVO u = new UsuarioVO();
+                u = cc.obterUsuarioPorEntidade(o);
+
+                retorno.setUsuario(u);
+                retorno.setEntidade(o);
+                return retorno;
 
             }catch (Exception e){
                 e.printStackTrace();
@@ -159,23 +186,31 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
 
         @Override
-        protected void onPostExecute(EntidadeVO result) {
+        protected void onPostExecute(ConjuntoEntidadeUsuario result) {
 
             final EditText txtNome = (EditText) findViewById(R.id.txtNomeEntidade);
+            final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
+            final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
 
             if(result != null){
 
-                txtNome.setText(result.getNome());
+                EntidadeVO e = result.getEntidade();
+                UsuarioVO u = result.getUsuario();
+
+                txtNome.setText(e.getNome());
+                edtUsuarioConsulta.setText(u.getNome());
+                edtUsuarioConsultaSenha.setText(u.getSenha());
+
 
                 try {
                     //seleciona o evento
                     Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
-                    dropdown.setSelection(((ArrayAdapter)dropdown.getAdapter()).getPosition("[" + String.format("%05d", result.getEvento().getId()) + "] " + result.getEvento().getNome()));
+                    dropdown.setSelection(((ArrayAdapter)dropdown.getAdapter()).getPosition("[" + String.format("%05d", e.getEvento().getId()) + "] " + e.getEvento().getNome()));
 
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                }catch (Exception ex){
+                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    ex.printStackTrace();
                 }
 
 
@@ -205,7 +240,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
     void salvar(){
 
         final EditText txtNome = (EditText) findViewById(R.id.txtNomeEntidade);
-
+        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+        final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
+        final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
 
         //validacoes
@@ -215,6 +252,28 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             return;
         }
 
+        if(dropdown.getSelectedItem().toString().length() == 0 ){
+            Toast.makeText(getApplicationContext(), "Selecione o evento!", Toast.LENGTH_SHORT).show();
+            dropdown.requestFocus();
+            return;
+        }
+
+
+        if( edtUsuarioConsulta.getText().toString().trim().length()==0  ){
+            Toast.makeText(getApplicationContext(), "Informe o usuário!", Toast.LENGTH_SHORT).show();
+            edtUsuarioConsulta.requestFocus();
+            return;
+        }
+
+        if( edtUsuarioConsultaSenha.getText().toString().trim().length()==0  ){
+            Toast.makeText(getApplicationContext(), "Informe a senha!", Toast.LENGTH_SHORT).show();
+            edtUsuarioConsultaSenha.requestFocus();
+            return;
+        }
+
+
+
+
 
 
         try {
@@ -222,12 +281,20 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             //editar ou novo?
             Bundle b = getIntent().getExtras();
 
-            String[] paramns = new String[]{txtNome.getText().toString().trim(), b.getString("registro")};
+            String[] paramns = new String[]{
+                    b.getString("registro"),
+                    txtNome.getText().toString().trim(),
+                    dropdown.getSelectedItem().toString().substring(1, 6),
+                    edtUsuarioConsulta.getText().toString(),
+                    edtUsuarioConsultaSenha.getText().toString()
+                    };
+
             new salvarTask().execute(paramns );
 
         }catch (Exception e)
         {
             Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
 
 
@@ -238,27 +305,66 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
+            boolean retorno=false;
+
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                EntidadeVO o = new EntidadeVO();
-                o.setNome(param[0]);
+                EventoVO oEvt = new EventoVO();
+                oEvt = cc.obterEventoPorId(Integer.parseInt(param[2]));
 
-                if(param[1] != null){
+                if(oEvt==null){
+                    throw new Exception("Evento nao existente!");
+                }
+
+
+                EntidadeVO o = new EntidadeVO();
+                o.setNome(param[1]);
+                o.setEvento(oEvt);
+
+
+                if(param[0] != null){
                     //editar
-                    o.setId( Integer.parseInt(param[1]));
+                    o.setId( Integer.parseInt(param[0]));
                     if(cc.editarEntidade(o) ){
-                        return true;
+                        retorno=true;
                     }
                 }
                 else
                 {
                     //novo registro
                     if(cc.inserirEntidade(o)){
-                        return true;
+                        retorno=true;
                     }
                 }
+
+
+
+
+
+                // remove usuario da entidade, caso seja edicao
+                if(param[0] != null) {
+                    UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
+
+                    if(usuEntid!=null){
+                        cc.excluirUsuario(usuEntid);
+                    }
+                }
+
+                //cadastra novo usuario
+                UsuarioVO newUs = new UsuarioVO();
+                newUs.setEntidade(o);
+                newUs.setNome(param[3].trim());
+                newUs.setSenha(param[4].trim());
+                newUs.setNivelAcesso("ENT");
+
+                if(!cc.inserirUsuario(newUs) ){
+                    throw new Exception("Erro no cadastro do novo usuario");
+                }
+
+
+
 
 
 
@@ -267,7 +373,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return false;
+            return retorno;
 
         }
 
