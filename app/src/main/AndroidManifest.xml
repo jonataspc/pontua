@@ -38,6 +38,8 @@
         </activity>
         <activity android:name=".CadastroEntidades" >
         </activity>
+        <activity android:name=".CadastroEntidadesNovoEditar" >
+        </activity>
     </application>
 
 </manifest>

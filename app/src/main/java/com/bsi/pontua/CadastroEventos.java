@@ -64,8 +64,8 @@ public class CadastroEventos extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_eventos);
 
 
-        final Button btnNovoEvento = (Button) findViewById(R.id.btnNovoEntidade);
-        final Button btnEditarEvento = (Button) findViewById(R.id.btnEditarEntidade);
+        final Button btnNovoEvento = (Button) findViewById(R.id.btnNovo);
+        final Button btnEditarEvento = (Button) findViewById(R.id.btnExcluir);
         final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
         final ImageButton ibtCadEventoRefresh = (ImageButton) findViewById(R.id.ibtCadEventoRefresh);
         final Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
@@ -186,8 +186,8 @@ public class CadastroEventos extends AppCompatActivity {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroEventos.this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdown.setAdapter(adapter);
 
-            final Button btnNovoEvento = (Button) findViewById(R.id.btnNovoEntidade);
-            final Button btnEditarEvento = (Button) findViewById(R.id.btnEditarEntidade);
+            final Button btnNovoEvento = (Button) findViewById(R.id.btnNovo);
+            final Button btnEditarEvento = (Button) findViewById(R.id.btnExcluir);
             final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
 
             dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

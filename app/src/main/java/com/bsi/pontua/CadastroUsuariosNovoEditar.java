@@ -67,6 +67,11 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
 
         }
+        else
+        {
+            //nao habilita o ENT caso seja novo
+            ((RadioButton) findViewById(R.id.rbtEnt)).setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -121,6 +126,9 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
                     case "ENT":
                         rbtEnt.setChecked(true);
+                        // caso seja entidade, nao permite edicao de perfil
+                        rbtAdm.setVisibility(View.INVISIBLE);
+                        rbtAval.setVisibility(View.INVISIBLE);
                         break;
                 }
 

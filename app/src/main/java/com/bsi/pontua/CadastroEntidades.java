@@ -1,32 +1,23 @@
 package com.bsi.pontua;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -39,25 +30,21 @@ public class CadastroEntidades extends AppCompatActivity {
 
     TableLayout tl;
     TableRow tr;
-    TextView col1,col2;
+    TextView col1, col2;
 
-    String registro ="";
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_entidades);
 
-        ///
+        final Button btnNovo = (Button) findViewById(R.id.btnNovo);
+        final Button btnEditar = (Button) findViewById(R.id.btnEditar);
+        final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+        final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
-
-
-        final Button btnNovoEntidade = (Button) findViewById(R.id.btnNovoEntidade);
-        final Button btnEditarEntidade = (Button) findViewById(R.id.btnEditarEntidade);
-        final Button btnExcluirEntidade = (Button) findViewById(R.id.btnExcluirEntidade);
-        final ImageButton ibtCadEntidadeRefresh = (ImageButton) findViewById(R.id.ibtCadEntidadeRefresh);
-
-        ibtCadEntidadeRefresh.setOnClickListener(new View.OnClickListener() {
+        ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //atualiza grid
@@ -65,49 +52,60 @@ public class CadastroEntidades extends AppCompatActivity {
             }
         });
 
-        btnNovoEntidade.setOnClickListener(new View.OnClickListener() {
+        btnNovo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
-                //Bundle b = new Bundle();
-                //b.putString("registro", null);
-                //myIntent.putExtras(b); //Put your id to your next Intent
-                //startActivityForResult(myIntent, 1);
+                Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
+                Bundle b = new Bundle();
+                b.putString("registro", null);
+                myIntent.putExtras(b); //Put your id to your next Intent
+                startActivityForResult(myIntent, 1);
             }
         });
 
-        btnEditarEntidade.setOnClickListener(new View.OnClickListener() {
+        btnEditar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
-                //Bundle b = new Bundle();
-                //b.putString("registro", registro);
-                //myIntent.putExtras(b); //Put your id to your next Intent
-                //startActivityForResult(myIntent, 1);
+
+                registro = -1;
+                selectedRadio(tl);
+
+                if (registro != -1) {
+                    Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
+                    Bundle b = new Bundle();
+                    b.putString("registro", String.valueOf(registro));
+                    myIntent.putExtras(b); //Put your id to your next Intent
+                    startActivityForResult(myIntent, 1);
+                }
             }
         });
 
-        btnExcluirEntidade.setOnClickListener(new View.OnClickListener() {
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(CadastroEntidades.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("")
-                        .setMessage("Deseja realmente excluir o registro selecionado?")
-                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
 
-                                //remove
-                                String[] paramns = new String[]{registro};
-                                new excluirRegistroTask().execute(paramns);
-                            }
+                registro = -1;
+                selectedRadio(tl);
+                if (registro != -1) {
+                    new AlertDialog.Builder(CadastroEntidades.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("")
+                            .setMessage("Deseja realmente excluir o registro selecionado?")
+                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                        })
-                        .setNegativeButton("Não", null)
-                        .show();
+                                    //remove
+                                    String[] paramns = new String[]{String.valueOf(registro)};
+                                    new excluirRegistroTask().execute(paramns);
+                                }
+
+                            })
+                            .setNegativeButton("Não", null)
+                            .show();
+                }
             }
         });
 
@@ -115,156 +113,31 @@ public class CadastroEntidades extends AppCompatActivity {
         //atualiza lista
         new popularGridTask().execute("");
 
-
-
-
     }
 
+    int registro = -1;
 
+    public void selectedRadio(ViewGroup layout) {
 
-    /** This function add the headers to the table **/
-    public void addHeaders(){
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
 
-        /** Create a TableRow **/
-        tr = new TableRow(this);
-        tr.setLayoutParams(new LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT));
+            if (v instanceof ViewGroup) {
+                selectedRadio((ViewGroup) v);
+            } else if (v instanceof TableRow) {
+                selectedRadio((TableRow) v);
+            } else if (v instanceof SoftRadioButton) {
 
-        /** Creating a TextView to add to the row **/
-        TextView col1 = new TextView(this);
-        col1.setText("Cód");
-        //col1.setTextColor(Color.GRAY);
-        col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        col1.setPadding(5, 5, 5, 0);
-        tr.addView(col1);  // Adding textView to tablerow.
-
-        /** Creating another textview **/
-        TextView col2 = new TextView(this);
-        col2.setText("Nome");
-        //col2.setTextColor(Color.GRAY);
-        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        col2.setPadding(5, 5, 5, 0);
-        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(col2); // Adding textView to tablerow.
-
-        /** Creating another textview **/
-        TextView ncol2 = new TextView(this);
-        ncol2.setText("Evento");
-        //ncol2.setTextColor(Color.GRAY);
-        ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        ncol2.setPadding(5, 5, 5, 0);
-        ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(ncol2); // Adding textView to tablerow.
-
-
-
-        // Add the TableRow to the TableLayout
-        tl.addView(tr, new TableLayout.LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT));
-
-        // we are adding two textviews for the <span id="IL_AD5" class="IL_AD">divider</span> because we have two columns
-        tr = new TableRow(this);
-        tr.setLayoutParams(new LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT));
-
-
-
-
-/*
-        *//** Creating another textview **//*
-        TextView divider = new TextView(this);
-        divider.setText("-----------------");
-        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        divider.setPadding(5, 0, 0, 0);
-        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider); // Adding textView to tablerow.
-
-        TextView divider2 = new TextView(this);
-        divider2.setText("-------------------------");
-        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        divider2.setPadding(5, 0, 0, 0);
-        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*/
-
-        // Add the TableRow to the TableLayout
-        tl.addView(tr, new TableLayout.LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT));
-    }
-
-    /** This function add the data to the table **/
-    public void addData(List<EntidadeVO> obj){
-
-        for(EntidadeVO e: obj){
-
-            /** Create a TableRow dynamically **/
-            tr = new TableRow(this);
-            tr.setLayoutParams(new LayoutParams(
-                    LayoutParams.FILL_PARENT,
-                    LayoutParams.WRAP_CONTENT));
-
-            /** Creating a TextView to add to the row **/
-
-            final  SoftRadioButton chk = new SoftRadioButton(this, "g1" );
-            chk.setText(String.valueOf(e.getId()));
-            chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            chk.setPadding(5, 5, 5, 5);
-            chk.setTextColor(Color.BLACK);
-           /* chk.setOnClickListener(new View.OnClickListener() {
-
-               @Override
-                public void onClick(View v) {
-
-                   Toast.makeText(getApplicationContext(), "CLicado! " + chk.getText(), Toast.LENGTH_SHORT).show();
-                    btnEditarEntidade.setEnabled(true);
-                    btnExcluirEntidade.setEnabled(true);
-                    btnEditarEntidade.setClickable(true);
-                    btnExcluirEntidade.setClickable(true);
+                if (((SoftRadioButton) v).isChecked()) {
+                    registro = Integer.parseInt(((SoftRadioButton) v).getText().toString());
                 }
 
 
-            });*/
+            }
 
-            tr.addView(chk);  // Adding textView to tablerow.
-
-
-            col1 = new TextView(this);
-            col1.setText(e.getNome());
-            col1.setTextColor(Color.BLACK);
-            col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col1.setPadding(5, 5, 5, 5);
-            tr.addView(col1);  // Adding textView to tablerow.
-
-            /** Creating another textview **/
-            col2 = new TextView(this);
-            col2.setText(e.getEvento().getNome());
-            col2.setTextColor(Color.BLACK);
-            col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-            col2.setPadding(5, 5, 5, 5);
-            tr.addView(col2); // Adding textView to tablerow.
-
-            // Add the TableRow to the TableLayout
-            tl.addView(tr, new TableLayout.LayoutParams(
-                    LayoutParams.FILL_PARENT,
-                    LayoutParams.WRAP_CONTENT));
         }
-    }
-
-////
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        Toast.makeText(getApplicationContext(),  String.valueOf(checked), Toast.LENGTH_SHORT).show();
 
     }
-
-
-    ProgressDialog progress;
 
     @Override
     public void onPause() {
@@ -298,9 +171,106 @@ public class CadastroEntidades extends AppCompatActivity {
         }
     }
 
+    /**
+     * This function add the headers to the table
+     **/
+    public void addHeaders() {
+
+        /** Create a TableRow **/
+        tr = new TableRow(this);
+        tr.setLayoutParams(new LayoutParams(
+                LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT));
+
+        /** Creating a TextView to add to the row **/
+        TextView col1 = new TextView(this);
+        col1.setText("Cód");
+        col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        col1.setPadding(5, 5, 5, 0);
+        tr.addView(col1);  // Adding textView to tablerow.
+
+        /** Creating another textview **/
+        TextView col2 = new TextView(this);
+        col2.setText("Nome");
+        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        col2.setPadding(5, 5, 5, 0);
+        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(col2); // Adding textView to tablerow.
+
+        /** Creating another textview **/
+        TextView ncol2 = new TextView(this);
+        ncol2.setText("Evento");
+        ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ncol2.setPadding(5, 5, 5, 0);
+        ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol2); // Adding textView to tablerow.
 
 
+        // Add the TableRow to the TableLayout
+        tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
+        // we are adding two textviews for the <span id="IL_AD5" class="IL_AD">divider</span> because we have two columns
+        tr = new TableRow(this);
+        tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+/*
+        *//** Creating another textview **//*
+        TextView divider = new TextView(this);
+        divider.setText("-----------------");
+        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        divider.setPadding(5, 0, 0, 0);
+        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(divider); // Adding textView to tablerow.
+
+        TextView divider2 = new TextView(this);
+        divider2.setText("-------------------------");
+        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+        divider2.setPadding(5, 0, 0, 0);
+        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(divider2); // Adding textView to tablerow.*/
+
+        // Add the TableRow to the TableLayout
+        tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    }
+
+    /**
+     * This function add the data to the table
+     **/
+    public void addData(List<EntidadeVO> obj) {
+
+        for (EntidadeVO e : obj) {
+
+            /** Create a TableRow dynamically **/
+            tr = new TableRow(this);
+            tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+            /** Creating a TextView to add to the row **/
+            final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
+            chk.setText(String.valueOf(e.getId()));
+            chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            chk.setPadding(5, 5, 5, 5);
+            chk.setTextColor(Color.BLACK);
+            tr.addView(chk);  // Adding textView to tablerow.
+
+            col1 = new TextView(this);
+            col1.setText(e.getNome());
+            col1.setTextColor(Color.BLACK);
+            col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col1.setPadding(5, 5, 5, 5);
+            tr.addView(col1);
+
+            col2 = new TextView(this);
+            col2.setText(e.getEvento().getNome());
+            col2.setTextColor(Color.BLACK);
+            col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col2.setPadding(5, 5, 5, 5);
+            tr.addView(col2);
+
+            // Add the TableRow to the TableLayout
+            tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -338,45 +308,14 @@ public class CadastroEntidades extends AppCompatActivity {
             return null;
         }
 
-
         @Override
         protected void onPostExecute(List result) {
 
-            List<EntidadeVO> lista = result;
-            String[] items = new String[lista.size()];
-/*
-            int cont = 0;
-            for (EntidadeVO item : lista) {
-                items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
-                cont++;
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroEntidades.this, android.R.layout.simple_spinner_dropdown_item, items);
-            dropdown.setAdapter(adapter);
-*/
-
-
-            final Button btnNovoEntidade = (Button) findViewById(R.id.btnNovoEntidade);
-            final Button btnEditarEntidade = (Button) findViewById(R.id.btnEditarEntidade);
-            final Button btnExcluirEntidade = (Button) findViewById(R.id.btnExcluirEntidade);
-
-
-
-            btnEditarEntidade.setEnabled(false);
-            btnExcluirEntidade.setEnabled(false);
-            btnEditarEntidade.setClickable(false);
-            btnExcluirEntidade.setClickable(false);
-
-
-            /////
             tl = (TableLayout) findViewById(R.id.maintable);
-
             tl.removeAllViewsInLayout();
 
             addHeaders();
             addData(result);
-            /////
-
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
@@ -405,7 +344,6 @@ public class CadastroEntidades extends AppCompatActivity {
 
             return false;
         }
-
 
         @Override
         protected void onPostExecute(Boolean result) {

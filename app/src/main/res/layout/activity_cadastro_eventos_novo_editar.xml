@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Cadastro de Eventos - novo"
-        android:id="@+id/tvwEventoTitle"
+        android:id="@+id/tvwTitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -24,7 +24,7 @@
         android:maxLines="1"
         android:hint="Nome"
         android:maxLength="25"
-        android:layout_below="@+id/tvwEventoTitle"
+        android:layout_below="@+id/tvwTitle"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="38dp" />
 

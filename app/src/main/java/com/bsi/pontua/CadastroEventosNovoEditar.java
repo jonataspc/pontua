@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
         final EditText txtNovoEvento = (EditText) findViewById(R.id.txtNovoEvento);
-        final TextView tvwEventoTitle = (TextView) findViewById(R.id.tvwEventoTitle);
+        final TextView tvwEventoTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
 
