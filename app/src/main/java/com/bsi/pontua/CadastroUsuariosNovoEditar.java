@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import controle.CadastrosControle;
+import vo.EntidadeVO;
 import vo.UsuarioVO;
 
 public class CadastroUsuariosNovoEditar extends AppCompatActivity {
@@ -70,7 +71,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
         else
         {
             //nao habilita o ENT caso seja novo
-            ((RadioButton) findViewById(R.id.rbtEnt)).setVisibility(View.INVISIBLE);
+            ((RadioButton) findViewById(R.id.rbtEnt)).setEnabled(false);
         }
 
 
@@ -118,17 +119,19 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
                 switch (result.getNivelAcesso()){
                     case "ADM":
                         rbtAdm.setChecked(true);
+                        ((RadioButton) findViewById(R.id.rbtEnt)).setEnabled(false);
                         break;
 
                     case "AVAL":
                         rbtAval.setChecked(true);
+                        ((RadioButton) findViewById(R.id.rbtEnt)).setEnabled(false);
                         break;
 
                     case "ENT":
                         rbtEnt.setChecked(true);
                         // caso seja entidade, nao permite edicao de perfil
-                        rbtAdm.setVisibility(View.INVISIBLE);
-                        rbtAval.setVisibility(View.INVISIBLE);
+                        rbtAdm.setEnabled(false);
+                        rbtAval.setEnabled(false);
                         break;
                 }
 
@@ -215,7 +218,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             try {
 
                 UsuarioVO o = new UsuarioVO();
-                o.setEntidade(null); //TODO: tratar entidade aqui!!!
+                o.setEntidade(null);
                 o.setNome(param[0]);
                 o.setSenha(param[1]);
                 o.setNivelAcesso(param[2]);
@@ -223,6 +226,13 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
                 if(param[3] != null){
                     //editar
                     o.setId( Integer.parseInt(param[3]));
+
+                    //entidade?
+                    UsuarioVO usAtual = cc.obterUsuarioPorId(Integer.parseInt(param[3]));
+                    if(usAtual.getEntidade() != null){
+                        o.setEntidade(usAtual.getEntidade());
+                    }
+
                     if(cc.editarUsuario(o) ){
                         return true;
                     }

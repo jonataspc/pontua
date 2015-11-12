@@ -360,7 +360,8 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 newUs.setNivelAcesso("ENT");
 
                 if(!cc.inserirUsuario(newUs) ){
-                    throw new Exception("Erro no cadastro do novo usuario");
+                    return false;
+                    //throw new Exception("Erro no cadastro do novo usuario");
                 }
 
 

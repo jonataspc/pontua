@@ -350,7 +350,14 @@ public class CadastroEntidades extends AppCompatActivity {
 
             if (result) {
                 //atualiza lista de Entidades
-                new popularGridTask().execute("");
+                AsyncTask t = new popularGridTask().execute("");
+
+                try {
+                    t.get();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
                 Toast.makeText(getApplicationContext(), "Registro removido com sucesso!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Erro ao realizar a exclusão!", Toast.LENGTH_SHORT).show();

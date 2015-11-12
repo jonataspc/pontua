@@ -28,13 +28,22 @@ public class EntidadeDAO {
 
             EventoDAO eventoDAO = new EventoDAO();
 
+            boolean acho = false;
+
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
-                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento"))  );
+                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+                acho=true;
             }
 
             conn.close();
+
+
+            if(acho=false){
+                return null;
+            }
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
