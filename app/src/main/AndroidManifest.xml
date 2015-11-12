@@ -36,9 +36,10 @@
         </activity>
         <activity android:name=".CadastroEventosNovoEditar" >
         </activity>
-        <activity android:name=".CadastroEntidades" >
+        <activity android:name=".CadastroEntidades"
+            >
         </activity>
-        <activity android:name=".CadastroEntidadesNovoEditar" >
+        <activity android:name=".CadastroEntidadesNovoEditar"    android:windowSoftInputMode="adjustResize" >
         </activity>
     </application>
 
