@@ -54,9 +54,9 @@ public class ItemInspecaoDAO {
             PreparedStatement st;
 
             if (nomePesquisa.trim() == "") {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao ORDER BY nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ORDER BY id_evento, area, nome;");
             } else {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE nome LIKE ? ORDER BY nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE nome LIKE ? ORDER BY id_evento, area, nome;");
                 st.setString(1, "%" + nomePesquisa.trim() + "%");
             }
 
@@ -72,8 +72,8 @@ public class ItemInspecaoDAO {
                 o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
                 o.setArea(resultado.getString("area"));
                 o.setNome(resultado.getString("nome"));
-                o.setPontuacaoMinima(new BigDecimal(resultado.getInt("pontuacao_minima")));
-                o.setPontuacaoMaxima(new BigDecimal(resultado.getInt("pontuacao_maxima")));
+                o.setPontuacaoMinima(new BigDecimal(resultado.getDouble("pontuacao_minima")));
+                o.setPontuacaoMaxima(new BigDecimal(resultado.getDouble("pontuacao_maxima")));
 
                 lista.add(o);
 

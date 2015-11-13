@@ -1,5 +1,7 @@
 package com.bsi.pontua;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -24,20 +27,21 @@ import java.util.List;
 
 import controle.CadastrosControle;
 import utils.SoftRadioButton;
-import vo.EntidadeVO;
+import vo.ItemInspecaoVO;
 
-public class CadastroEntidades extends AppCompatActivity {
+public class CadastroItensInspecao extends AppCompatActivity {
 
     TableLayout tl;
     TableRow tr;
-    TextView col1, col2;
+    TextView col1, col2, col3, col4, col5;
 
     ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_entidades);
+        setContentView(R.layout.activity_cadastro_itens_inspecao);
+
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
@@ -55,7 +59,7 @@ public class CadastroEntidades extends AppCompatActivity {
         btnNovo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
+                Intent myIntent = new Intent(CadastroItensInspecao.this, CadastroItensInspecaoNovoEditar.class);
                 Bundle b = new Bundle();
                 b.putString("registro", null);
                 myIntent.putExtras(b); //Put your id to your next Intent
@@ -72,7 +76,7 @@ public class CadastroEntidades extends AppCompatActivity {
                 selectedRadio(tl);
 
                 if (registro != -1) {
-                    Intent myIntent = new Intent(CadastroEntidades.this, CadastroEntidadesNovoEditar.class);
+                    Intent myIntent = new Intent(CadastroItensInspecao.this, CadastroItensInspecaoNovoEditar.class);
                     Bundle b = new Bundle();
                     b.putString("registro", String.valueOf(registro));
                     myIntent.putExtras(b); //Put your id to your next Intent
@@ -89,7 +93,7 @@ public class CadastroEntidades extends AppCompatActivity {
                 registro = -1;
                 selectedRadio(tl);
                 if (registro != -1) {
-                    new AlertDialog.Builder(CadastroEntidades.this)
+                    new AlertDialog.Builder(CadastroItensInspecao.this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .setTitle("")
                             .setMessage("Deseja realmente excluir o registro selecionado?")
@@ -112,6 +116,9 @@ public class CadastroEntidades extends AppCompatActivity {
 
         //atualiza lista
         new popularGridTask().execute("");
+
+
+
 
     }
 
@@ -163,7 +170,7 @@ public class CadastroEntidades extends AppCompatActivity {
     void inicializaProgressBar() {
 
         if (progress == null) {
-            progress = new ProgressDialog(CadastroEntidades.this);
+            progress = new ProgressDialog(CadastroItensInspecao.this);
             progress.setTitle("");
             progress.setMessage("Aguarde...");
             progress.setIndeterminate(true);
@@ -200,11 +207,35 @@ public class CadastroEntidades extends AppCompatActivity {
 
         /** Creating another textview **/
         TextView ncol2 = new TextView(this);
-        ncol2.setText("Entidade");
+        ncol2.setText("Área");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol2.setPadding(5, 5, 5, 0);
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol2); // Adding textView to tablerow.
+
+        /** Creating another textview **/
+        TextView ncol3 = new TextView(this);
+        ncol3.setText("Nome Ítem");
+        ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ncol3.setPadding(5, 5, 5, 0);
+        ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol3); // Adding textView to tablerow.
+
+        /** Creating another textview **/
+        TextView ncol4 = new TextView(this);
+        ncol4.setText("P. Mín");
+        ncol4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ncol4.setPadding(5, 5, 5, 0);
+        ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol4); // Adding textView to tablerow.
+
+        /** Creating another textview **/
+        TextView ncol5 = new TextView(this);
+        ncol5.setText("P. Máx");
+        ncol5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ncol5.setPadding(5, 5, 5, 0);
+        ncol5.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol5); // Adding textView to tablerow.
 
 
         // Add the TableRow to the TableLayout
@@ -234,8 +265,6 @@ public class CadastroEntidades extends AppCompatActivity {
         tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 
-
-
         //separator
         TableRow tr = new TableRow(this);
         tr.setBackgroundColor(Color.GRAY);
@@ -246,15 +275,14 @@ public class CadastroEntidades extends AppCompatActivity {
 
         tl.addView(tr);
 
-
     }
 
     /**
      * This function add the data to the table
      **/
-    public void addData(List<EntidadeVO> obj) {
+    public void addData(List<ItemInspecaoVO> obj) {
 
-        for (EntidadeVO e : obj) {
+        for (ItemInspecaoVO e : obj) {
 
             /** Create a TableRow dynamically **/
             tr = new TableRow(this);
@@ -276,26 +304,49 @@ public class CadastroEntidades extends AppCompatActivity {
             tr.addView(col1);
 
             col2 = new TextView(this);
-            col2.setText(e.getNome());
-            col2.setTextColor(Color.BLACK);
+            col2.setText(e.getArea());
+            col2.setTextColor(Color.GRAY);
             col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col2.setPadding(5, 5, 5, 5);
             tr.addView(col2);
+
+            col3 = new TextView(this);
+            col3.setText(e.getNome());
+            col3.setTextColor(Color.BLACK);
+            col3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col3.setPadding(5, 5, 5, 5);
+            tr.addView(col3);
+
+            col4 = new TextView(this);
+            col4.setText(String.valueOf(e.getPontuacaoMinima().doubleValue()));
+            col4.setTextColor(Color.BLUE);
+            col4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col4.setPadding(5, 5, 5, 5);
+            tr.addView(col4);
+
+            col5 = new TextView(this);
+            col5.setText(String.valueOf(e.getPontuacaoMaxima().doubleValue()));
+            col5.setTextColor(Color.BLUE);
+            col5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col5.setPadding(5, 5, 5, 5);
+            tr.addView(col5);
 
             // Add the TableRow to the TableLayout
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 
 
+
             //separator
             TableRow tr = new TableRow(this);
             tr.setBackgroundColor(Color.GRAY);
-            tr.setPadding(0, 0, 0, 2 ); //Border between rows
+            tr.setPadding(0, 0, 0, 2); //Border between rows
 
             TableRow.LayoutParams llp = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
             llp.setMargins(0, 0, 2, 0);//2px right-margin
 
             tl.addView(tr);
+
 
 
         }
@@ -321,13 +372,13 @@ public class CadastroEntidades extends AppCompatActivity {
         }
 
         @Override
-        protected List<EntidadeVO> doInBackground(String... param) {
+        protected List<ItemInspecaoVO> doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                List<EntidadeVO> lista = cc.listarEntidade("");
+                List<ItemInspecaoVO> lista = cc.listarItemInspecao("");
                 return lista;
 
             } catch (Exception e) {
@@ -361,9 +412,9 @@ public class CadastroEntidades extends AppCompatActivity {
 
             try {
 
-                EntidadeVO o = new EntidadeVO();
+                ItemInspecaoVO o = new ItemInspecaoVO();
                 o.setId(Integer.parseInt(param[0]));
-                cc.excluirEntidade(o);
+                cc.excluirItemInspecao(o);
 
                 return true;
 
@@ -378,7 +429,7 @@ public class CadastroEntidades extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
 
             if (result) {
-                //atualiza lista de Entidades
+                //atualiza lista de ItemInspecao
                 AsyncTask t = new popularGridTask().execute("");
 
                 try {

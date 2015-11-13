@@ -183,7 +183,7 @@ public class Login extends AppCompatActivity {
 
             try {
 
-                List<UsuarioVO> lista = cc.listarUsuario("");
+                //List<UsuarioVO> lista = cc.listarUsuario("");
 
                 UsuarioVO o = new UsuarioVO();
                 o.setNome(param[0]);
@@ -224,6 +224,7 @@ public class Login extends AppCompatActivity {
                 Intent myIntent = new Intent(Login.this, Menu2.class);
                 Bundle b = new Bundle();
                 b.putString("usuario", edtUsuario.getText().toString().trim());
+                //b.putString("perfil", edtUsuario.getText().toString().trim()); TODO
 
                 myIntent.putExtras(b); //Put your id to your next Intent
                 startActivity(myIntent);
