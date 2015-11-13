@@ -67,6 +67,19 @@ public class Menu2 extends AppCompatActivity {
 
         });
 
+        ((Button) findViewById(R.id.btnCadastroItensInspecao)).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu2.this, CadastroItensInspecao.class);
+                Bundle b = new Bundle();
+                //b.putString("usuario", edtUsuario.getText().toString().trim());
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+
+        });
+
 /*
 
         View myView = findViewById(R.id.button);
