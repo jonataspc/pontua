@@ -120,8 +120,13 @@ public class Login extends AppCompatActivity {
         final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
         final EditText edtSenha = (EditText) findViewById(R.id.edtSenha);
 
-        if(edtUsuario.getText().length()==0 || edtSenha.getText().length()==0 ){
-            Toast.makeText(getApplicationContext(), "Informe o login e senha!", Toast.LENGTH_SHORT).show();
+        if(edtUsuario.getText().length()==0){
+            Toast.makeText(getApplicationContext(), "Informe o usuário!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtSenha.getText().length()==0 ){
+            Toast.makeText(getApplicationContext(), "Informe a senha!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -135,6 +140,10 @@ public class Login extends AppCompatActivity {
         try {
 
             String[] paramns = new String[]{edtUsuario.getText().toString().trim(),  edtSenha.getText().toString().trim() };
+
+            //remove a senha
+            edtSenha.setText("");
+
             new validarLoginTask().execute(paramns );
 
         }catch (Exception e)
