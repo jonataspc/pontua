@@ -24,14 +24,14 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:id="@+id/txtNomeEntidade"
+            android:id="@+id/txtNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginLeft="0dp"
             android:maxLines="1"
             android:hint="Nome do ítem"
-            android:maxLength="25"
+            android:maxLength="30"
             android:layout_marginTop="26dp"
             android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true" />
@@ -52,7 +52,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Evento:"
             android:id="@+id/textView4"
-            android:layout_below="@+id/txtNomeEntidade"
+            android:layout_below="@+id/txtNome"
             android:layout_alignParentStart="true"
             android:layout_marginTop="10dp" />
 
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:layout_alignParentRight="true"
-                android:id="@+id/editText"
+                android:id="@+id/txtPontMin"
                 android:layout_gravity="center"
                 android:inputType="numberDecimal"
                 android:gravity="right"
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:layout_alignParentRight="true"
-                android:id="@+id/editText2"
+                android:id="@+id/txtPontMax"
                 android:layout_gravity="center"
                 android:inputType="numberDecimal"
                 android:gravity="right"

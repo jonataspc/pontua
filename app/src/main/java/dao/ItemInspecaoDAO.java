@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class ItemInspecaoDAO {
                 o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
                 o.setArea(resultado.getString("area"));
                 o.setNome(resultado.getString("nome"));
-                o.setPontuacaoMinima(new BigDecimal(  resultado.getInt("pontuacao_minima")));
-                o.setPontuacaoMaxima(new BigDecimal(resultado.getInt("pontuacao_maxima")));
+                o.setPontuacaoMinima(new BigDecimal(resultado.getDouble("pontuacao_minima")));
+                o.setPontuacaoMaxima(new BigDecimal(resultado.getDouble("pontuacao_maxima")));
             }
 
             conn.close();
@@ -89,6 +90,31 @@ public class ItemInspecaoDAO {
 
     }
 
+    public List<String> listarAreas() {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT area FROM item_inspecao WHERE area <> '' AND NOT area IS NULL GROUP BY area ORDER BY area;");
+
+            ResultSet resultado = st.executeQuery();
+
+            List<String> lista = new ArrayList<String>(0);
+            while (resultado.next()) {
+                lista.add(resultado.getString("area"));
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
 
     public boolean incluir(ItemInspecaoVO c) {
         try {
@@ -131,7 +157,17 @@ public class ItemInspecaoDAO {
             PreparedStatement st = conn.prepareStatement("UPDATE item_inspecao SET id_evento=?, area=?, nome=?, pontuacao_minima=?, pontuacao_maxima =? WHERE id=?");
 
             st.setInt(1, c.getEvento().getId());
-            st.setString(2, c.getArea());
+
+            if(c.getArea() != null){
+                st.setString(2, c.getArea());
+            }
+            else
+            {
+                st.setNull(2, Types.VARCHAR);
+            }
+
+
+
             st.setString(3, c.getNome());
             st.setDouble(4, c.getPontuacaoMinima().doubleValue());
             st.setDouble(5, c.getPontuacaoMaxima().doubleValue());

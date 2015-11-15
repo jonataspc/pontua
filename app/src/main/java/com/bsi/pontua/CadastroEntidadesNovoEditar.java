@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import controle.CadastrosControle;
 import vo.EntidadeVO;
@@ -33,7 +30,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
-        final EditText txtNome = (EditText) findViewById(R.id.txtNomeEntidade);
+        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
         final TextView tvwTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +185,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(ConjuntoEntidadeUsuario result) {
 
-            final EditText txtNome = (EditText) findViewById(R.id.txtNomeEntidade);
+            final EditText txtNome = (EditText) findViewById(R.id.txtNome);
             final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
             final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
@@ -239,7 +236,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     void salvar(){
 
-        final EditText txtNome = (EditText) findViewById(R.id.txtNomeEntidade);
+        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
         final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
         final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
         final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
@@ -386,7 +383,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             if(result){
 
-                Toast.makeText(getApplicationContext(), "Alterações salvas com sucesso.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Alterações salvas com sucesso", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();

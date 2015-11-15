@@ -264,7 +264,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             if(result){
 
-                Toast.makeText(getApplicationContext(), "Alterações salvas com sucesso.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Alterações salvas com sucesso", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();

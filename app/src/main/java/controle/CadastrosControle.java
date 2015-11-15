@@ -128,6 +128,9 @@ public class CadastrosControle {
 		return daoItemInspecao.editar(o);
 	}
 
+	public    List<String> listarAreas() throws Exception{
+		return daoItemInspecao.listarAreas();
+	}
 
 
 
