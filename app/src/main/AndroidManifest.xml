@@ -19,34 +19,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".menu"
-            android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity android:name=".Menu2" >
-        </activity>
-        <activity android:name=".CadastroUsuarios" >
-        </activity>
-        <activity android:name=".CadastroUsuariosNovoEditar" >
-        </activity>
-        <activity android:name=".activity_cadastro_eventos" >
-        </activity>
-        <activity android:name=".CadastroEventos" >
-        </activity>
-        <activity android:name=".CadastroEventosNovoEditar" >
-        </activity>
-        <activity android:name=".CadastroEntidades" >
-        </activity>
+        <activity android:name=".Menu2" />
+        <activity android:name=".CadastroUsuarios" />
+        <activity android:name=".CadastroUsuariosNovoEditar" />
+        <activity android:name=".CadastroEventos" />
+        <activity android:name=".CadastroEventosNovoEditar" />
+        <activity android:name=".CadastroEntidades" />
         <activity
             android:name=".CadastroEntidadesNovoEditar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".CadastroItensInspecao" />
+        <activity
+            android:name=".CadastroItensInspecaoNovoEditar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Avaliacao"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ConsultarAvaliacoes" />
+        <activity
+            android:name=".ConsultarAvaliacoesRel"
             android:windowSoftInputMode="adjustResize" >
-        </activity>
-        <activity android:name=".CadastroItensInspecao" >
-        </activity>
-        <activity android:name=".CadastroItensInspecaoNovoEditar" >
-        </activity>
-        <activity android:name=".Avaliacao" >
         </activity>
     </application>
 
