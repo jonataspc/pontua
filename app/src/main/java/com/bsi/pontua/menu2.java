@@ -27,6 +27,7 @@ public class Menu2 extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.txtUsuario)).setText(usuario);
 
+        //TODO: remover botoes de usuarios que nao tenham permissao!
 
         ((Button) findViewById(R.id.btnCadastroUsuarios)).setOnClickListener(new View.OnClickListener() {
 
