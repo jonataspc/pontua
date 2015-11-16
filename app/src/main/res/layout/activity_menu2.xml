@@ -79,6 +79,12 @@
                 android:text="Realizar avaliação"
                 android:id="@+id/btnRealizarAvaliacao" />
 
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Consultar avaliações"
+                android:id="@+id/btnConsultarAvaliacoes" />
+
         </LinearLayout>
     </ScrollView>
 
