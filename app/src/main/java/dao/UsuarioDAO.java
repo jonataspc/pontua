@@ -125,7 +125,9 @@ public class UsuarioDAO {
 
     }
 
-    public boolean validarLogin(UsuarioVO c) {
+
+    public UsuarioVO validarLogin(UsuarioVO c) {
+
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -138,15 +140,24 @@ public class UsuarioDAO {
 
             ResultSet resultado = st.executeQuery();
 
+            int cod=-1;
+
             if (resultado.next()) {
-                return true;
+                cod = resultado.getInt("id");
             }
 
             conn.close();
-            return false;
+
+            if(cod != -1){
+                return obterPorCodigo(cod);
+            }else {
+                return null;
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
 
 

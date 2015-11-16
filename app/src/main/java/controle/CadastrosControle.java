@@ -64,6 +64,10 @@ public class CadastrosControle {
 		return daoEntidade.listar(nomePesquisa);
 	}
 
+	public    List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception{
+		return daoEntidade.listarPorEvento(ev);
+	}
+
 	public     boolean excluirEntidade(EntidadeVO o) throws Exception{
 		return daoEntidade.excluir(o);
 	}
@@ -101,7 +105,7 @@ public class CadastrosControle {
 		return daoUsuario.editar(o);
 	}
 
-	public     boolean validarLogin(UsuarioVO  o) throws Exception{
+	public     UsuarioVO validarLogin(UsuarioVO  o) throws Exception{
 		return daoUsuario.validarLogin(o);
 	}
 
@@ -116,6 +120,11 @@ public class CadastrosControle {
 		return daoItemInspecao.listar(nomePesquisa);
 	}
 
+	public    List<ItemInspecaoVO> listarItemInspecaoPorEventoArea(EventoVO evt, String area) throws Exception{
+		return daoItemInspecao.listarPorEvento(evt, area);
+	}
+
+
 	public     boolean excluirItemInspecao(ItemInspecaoVO o) throws Exception{
 		return daoItemInspecao.excluir(o);
 	}
@@ -128,8 +137,16 @@ public class CadastrosControle {
 		return daoItemInspecao.editar(o);
 	}
 
-	public    List<String> listarAreas() throws Exception{
-		return daoItemInspecao.listarAreas();
+	public    List<String> listarAreas(EventoVO evt) throws Exception{
+
+		if(evt==null) {
+			return daoItemInspecao.listarAreas();
+		}
+		else
+		{
+			return daoItemInspecao.listarAreasPorEvento(evt);
+		}
+
 	}
 
 

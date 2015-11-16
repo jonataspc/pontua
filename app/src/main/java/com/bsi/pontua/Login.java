@@ -21,19 +21,15 @@ import vo.UsuarioVO;
 public class Login extends AppCompatActivity {
 
     public static Context contextOfApplication;
-
-    public static Context getContextOfApplication(){
-        return contextOfApplication;
-    }
-
-
-
     Button btnLogar;
     Button btnSair;
     EditText edtUsuario;
     EditText edtSenha;
-
     ProgressDialog progress;
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +42,6 @@ public class Login extends AppCompatActivity {
         //new testexx().execute("");
         final Button btnLogar = (Button) findViewById(R.id.btnLogar);
         final Button btnSair = (Button) findViewById(R.id.btnSair);
-
 
 
         btnSair.setOnClickListener(new View.OnClickListener() {
@@ -69,20 +64,19 @@ public class Login extends AppCompatActivity {
 
         final EditText edtServidor = (EditText) findViewById(R.id.edtServidor);
         SharedPreferences settings = getSharedPreferences("settings", 0);
-        String  serverIP = settings.getString("ServerIP", "192.168.25.1:3307");
+        String serverIP = settings.getString("ServerIP", "192.168.25.1:3307");
         edtServidor.setText(serverIP);
 
     }
 
 
-
     @Override
-    public void onPause(){
+    public void onPause() {
         //evita erro de leak
         super.onPause();
-        if(progress != null) {
+        if (progress != null) {
             progress.dismiss();
-            progress=null;
+            progress = null;
         }
 
 
@@ -93,18 +87,17 @@ public class Login extends AppCompatActivity {
         //evita erro de leak
         super.onStop();
 
-        if(progress != null) {
+        if (progress != null) {
             progress.dismiss();
-            progress=null;
+            progress = null;
         }
 
     }
 
 
+    void inicializaProgressBar() {
 
-    void inicializaProgressBar(){
-
-        if(progress==null){
+        if (progress == null) {
 
             progress = new ProgressDialog(Login.this);
             progress.setTitle("");
@@ -115,17 +108,17 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    void validarLogin(){
+    void validarLogin() {
 
         final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
         final EditText edtSenha = (EditText) findViewById(R.id.edtSenha);
 
-        if(edtUsuario.getText().length()==0){
+        if (edtUsuario.getText().length() == 0) {
             Toast.makeText(getApplicationContext(), "Informe o usuário!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(edtSenha.getText().length()==0 ){
+        if (edtSenha.getText().length() == 0) {
             Toast.makeText(getApplicationContext(), "Informe a senha!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -139,43 +132,47 @@ public class Login extends AppCompatActivity {
 
         try {
 
-            String[] paramns = new String[]{edtUsuario.getText().toString().trim(),  edtSenha.getText().toString().trim() };
+            String[] paramns = new String[]{edtUsuario.getText().toString().trim(), edtSenha.getText().toString().trim()};
 
             //remove a senha
             edtSenha.setText("");
 
-            new validarLoginTask().execute(paramns );
+            new validarLoginTask().execute(paramns);
 
-        }catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
 
 
-    class validarLoginTask extends AsyncTask<String, Integer, String> {
+    class validarLoginTask extends AsyncTask<String, Integer, UsuarioVO> {
 
-        AlertDialog.Builder  alertDialog;
+        AlertDialog.Builder alertDialog;
 
         @Override
         protected void onPreExecute() {
-
-
             inicializaProgressBar();
             progress.show();
-
         }
 
 
         @Override
-        protected String doInBackground(String... param) {
+        protected UsuarioVO doInBackground(String... param) {
 
 
-            String retorno="";
+            if (param[0].toString().equals("master") && param[1].toString().equals("master")) {
 
-            if(param[0].toString().equals("master") && param[1].toString().equals("master") ){
-                return "OK";
+                UsuarioVO us = new UsuarioVO();
+
+                us.setEntidade(null);
+                us.setSenha(null);
+                us.setNome("MASTER");
+                us.setNivelAcesso("ADM");
+                us.setId(0);
+
+                return us;
             }
 
 
@@ -183,74 +180,64 @@ public class Login extends AppCompatActivity {
 
             try {
 
-                //List<UsuarioVO> lista = cc.listarUsuario("");
-
                 UsuarioVO o = new UsuarioVO();
                 o.setNome(param[0]);
                 o.setSenha(param[1]);
 
+                return cc.validarLogin(o);
 
-                if(cc.validarLogin(o)){
-                  retorno="OK";
-                }
-                else
-                {
-                    retorno="";
-                }
-
-                return  retorno;
-
-
-            }catch (Exception e){
-
-                return e.getMessage() + "\n" + e.getStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
-
 
 
         }
 
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(UsuarioVO result) {
 
 
-
-            if(result=="OK"){
+            if (result != null) {
 
                 //abre menu inicial
                 final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
 
                 Intent myIntent = new Intent(Login.this, Menu2.class);
                 Bundle b = new Bundle();
-                b.putString("usuario", edtUsuario.getText().toString().trim());
-                //b.putString("perfil", edtUsuario.getText().toString().trim()); TODO
+
+                b.putString("usuario", result.getNome());
+                b.putString("perfil", result.getNivelAcesso());
+                b.putInt("id", result.getId());
+
+                if(result.getEntidade()==null){
+                    b.putInt("id_entidade", -1);
+                }else {
+                    b.putInt("id_entidade", result.getEntidade().getId());
+                }
+
 
                 myIntent.putExtras(b); //Put your id to your next Intent
                 startActivity(myIntent);
 
-                if (progress!=null && progress.isShowing()) {
+                if (progress != null && progress.isShowing()) {
                     progress.dismiss();
                 }
 
 
-            }
-            else
-            {
-                if (progress!=null && progress.isShowing()) {
+            } else {
+                if (progress != null && progress.isShowing()) {
                     progress.dismiss();
                 }
                 Toast.makeText(getApplicationContext(), "Dados inválidos, acesso negado!", Toast.LENGTH_SHORT).show();
             }
 
 
-
-
         }
 
 
     }
-
 
 
 }

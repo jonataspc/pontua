@@ -58,4 +58,9 @@ public class ItemInspecaoVO {
     public void setPontuacaoMaxima(BigDecimal pontuacaoMaxima) {
         this.pontuacaoMaxima = pontuacaoMaxima;
     }
+
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }

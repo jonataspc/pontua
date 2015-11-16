@@ -331,7 +331,7 @@ public class CadastroEntidades extends AppCompatActivity {
                 return lista;
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
 
             return null;

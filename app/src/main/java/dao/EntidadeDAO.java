@@ -10,6 +10,7 @@ import java.util.List;
 
 import utils.Conexao;
 import vo.EntidadeVO;
+import vo.EventoVO;
 
 public class EntidadeDAO {
 
@@ -50,6 +51,46 @@ public class EntidadeDAO {
         }
         return null;
     }
+
+    public List<EntidadeVO> listarPorEvento(EventoVO evto) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+            PreparedStatement st;
+
+
+            st = conn.prepareStatement("SELECT * FROM entidade WHERE id_evento=? ORDER BY nome;");
+            st.setInt(1,  evto.getId());
+
+
+            ResultSet resultado = st.executeQuery();
+
+            EventoDAO eventoDAO = new EventoDAO();
+
+            List<EntidadeVO> lista = new ArrayList<EntidadeVO>(0);
+            while (resultado.next()) {
+
+                EntidadeVO o = new EntidadeVO();
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("Nome"));
+                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+
+                lista.add(o);
+
+            }
+
+
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
 
     public List<EntidadeVO> listar(String nomePesquisa) {
         try {
@@ -92,6 +133,7 @@ public class EntidadeDAO {
 
 
     }
+
 
 
     public boolean incluir(EntidadeVO c) {

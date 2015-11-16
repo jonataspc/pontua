@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +18,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
 
 
 import java.math.BigDecimal;
@@ -148,6 +145,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             }catch (Exception e)
             {
+                e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
@@ -175,7 +173,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                 return lista;
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
 
             return null;
@@ -222,11 +220,11 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             try {
 
-                List<String> lista = cc.listarAreas();
+                List<String> lista = cc.listarAreas(null);
                 return lista;
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
 
             return null;
@@ -236,7 +234,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         protected void onPostExecute(List result) {
 
             //popula o spinner
-            Spinner spnAreas = (Spinner) findViewById(R.id.spnArea);
+            Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
 
             listaAreas = result;
 
@@ -296,7 +294,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                                     }
 
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroItensInspecaoNovoEditar.this, android.R.layout.simple_spinner_dropdown_item, items);
-                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnArea);
+                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
                                     spnAreas.setAdapter(adapter);
 
                                     //pre seleciona o inserido
@@ -305,7 +303,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                                 else
                                 {
                                     //seleciona 'nenhuma'
-                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnArea);
+                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
                                     spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition("Nenhuma"));
                                 }
 
@@ -317,7 +315,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
                                 //seleciona 'nenhuma'
-                                Spinner spnAreas = (Spinner) findViewById(R.id.spnArea);
+                                Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
                                 spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition("Nenhuma"));
 
                                 dialog.cancel();
@@ -386,7 +384,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             final EditText txtNome = (EditText) findViewById(R.id.txtNome);
             final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-            final Spinner spnArea = (Spinner) findViewById(R.id.spnArea);
+            final Spinner spnArea = (Spinner) findViewById(R.id.spnEntidades);
             final EditText txtPontMin = (EditText) findViewById(R.id.txtPontMin);
             final EditText txtPontMax = (EditText) findViewById(R.id.txtPontMax);
 
@@ -407,8 +405,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                     spnArea.setSelection(((ArrayAdapter)spnArea.getAdapter()).getPosition(result.getArea()));
 
                 }catch (Exception ex){
-                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                     ex.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
 
 
@@ -443,7 +442,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         final EditText txtNome = (EditText) findViewById(R.id.txtNome);
         final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-        final Spinner spnArea = (Spinner) findViewById(R.id.spnArea);
+        final Spinner spnArea = (Spinner) findViewById(R.id.spnEntidades);
         final EditText txtPontMin = (EditText) findViewById(R.id.txtPontMin);
         final EditText txtPontMax = (EditText) findViewById(R.id.txtPontMax);
 
@@ -511,8 +510,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
+
         }
 
 

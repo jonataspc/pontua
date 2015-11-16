@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.EventoVO;
 import vo.ItemInspecaoVO;
 
 public class ItemInspecaoDAO {
@@ -90,6 +91,50 @@ public class ItemInspecaoDAO {
 
     }
 
+
+    public List<ItemInspecaoVO> listarPorEvento( EventoVO evt,  String area) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            if ( area==null || area.trim() == "") {
+                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE id_evento=" + evt.getId() + " ORDER BY id_evento, area, nome;");
+            } else {
+                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE id_evento=" + evt.getId() + " AND area=? ORDER BY id_evento, area, nome;");
+                st.setString(1, area);
+            }
+
+            ResultSet resultado = st.executeQuery();
+
+            EventoDAO eventoDAO = new EventoDAO();
+
+            List<ItemInspecaoVO> lista = new ArrayList<ItemInspecaoVO>(0);
+            while (resultado.next()) {
+
+                ItemInspecaoVO o = new ItemInspecaoVO();
+                o.setId(resultado.getInt("id"));
+                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+                o.setArea(resultado.getString("area"));
+                o.setNome(resultado.getString("nome"));
+                o.setPontuacaoMinima(new BigDecimal(resultado.getDouble("pontuacao_minima")));
+                o.setPontuacaoMaxima(new BigDecimal(resultado.getDouble("pontuacao_maxima")));
+
+                lista.add(o);
+
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
     public List<String> listarAreas() {
         try {
 
@@ -98,6 +143,33 @@ public class ItemInspecaoDAO {
             PreparedStatement st;
 
             st = conn.prepareStatement("SELECT area FROM item_inspecao WHERE area <> '' AND NOT area IS NULL GROUP BY area ORDER BY area;");
+
+            ResultSet resultado = st.executeQuery();
+
+            List<String> lista = new ArrayList<String>(0);
+            while (resultado.next()) {
+                lista.add(resultado.getString("area"));
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+    public List<String> listarAreasPorEvento( EventoVO evt) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT area FROM item_inspecao WHERE id_evento=? AND area <> '' AND NOT area IS NULL GROUP BY area ORDER BY area;");
+            st.setInt(1, evt.getId());
 
             ResultSet resultado = st.executeQuery();
 

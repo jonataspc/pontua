@@ -79,6 +79,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             }catch (Exception e)
             {
+                e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
@@ -101,7 +102,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 return lista;
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
 
             return null;
@@ -206,8 +207,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                     dropdown.setSelection(((ArrayAdapter)dropdown.getAdapter()).getPosition("[" + String.format("%05d", e.getEvento().getId()) + "] " + e.getEvento().getNome()));
 
                 }catch (Exception ex){
-                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                     ex.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Erro ao carregar o registro! - " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
 
 
@@ -290,8 +292,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
+
         }
 
 

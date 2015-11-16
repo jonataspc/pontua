@@ -17,7 +17,7 @@ public class Menu2 extends AppCompatActivity {
 
 
         //recupera usuario
-        Bundle b = getIntent().getExtras();
+        final Bundle b = getIntent().getExtras();
 
         if(b==null){
             finish();
@@ -33,8 +33,6 @@ public class Menu2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu2.this, CadastroUsuarios.class);
-                Bundle b = new Bundle();
-                //b.putString("usuario", edtUsuario.getText().toString().trim());
                 myIntent.putExtras(b);
                 startActivity(myIntent);
             }
@@ -46,8 +44,6 @@ public class Menu2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu2.this, CadastroEventos.class);
-                Bundle b = new Bundle();
-                //b.putString("usuario", edtUsuario.getText().toString().trim());
                 myIntent.putExtras(b);
                 startActivity(myIntent);
             }
@@ -59,8 +55,6 @@ public class Menu2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu2.this, CadastroEntidades.class);
-                Bundle b = new Bundle();
-                //b.putString("usuario", edtUsuario.getText().toString().trim());
                 myIntent.putExtras(b);
                 startActivity(myIntent);
             }
@@ -72,8 +66,17 @@ public class Menu2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu2.this, CadastroItensInspecao.class);
-                Bundle b = new Bundle();
-                //b.putString("usuario", edtUsuario.getText().toString().trim());
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+
+        });
+
+        ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu2.this, Avaliacao.class);
                 myIntent.putExtras(b);
                 startActivity(myIntent);
             }

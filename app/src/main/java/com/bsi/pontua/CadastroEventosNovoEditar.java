@@ -57,6 +57,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             }catch (Exception e)
             {
+                e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
@@ -146,6 +147,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
         }catch (Exception e)
         {
+            e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage() , Toast.LENGTH_SHORT).show();
         }
 

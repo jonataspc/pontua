@@ -31,5 +31,9 @@ public class EntidadeVO {
 
     private String nome;
 
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 
 }

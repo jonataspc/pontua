@@ -18,33 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Titulo"
+            android:text="Realizar Avaliação"
             android:id="@+id/tvwTitle"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
-
-        <EditText
-            android:id="@+id/txtNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginLeft="0dp"
-            android:maxLines="1"
-            android:hint="Nome do ítem"
-            android:maxLength="30"
-            android:layout_marginTop="26dp"
-            android:layout_below="@+id/tvwTitle"
-            android:layout_alignParentStart="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Salvar"
-            android:id="@+id/btnCadastrar"
-            android:layout_alignParentTop="false"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/relativeLayout2"
-            android:layout_marginTop="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,9 +29,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Evento:"
             android:id="@+id/textView4"
-            android:layout_below="@+id/txtNome"
+            android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="5dp" />
 
         <Spinner
             android:id="@+id/spnEventos"
@@ -70,11 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Área:"
+            android:text="Entidade:"
             android:id="@+id/textView5"
             android:layout_below="@+id/spnEventos"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="5dp" />
 
         <Spinner
             android:id="@+id/spnEntidades"
@@ -85,66 +62,73 @@
             android:layout_below="@+id/textView5"
             android:layout_alignParentStart="true" />
 
-        <RelativeLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
+
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout"
-            android:hint="Servidor"
-            android:textSize="20sp"
-            android:maxLines="1"
-            android:maxLength="20"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Área:"
+            android:id="@+id/textView6"
             android:layout_below="@+id/spnEntidades"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="5dp" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="Pontuação mínima:"
-                android:textSize="18sp"
-                android:layout_marginRight="10dp"
-                android:textColor="#808080" />
+        <Spinner
+            android:id="@+id/spnAreas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/textView6"
+            android:layout_alignParentStart="true" />
 
-            <EditText
-                android:layout_marginLeft="170dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:layout_alignParentRight="true"
-                android:id="@+id/txtPontMin"
-                android:layout_gravity="center"
-                android:inputType="numberDecimal"
-                android:gravity="right"
-                android:layout_marginRight="5dp" />
-        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Ítem:"
+            android:id="@+id/textView7"
+            android:layout_below="@+id/spnAreas"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
+
+        <Spinner
+            android:id="@+id/spnItens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/textView7"
+            android:layout_alignParentStart="true" />
 
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout2"
+            android:id="@+id/relativeLayout3"
             android:hint="Servidor"
             android:textSize="20sp"
             android:maxLines="1"
             android:maxLength="20"
-
+            android:layout_below="@+id/spnItens"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/relativeLayout">
+            android:layout_marginTop="5dp"
+            android:background="#e3e3e3">
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="Pontuação máxima:"
+                android:text="Pontuação a lançar:"
                 android:textSize="18sp"
                 android:layout_marginRight="10dp"
-                android:textColor="#808080" />
+                android:textColor="#808080"
+                android:layout_marginLeft="5dp" />
 
             <EditText
                 android:layout_marginLeft="170dp"
@@ -152,12 +136,34 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:layout_alignParentRight="true"
-                android:id="@+id/txtPontMax"
+                android:id="@+id/txtPontuacao"
                 android:layout_gravity="center"
                 android:inputType="numberDecimal"
                 android:gravity="right"
                 android:layout_marginRight="5dp" />
         </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pontuar"
+            android:id="@+id/btnLancar"
+            android:layout_below="@+id/relativeLayout3"
+            android:layout_alignEnd="@+id/relativeLayout3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Instruções blablabla Instruções blablabla Instruções blablabla Instruções blablabla Instruções blablabla "
+            android:id="@+id/lblInstrucoes"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="false"
+            android:layout_toStartOf="@+id/btnLancar"
+            android:layout_alignTop="@+id/btnLancar"
+            android:layout_alignParentTop="false"
+            android:layout_marginTop="10dp" />
+
 
     </RelativeLayout>
 </ScrollView>
