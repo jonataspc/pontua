@@ -120,8 +120,8 @@ public class CadastrosControle {
 		return daoItemInspecao.listar(nomePesquisa);
 	}
 
-	public    List<ItemInspecaoVO> listarItemInspecaoPorEventoArea(EventoVO evt, String area) throws Exception{
-		return daoItemInspecao.listarPorEvento(evt, area);
+	public    List<ItemInspecaoVO> listarItemInspecaoPendentesPorEventoEntidadeArea(EventoVO evt, EntidadeVO ent, String area) throws Exception{
+		return daoItemInspecao.listarPendentesPorEventoEntidade(evt, ent, area);
 	}
 
 

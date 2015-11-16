@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
 
@@ -92,7 +93,7 @@ public class ItemInspecaoDAO {
     }
 
 
-    public List<ItemInspecaoVO> listarPorEvento( EventoVO evt,  String area) {
+    public List<ItemInspecaoVO> listarPendentesPorEventoEntidade(EventoVO evt, EntidadeVO ent, String area) {
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -100,9 +101,13 @@ public class ItemInspecaoDAO {
             PreparedStatement st;
 
             if ( area==null || area.trim() == "") {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE id_evento=" + evt.getId() + " ORDER BY id_evento, area, nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ii " +
+                        "LEFT JOIN avaliacao av ON av.id_entidade=" + ent.getId() + " AND av.id_item_inspecao=ii.id " +
+                        "  WHERE id_evento=" + evt.getId() + "            AND av.id IS NULL ORDER BY id_evento, area, nome;");
             } else {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE id_evento=" + evt.getId() + " AND area=? ORDER BY id_evento, area, nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ii " +
+                        "LEFT JOIN avaliacao av ON av.id_entidade=" + ent.getId() + " AND av.id_item_inspecao=ii.id " +
+                        "  WHERE id_evento=" + evt.getId() + " AND area=? AND av.id IS NULL ORDER BY id_evento, area, nome;");
                 st.setString(1, area);
             }
 

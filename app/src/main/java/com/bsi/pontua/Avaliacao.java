@@ -17,9 +17,7 @@ import android.widget.Toast;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import utils.*;
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
 import vo.AvaliacaoVO;
@@ -128,9 +126,7 @@ public class Avaliacao extends AppCompatActivity {
         btnLancar.setEnabled(false);
 
 
-        _eventoAtual = null;
-        _entidadeAtual = null;
-        _itemInspecaoAtual = null;
+
 
     }
 
@@ -197,6 +193,10 @@ public class Avaliacao extends AppCompatActivity {
 
                     if (((EventoVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
                         resetaUi();
+
+                        _eventoAtual = null;
+                        _entidadeAtual = null;
+                        _itemInspecaoAtual = null;
 
                         //zera entidade
                         Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
@@ -306,6 +306,9 @@ public class Avaliacao extends AppCompatActivity {
                     if (((EntidadeVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
                         resetaUi();
 
+                        _entidadeAtual = null;
+                        _itemInspecaoAtual = null;
+
                         //zera area
                         Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
                         spnAreas.setAdapter(new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
@@ -381,25 +384,6 @@ public class Avaliacao extends AppCompatActivity {
 
             result.add(0, TXT_MSG_SELECIONE);
 
-            /*
-            List<String> lista = result;
-
-            String[] items = new String[lista.size()+2];
-
-            int cont = 0;
-
-            items[cont] = TXT_MSG_SELECIONE;
-            cont++;
-
-            items[cont] = TXT_AREA_QUALQUER;
-            cont++;
-
-            for (String item : lista) {
-                items[cont] = item ;
-                cont++;
-            }
-*/
-
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnAreas.setAdapter(adapter);
@@ -420,23 +404,7 @@ public class Avaliacao extends AppCompatActivity {
 
 
                     } else {
-                        //carrega itens em spinner
-                        Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-                        Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
-
-
-                        String strArea = spnAreas.getSelectedItem().toString();
-
-                        if (strArea.equals(TXT_AREA_QUALQUER)) {
-                            strArea = null;
-                        }
-
-
-                        String[] paramns = new String[]{String.valueOf(((EventoVO) spnEventos.getSelectedItem()).getId()),
-                                strArea};
-
-                        new carregarItensTask().execute(paramns);
-
+                       atualizarItens();
                     }
 
                 }
@@ -454,6 +422,26 @@ public class Avaliacao extends AppCompatActivity {
         }
     }
 
+    void atualizarItens(){
+
+        //carrega itens em spinner
+        String strArea = ((Spinner) findViewById(R.id.spnAreas)).getSelectedItem().toString();
+
+        if (strArea.equals(TXT_AREA_QUALQUER)) {
+            strArea = null;
+        }
+
+
+        String[] paramns = new String[]{
+                String.valueOf(_eventoAtual.getId()),
+                String.valueOf(_entidadeAtual.getId()),
+                strArea
+        };
+
+        new carregarItensTask().execute(paramns);
+
+    }
+
     class carregarItensTask extends AsyncTask<String, Integer, List> {
 
         @Override
@@ -469,7 +457,11 @@ public class Avaliacao extends AppCompatActivity {
 
             try {
 
-                List<ItemInspecaoVO> lista = cc.listarItemInspecaoPorEventoArea(cc.obterEventoPorId(Integer.parseInt(param[0])), param[1]);
+                List<ItemInspecaoVO> lista = cc.listarItemInspecaoPendentesPorEventoEntidadeArea(
+                        cc.obterEventoPorId(Integer.parseInt(param[0])),
+                        cc.obterEntidadePorId(Integer.parseInt(param[1])),
+                        param[2]
+                );
 
                 return lista;
 
@@ -585,12 +577,19 @@ public class Avaliacao extends AppCompatActivity {
             return;
         }
 
+        if( Double.parseDouble(txtPontuacao.getText().toString()) > Double.parseDouble(_itemInspecaoAtual.getPontuacaoMaxima().toString())){
+            Toast.makeText(getApplicationContext(), "Pontuação lançada deve ser inferior/igual à máxima!", Toast.LENGTH_SHORT).show();
+            txtPontuacao.requestFocus();
+            return;
+        }
+
 
 
 
         //efetua lancamento
         AvaliacaoVO[] paramns = new AvaliacaoVO[1];
 
+        paramns[0] = new AvaliacaoVO();
         paramns[0].setEntidade(_entidadeAtual);
         paramns[0].setItemInspecao(_itemInspecaoAtual);
         paramns[0].setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
@@ -672,6 +671,9 @@ public class Avaliacao extends AppCompatActivity {
 
             if(result){
                 resetaUi();
+                atualizarItens();
+
+
                 Toast.makeText(getApplicationContext(), "Avaliação realizada com sucesso", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(getApplicationContext(), "Erro ao realizar a avaliação" , Toast.LENGTH_LONG).show();
