@@ -85,6 +85,12 @@
                 android:text="Consultar avaliações"
                 android:id="@+id/btnConsultarAvaliacoes" />
 
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Relatório de Ranking"
+                android:id="@+id/btnRelRkg" />
+
         </LinearLayout>
     </ScrollView>
 

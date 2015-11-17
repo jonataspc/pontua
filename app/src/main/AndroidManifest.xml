@@ -40,6 +40,12 @@
             android:name=".ConsultarAvaliacoesRel"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        <activity
+            android:name=".RelatorioRanking"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity android:name=".RelatorioRankingRel" >
+        </activity>
     </application>
 
 </manifest>

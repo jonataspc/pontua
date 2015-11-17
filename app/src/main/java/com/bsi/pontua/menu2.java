@@ -27,7 +27,9 @@ public class Menu2 extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.txtUsuario)).setText(usuario);
 
-        //TODO: remover botoes de usuarios que nao tenham permissao!
+
+
+
 
         ((Button) findViewById(R.id.btnCadastroUsuarios)).setOnClickListener(new View.OnClickListener() {
 
@@ -95,16 +97,77 @@ public class Menu2 extends AppCompatActivity {
 
         });
 
-/*
+        ((Button) findViewById(R.id.btnRelRkg)).setOnClickListener(new View.OnClickListener() {
 
-        View myView = findViewById(R.id.button);
-        ViewGroup parent = (ViewGroup) myView.getParent();
-        parent.removeView(myView);
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu2.this, RelatorioRanking.class);
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
 
-        myView = findViewById(R.id.button2);
-        parent = (ViewGroup) myView.getParent();
-        parent.removeView(myView);
-*/
+        });
+
+
+
+
+
+
+        //remover botoes de usuarios que nao tenham permissao!
+        if(b.getString("perfil").equals("AVAL")){
+
+            View myView = findViewById(R.id.btnCadastroUsuarios);
+            ViewGroup parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroEventos);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroEntidades);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroItensInspecao);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnConsultarAvaliacoes);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnRelRkg);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+        }else if(b.getString("perfil").equals("ENT")){
+
+            View myView = findViewById(R.id.btnCadastroUsuarios);
+            ViewGroup parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroEventos);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroEntidades);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnCadastroItensInspecao);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnRelRkg);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnRealizarAvaliacao);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+        }
+
+
 
 
 

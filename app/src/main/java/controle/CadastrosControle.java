@@ -6,11 +6,13 @@ import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
+import dao.RelRankingDAO;
 import dao.UsuarioDAO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.RelRankingVO;
 import vo.UsuarioVO;
 
 public class CadastrosControle {
@@ -20,6 +22,7 @@ public class CadastrosControle {
 	private UsuarioDAO daoUsuario;
 	private ItemInspecaoDAO daoItemInspecao;
 	private AvaliacaoDAO daoAvaliacao;
+    private RelRankingDAO daoRelRanking;
 
 	public CadastrosControle() {
  		daoEvento = new EventoDAO();
@@ -27,8 +30,14 @@ public class CadastrosControle {
 		daoUsuario= new UsuarioDAO();
 		daoItemInspecao = new ItemInspecaoDAO();
 		daoAvaliacao = new AvaliacaoDAO();
-
+        daoRelRanking = new RelRankingDAO();
 	}
+
+
+    //relatorio rkg
+    public    List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception{
+        return daoRelRanking.relatorioRanking(e);
+    }
 
 
 	//evento

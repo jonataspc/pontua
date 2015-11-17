@@ -1,5 +1,7 @@
 package com.bsi.pontua;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +23,6 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import controle.CadastrosControle;
@@ -57,7 +58,9 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.UsuarioVO;
 
-public class ConsultarAvaliacoes extends AppCompatActivity {
+public class RelatorioRanking extends AppCompatActivity {
+
+
 
     ProgressDialog progress;
 
@@ -94,14 +97,16 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
     }
 
     private String TXT_MSG_SELECIONE = "Selecione...";
-    private String TXT_AREA_QUALQUER = "[Todas]";
 
     Bundle b=null;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_consultar_avaliacoes);
+        setContentView(R.layout.activity_relatorio_ranking);
 
         //recupera usuario
         b = getIntent().getExtras();
@@ -130,12 +135,9 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         //abre nova activity com relatoio
         Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-        Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
 
-        Intent myIntent = new Intent(ConsultarAvaliacoes.this, ConsultarAvaliacoesRel.class);
+        Intent myIntent = new Intent(RelatorioRanking.this, RelatorioRankingRel.class);
         b.putInt("id_evento", ((EventoVO) spnEventos.getSelectedItem()).getId());
-        b.putInt("id_entidade",  ((EntidadeVO) spnEntidades.getSelectedItem()).getId()      );
-        // -2 = todas entidades
         myIntent.putExtras(b);
         startActivity(myIntent);
 
@@ -179,7 +181,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
 
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, result);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(RelatorioRanking.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEventos.setAdapter(adapter);
             spnEventos.requestFocus();
 
@@ -187,127 +189,16 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
             spnEventos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    //carrega entidades
 
                     if (((EventoVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
 
-
-                        //zera entidade
-                        Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
-                        spnEntidades.setAdapter(new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
-
                         final Button btnConsAvaliacoes = (Button) findViewById(R.id.btnConsAvaliacoes);
                         btnConsAvaliacoes.setEnabled(false);
 
                     } else {
-
-                        //carrega entidades em spinner
-                        String[] paramns = new String[]{String.valueOf(((EventoVO) parentView.getSelectedItem()).getId())};
-                        new carregarEntidadesTask().execute(paramns);
-                    }
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-
-                }
-            });
-
-
-            if (progress != null && progress.isShowing()) {
-                progress.dismiss();
-            }
-        }
-    }
-
-    class carregarEntidadesTask extends AsyncTask<String, Integer, List> {
-
-        @Override
-        protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
-        }
-
-        @Override
-        protected List<EntidadeVO> doInBackground(String... param) {
-
-            CadastrosControle cc = new CadastrosControle();
-
-            try {
-
-                List<EntidadeVO> lista = cc.listarEntidadePorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
-
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List result) {
-
-            //popula o spinner
-            Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
-
-
-            EntidadeVO newItem = new EntidadeVO();
-            newItem.setNome(TXT_AREA_QUALQUER);
-            newItem.setId(-2);
-            result.add(0, newItem);
-
-            EntidadeVO newItem2 = new EntidadeVO();
-            newItem2.setNome(TXT_MSG_SELECIONE);
-            newItem2.setId(-1);
-            result.add(0, newItem2);
-
-
-            if(b.getString("perfil").equals("ENT")){
-                //entidade?
-                int entidadeId = b.getInt("id_entidade");
-
-
-
-                Iterator<EntidadeVO> i = result.iterator();
-                while (i.hasNext()) {
-                    EntidadeVO s = i.next(); // must be called before you can call i.remove()
-
-                    if(s.getId()  != entidadeId){
-                        i.remove();
-                    }
-
-
-                }
-
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, result);
-            spnEntidades.setAdapter(adapter);
-            spnEntidades.requestFocus();
-
-
-            spnEntidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-
-                    if (((EntidadeVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
-
-
-                        final Button btnConsAvaliacoes = (Button) findViewById(R.id.btnConsAvaliacoes);
-                        btnConsAvaliacoes.setEnabled(false);
-
-
-                    } else {
-
 
                         final Button btnConsAvaliacoes = (Button) findViewById(R.id.btnConsAvaliacoes);
                         btnConsAvaliacoes.setEnabled(true);
-
-
                     }
 
                 }
@@ -324,7 +215,5 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
             }
         }
     }
-
-
 
 }
