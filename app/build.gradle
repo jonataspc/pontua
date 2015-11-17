@@ -21,7 +21,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile files('C:/Projetos/Pontua/libs/mysql-connector-java-5.1.34-bin.jar')
+    compile files('D:/Projetos/android/Pontua/libs/mysql-connector-java-5.1.34-bin.jar')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
 }

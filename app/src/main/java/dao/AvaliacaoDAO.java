@@ -6,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
+import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.UsuarioVO;
 
@@ -38,6 +40,7 @@ public class AvaliacaoDAO {
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
+                o.setDataHora(resultado.getDate("data_hora"));
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
                 o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
@@ -74,6 +77,7 @@ public class AvaliacaoDAO {
 
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
+                o.setDataHora(resultado.getDate("data_hora"));
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
                 o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
@@ -115,6 +119,7 @@ public class AvaliacaoDAO {
 
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
+                o.setDataHora(resultado.getDate("data_hora"));
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
                 o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
@@ -156,6 +161,68 @@ public class AvaliacaoDAO {
 
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
+                o.setDataHora(resultado.getDate("data_hora"));
+                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
+                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
+                o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
+                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                lista.add(o);
+
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+
+
+    public List<AvaliacaoVO> listar( EventoVO evt, EntidadeVO ent) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            if(ent==null){
+                // todas as entidades
+                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN item_inspecao ON item_inspecao.id=avaliacao.id_item_inspecao WHERE id_evento=?                   ORDER BY id_evento, area, item_inspecao.nome, id_entidade;");
+                st.setInt(1, evt.getId());
+            }else{
+                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN item_inspecao ON item_inspecao.id=avaliacao.id_item_inspecao WHERE id_evento=? AND id_entidade=? ORDER BY id_evento, area, item_inspecao.nome, id_entidade;");
+                st.setInt(1, evt.getId());
+                st.setInt(2, ent.getId());
+            }
+
+
+            ResultSet resultado = st.executeQuery();
+
+            EventoDAO eventoDAO = new EventoDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO();
+            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
+            while (resultado.next()) {
+
+                AvaliacaoVO o = new AvaliacaoVO();
+                o.setId(resultado.getInt("id"));
+
+                try {
+                    o.setDataHora(  new java.sql.Date(format.parse(resultado.getString("data_hora")).getTime())  );
+                }catch (Exception e){
+                    o.setDataHora(null);
+                }
+
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
                 o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
@@ -203,6 +270,7 @@ public class AvaliacaoDAO {
 
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
+                o.setDataHora(resultado.getDate("data_hora"));
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
                 o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));

@@ -1,6 +1,7 @@
 package vo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class AvaliacaoVO {
 
@@ -9,6 +10,16 @@ public class AvaliacaoVO {
     private ItemInspecaoVO itemInspecao;
     private UsuarioVO usuario;
     private BigDecimal pontuacao;
+    private int forma_automatica;
+    private Date dataHora;
+
+    public Date getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(Date dataHora) {
+        this.dataHora = dataHora;
+    }
 
     public int getForma_automatica() {
         return forma_automatica;
@@ -58,7 +69,7 @@ public class AvaliacaoVO {
         this.pontuacao = pontuacao;
     }
 
-    private int forma_automatica;
+
 
 
 }

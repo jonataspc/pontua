@@ -100,7 +100,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_avaliacao);
+        setContentView(R.layout.activity_consultar_avaliacoes);
 
         //recupera usuario
         b = getIntent().getExtras();
@@ -133,7 +133,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         Intent myIntent = new Intent(ConsultarAvaliacoes.this, ConsultarAvaliacoesRel.class);
         b.putInt("id_evento", ((EventoVO) spnEventos.getSelectedItem()).getId());
-        b.putInt("id_entidade",  Integer.parseInt( spnEntidades.getSelectedItem().toString() )  );
+        b.putInt("id_entidade",  ((EntidadeVO) spnEntidades.getSelectedItem()).getId()      );
         // -2 = todas entidades
         myIntent.putExtras(b);
         startActivity(myIntent);
@@ -194,6 +194,9 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
                         //zera entidade
                         Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
                         spnEntidades.setAdapter(new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+
+                        final Button btnConsAvaliacoes = (Button) findViewById(R.id.btnConsAvaliacoes);
+                        btnConsAvaliacoes.setEnabled(false);
 
                     } else {
 

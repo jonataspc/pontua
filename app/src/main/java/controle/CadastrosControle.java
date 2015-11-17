@@ -172,6 +172,10 @@ public class CadastrosControle {
 		return daoAvaliacao.listar(entidade);
 	}
 
+	public    List<AvaliacaoVO> listarAvaliacao(EventoVO evt, EntidadeVO ent) throws Exception{
+		return daoAvaliacao.listar(evt, ent);
+	}
+
 	public     boolean excluirAvaliacao(AvaliacaoVO o) throws Exception{
 		return daoAvaliacao.excluir(o);
 	}
