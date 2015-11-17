@@ -27,4 +27,12 @@ public class Utils {
         return (dt1.format(dt));
 
     }
+
+    public static String formatarHora(Date dt) {
+
+        SimpleDateFormat dt1 = new SimpleDateFormat("HH:mm:ss");
+        return (dt1.format(dt));
+
+    }
+
 }

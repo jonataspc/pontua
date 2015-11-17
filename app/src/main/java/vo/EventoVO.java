@@ -1,6 +1,10 @@
 package vo;
 
-public class EventoVO {
+import java.io.Serializable;
+
+public class EventoVO implements Serializable {
+
+    private static final long serialVersionUID = 3L;
 
     private int id;
     private String nome;

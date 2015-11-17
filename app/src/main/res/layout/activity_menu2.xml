@@ -82,6 +82,12 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:text="Avaliação por NFC"
+                android:id="@+id/btnRealizarAvaliacaoNFC" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:text="Consultar avaliações"
                 android:id="@+id/btnConsultarAvaliacoes" />
 

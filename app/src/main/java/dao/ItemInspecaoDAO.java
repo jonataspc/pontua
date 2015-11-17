@@ -140,6 +140,55 @@ public class ItemInspecaoDAO {
 
     }
 
+
+    public List<ItemInspecaoVO> listarPorEvento(EventoVO evt, String area) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            if ( area==null || area.trim() == "") {
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ii " +
+                        "  " +
+                        "  WHERE id_evento=" + evt.getId() + "           ORDER BY id_evento, area, nome;");
+            } else {
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ii " +
+                        "  " +
+                        "  WHERE id_evento=" + evt.getId() + " AND area=? ORDER BY id_evento, area, nome;");
+                st.setString(1, area);
+            }
+
+            ResultSet resultado = st.executeQuery();
+
+            EventoDAO eventoDAO = new EventoDAO();
+
+            List<ItemInspecaoVO> lista = new ArrayList<ItemInspecaoVO>(0);
+            while (resultado.next()) {
+
+                ItemInspecaoVO o = new ItemInspecaoVO();
+                o.setId(resultado.getInt("id"));
+                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+                o.setArea(resultado.getString("area"));
+                o.setNome(resultado.getString("nome"));
+                o.setPontuacaoMinima(new BigDecimal(resultado.getDouble("pontuacao_minima")));
+                o.setPontuacaoMaxima(new BigDecimal(resultado.getDouble("pontuacao_maxima")));
+
+                lista.add(o);
+
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+
     public List<String> listarAreas() {
         try {
 

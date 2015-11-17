@@ -108,7 +108,16 @@ public class Menu2 extends AppCompatActivity {
 
         });
 
+        ((Button) findViewById(R.id.btnRealizarAvaliacaoNFC)).setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu2.this, AvaliacaoNfc.class);
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+
+        });
 
 
 
@@ -163,6 +172,10 @@ public class Menu2 extends AppCompatActivity {
             parent.removeView(myView);
 
             myView = findViewById(R.id.btnRealizarAvaliacao);
+            parent = (ViewGroup) myView.getParent();
+            parent.removeView(myView);
+
+            myView = findViewById(R.id.btnRealizarAvaliacaoNFC);
             parent = (ViewGroup) myView.getParent();
             parent.removeView(myView);
         }

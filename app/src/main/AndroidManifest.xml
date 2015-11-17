@@ -46,6 +46,10 @@
         </activity>
         <activity android:name=".RelatorioRankingRel" >
         </activity>
+        <activity android:name=".AvaliacaoNfc" >
+        </activity>
+        <activity android:name=".AvaliacaoNfcLer" >
+        </activity>
     </application>
 
 </manifest>

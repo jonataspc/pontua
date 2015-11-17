@@ -17,184 +17,181 @@ import vo.UsuarioVO;
 
 public class CadastrosControle {
 
-	private EventoDAO daoEvento;
-	private EntidadeDAO daoEntidade;
-	private UsuarioDAO daoUsuario;
-	private ItemInspecaoDAO daoItemInspecao;
-	private AvaliacaoDAO daoAvaliacao;
+    private EventoDAO daoEvento;
+    private EntidadeDAO daoEntidade;
+    private UsuarioDAO daoUsuario;
+    private ItemInspecaoDAO daoItemInspecao;
+    private AvaliacaoDAO daoAvaliacao;
     private RelRankingDAO daoRelRanking;
 
-	public CadastrosControle() {
- 		daoEvento = new EventoDAO();
-		daoEntidade = new EntidadeDAO();
-		daoUsuario= new UsuarioDAO();
-		daoItemInspecao = new ItemInspecaoDAO();
-		daoAvaliacao = new AvaliacaoDAO();
+    public CadastrosControle() {
+        daoEvento = new EventoDAO();
+        daoEntidade = new EntidadeDAO();
+        daoUsuario = new UsuarioDAO();
+        daoItemInspecao = new ItemInspecaoDAO();
+        daoAvaliacao = new AvaliacaoDAO();
         daoRelRanking = new RelRankingDAO();
-	}
+    }
 
 
     //relatorio rkg
-    public    List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception{
+    public List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception {
         return daoRelRanking.relatorioRanking(e);
     }
 
 
-	//evento
-	public boolean inserirEvento( EventoVO i){
-		return daoEvento.incluir(i);
-	}
+    //evento
+    public boolean inserirEvento(EventoVO i) {
+        return daoEvento.incluir(i);
+    }
 
-	public    List<EventoVO> listarEvento(String nomePesquisa) throws Exception{
-		return daoEvento.listar(nomePesquisa);
-	}
+    public List<EventoVO> listarEvento(String nomePesquisa) throws Exception {
+        return daoEvento.listar(nomePesquisa);
+    }
 
-	public     boolean excluirEvento(EventoVO o) throws Exception{
-		return daoEvento.excluir(o);
-	}
+    public boolean excluirEvento(EventoVO o) throws Exception {
+        return daoEvento.excluir(o);
+    }
 
-	public     EventoVO obterEventoPorId(int a) throws Exception{
-		return daoEvento.obterPorCodigo(a);
-	}
+    public EventoVO obterEventoPorId(int a) throws Exception {
+        return daoEvento.obterPorCodigo(a);
+    }
 
-	public     boolean editarEvento(EventoVO  o) throws Exception{
-		return daoEvento.editar(o);
-	}
-
-
+    public boolean editarEvento(EventoVO o) throws Exception {
+        return daoEvento.editar(o);
+    }
 
 
-	//entidade
-	public boolean inserirEntidade( EntidadeVO i){
-		return daoEntidade.incluir(i);
-	}
+    //entidade
+    public boolean inserirEntidade(EntidadeVO i) {
+        return daoEntidade.incluir(i);
+    }
 
-	public    List<EntidadeVO> listarEntidade(String nomePesquisa) throws Exception{
-		return daoEntidade.listar(nomePesquisa);
-	}
+    public List<EntidadeVO> listarEntidade(String nomePesquisa) throws Exception {
+        return daoEntidade.listar(nomePesquisa);
+    }
 
-	public    List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception{
-		return daoEntidade.listarPorEvento(ev);
-	}
+    public List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception {
+        return daoEntidade.listarPorEvento(ev);
+    }
 
-	public     boolean excluirEntidade(EntidadeVO o) throws Exception{
-		return daoEntidade.excluir(o);
-	}
+    public boolean excluirEntidade(EntidadeVO o) throws Exception {
+        return daoEntidade.excluir(o);
+    }
 
-	public     EntidadeVO obterEntidadePorId(int a) throws Exception{
-		return daoEntidade.obterPorCodigo(a);
-	}
+    public EntidadeVO obterEntidadePorId(int a) throws Exception {
+        return daoEntidade.obterPorCodigo(a);
+    }
 
-	public     boolean editarEntidade(EntidadeVO  o) throws Exception{
-		return daoEntidade.editar(o);
-	}
+    public boolean editarEntidade(EntidadeVO o) throws Exception {
+        return daoEntidade.editar(o);
+    }
 
-	//usuario
-	public boolean inserirUsuario( UsuarioVO i){
-		return daoUsuario.incluir(i);
-	}
+    //usuario
+    public boolean inserirUsuario(UsuarioVO i) {
+        return daoUsuario.incluir(i);
+    }
 
-	public    List<UsuarioVO> listarUsuario(String nomePesquisa) throws Exception{
-		return daoUsuario.listar(nomePesquisa);
-	}
+    public List<UsuarioVO> listarUsuario(String nomePesquisa) throws Exception {
+        return daoUsuario.listar(nomePesquisa);
+    }
 
-	public     boolean excluirUsuario(UsuarioVO o) throws Exception{
-		return daoUsuario.excluir(o);
-	}
+    public boolean excluirUsuario(UsuarioVO o) throws Exception {
+        return daoUsuario.excluir(o);
+    }
 
-	public     UsuarioVO obterUsuarioPorId(int a) throws Exception{
-		return daoUsuario.obterPorCodigo(a);
-	}
+    public UsuarioVO obterUsuarioPorId(int a) throws Exception {
+        return daoUsuario.obterPorCodigo(a);
+    }
 
-	public     UsuarioVO obterUsuarioPorEntidade(EntidadeVO e) throws Exception{
-		return daoUsuario.obterPorEntidade(e);
-	}
+    public UsuarioVO obterUsuarioPorEntidade(EntidadeVO e) throws Exception {
+        return daoUsuario.obterPorEntidade(e);
+    }
 
-	public     boolean editarUsuario(UsuarioVO  o) throws Exception{
-		return daoUsuario.editar(o);
-	}
+    public boolean editarUsuario(UsuarioVO o) throws Exception {
+        return daoUsuario.editar(o);
+    }
 
-	public     UsuarioVO validarLogin(UsuarioVO  o) throws Exception{
-		return daoUsuario.validarLogin(o);
-	}
-
-
-
-	//itemINspecao
-	public boolean inserirItemInspecao( ItemInspecaoVO i){
-		return daoItemInspecao.incluir(i);
-	}
-
-	public    List<ItemInspecaoVO> listarItemInspecao(String nomePesquisa) throws Exception{
-		return daoItemInspecao.listar(nomePesquisa);
-	}
-
-	public    List<ItemInspecaoVO> listarItemInspecaoPendentesPorEventoEntidadeArea(EventoVO evt, EntidadeVO ent, String area) throws Exception{
-		return daoItemInspecao.listarPendentesPorEventoEntidade(evt, ent, area);
-	}
+    public UsuarioVO validarLogin(UsuarioVO o) throws Exception {
+        return daoUsuario.validarLogin(o);
+    }
 
 
-	public     boolean excluirItemInspecao(ItemInspecaoVO o) throws Exception{
-		return daoItemInspecao.excluir(o);
-	}
+    //itemINspecao
+    public boolean inserirItemInspecao(ItemInspecaoVO i) {
+        return daoItemInspecao.incluir(i);
+    }
 
-	public     ItemInspecaoVO obterItemInspecaoPorId(int a) throws Exception{
-		return daoItemInspecao.obterPorCodigo(a);
-	}
+    public List<ItemInspecaoVO> listarItemInspecao(String nomePesquisa) throws Exception {
+        return daoItemInspecao.listar(nomePesquisa);
+    }
 
-	public     boolean editarItemInspecao(ItemInspecaoVO  o) throws Exception{
-		return daoItemInspecao.editar(o);
-	}
+    public List<ItemInspecaoVO> listarItemInspecaoPendentesPorEventoEntidadeArea(EventoVO evt, EntidadeVO ent, String area) throws Exception {
+        return daoItemInspecao.listarPendentesPorEventoEntidade(evt, ent, area);
+    }
 
-	public    List<String> listarAreas(EventoVO evt) throws Exception{
+    public List<ItemInspecaoVO> listarItemInspecaoPorEvento(EventoVO evt, String area) throws Exception {
+        return daoItemInspecao.listarPorEvento(evt, area);
+    }
 
-		if(evt==null) {
-			return daoItemInspecao.listarAreas();
-		}
-		else
-		{
-			return daoItemInspecao.listarAreasPorEvento(evt);
-		}
+    public boolean excluirItemInspecao(ItemInspecaoVO o) throws Exception {
+        return daoItemInspecao.excluir(o);
+    }
 
-	}
+    public ItemInspecaoVO obterItemInspecaoPorId(int a) throws Exception {
+        return daoItemInspecao.obterPorCodigo(a);
+    }
+
+    public boolean editarItemInspecao(ItemInspecaoVO o) throws Exception {
+        return daoItemInspecao.editar(o);
+    }
+
+    public List<String> listarAreas(EventoVO evt) throws Exception {
+
+        if (evt == null) {
+            return daoItemInspecao.listarAreas();
+        } else {
+            return daoItemInspecao.listarAreasPorEvento(evt);
+        }
+
+    }
 
 
+    //Avaliacao
+    public boolean inserirAvaliacao(AvaliacaoVO i) {
+        return daoAvaliacao.incluir(i);
+    }
 
-	//Avaliacao
-	public boolean inserirAvaliacao( AvaliacaoVO i){
-		return daoAvaliacao.incluir(i);
-	}
+    public List<AvaliacaoVO> listarAvaliacao() throws Exception {
+        return daoAvaliacao.listar();
+    }
 
-	public    List<AvaliacaoVO> listarAvaliacao() throws Exception{
-		return daoAvaliacao.listar();
-	}
+    public List<AvaliacaoVO> listarAvaliacao(UsuarioVO usuario) throws Exception {
+        return daoAvaliacao.listar(usuario);
+    }
 
-	public    List<AvaliacaoVO> listarAvaliacao(UsuarioVO usuario) throws Exception{
-		return daoAvaliacao.listar(usuario);
-	}
+    public List<AvaliacaoVO> listarAvaliacao(ItemInspecaoVO itemInspecao) throws Exception {
+        return daoAvaliacao.listar(itemInspecao);
+    }
 
-	public    List<AvaliacaoVO> listarAvaliacao(ItemInspecaoVO itemInspecao) throws Exception{
-		return daoAvaliacao.listar(itemInspecao);
-	}
+    public List<AvaliacaoVO> listarAvaliacao(EntidadeVO entidade) throws Exception {
+        return daoAvaliacao.listar(entidade);
+    }
 
-	public    List<AvaliacaoVO> listarAvaliacao(EntidadeVO entidade) throws Exception{
-		return daoAvaliacao.listar(entidade);
-	}
+    public List<AvaliacaoVO> listarAvaliacao(EventoVO evt, EntidadeVO ent) throws Exception {
+        return daoAvaliacao.listar(evt, ent);
+    }
 
-	public    List<AvaliacaoVO> listarAvaliacao(EventoVO evt, EntidadeVO ent) throws Exception{
-		return daoAvaliacao.listar(evt, ent);
-	}
+    public boolean excluirAvaliacao(AvaliacaoVO o) throws Exception {
+        return daoAvaliacao.excluir(o);
+    }
 
-	public     boolean excluirAvaliacao(AvaliacaoVO o) throws Exception{
-		return daoAvaliacao.excluir(o);
-	}
+    public AvaliacaoVO obterAvaliacaoPorId(int a) throws Exception {
+        return daoAvaliacao.obterPorCodigo(a);
+    }
 
-	public     AvaliacaoVO obterAvaliacaoPorId(int a) throws Exception{
-		return daoAvaliacao.obterPorCodigo(a);
-	}
-
-	public     boolean editarAvaliacao(AvaliacaoVO o) throws Exception{
-		return daoAvaliacao.editar(o);
-	}
+    public boolean editarAvaliacao(AvaliacaoVO o) throws Exception {
+        return daoAvaliacao.editar(o);
+    }
 
 }

@@ -1,8 +1,11 @@
 package vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class RelRankingVO {
+public class RelRankingVO implements Serializable {
+
+    private static final long serialVersionUID = 5L;
 
     private EntidadeVO entidade;
     private BigDecimal saldoPontuacao;

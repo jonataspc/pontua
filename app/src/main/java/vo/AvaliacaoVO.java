@@ -1,9 +1,13 @@
 package vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class AvaliacaoVO {
+public class AvaliacaoVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
 
     private int id;
     private EntidadeVO entidade;
@@ -65,10 +69,22 @@ public class AvaliacaoVO {
         return pontuacao;
     }
 
+    @Override
+    public String toString() {
+        return "AvaliacaoVO{" +
+                "dataHora=" + dataHora +
+                ", id=" + id +
+                ", entidade=" + entidade +
+                ", itemInspecao=" + itemInspecao +
+                ", usuario=" + usuario +
+                ", pontuacao=" + pontuacao +
+                ", forma_automatica=" + forma_automatica +
+                '}';
+    }
+
     public void setPontuacao(BigDecimal pontuacao) {
         this.pontuacao = pontuacao;
     }
-
 
 
 

@@ -1,6 +1,10 @@
 package vo;
 
-public class EntidadeVO {
+import java.io.Serializable;
+
+public class EntidadeVO implements Serializable {
+
+    private static final long serialVersionUID = 2L;
 
     private int id;
     private EventoVO evento;

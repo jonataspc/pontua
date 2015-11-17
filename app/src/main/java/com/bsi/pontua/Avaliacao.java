@@ -519,7 +519,7 @@ public class Avaliacao extends AppCompatActivity {
                             "\nPontuação máxima: " + item.getPontuacaoMaxima().doubleValue());
 
                     //zera e disable txtPont
-                    txtPontuacao.setText("0");
+                    txtPontuacao.setText("");
                     txtPontuacao.setEnabled(true);
 
                     //disable btn

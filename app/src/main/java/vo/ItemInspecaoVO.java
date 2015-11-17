@@ -1,8 +1,11 @@
 package vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ItemInspecaoVO {
+public class ItemInspecaoVO implements Serializable {
+
+    private static final long serialVersionUID = 4L;
 
     private int id;
     private EventoVO evento;
