@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -46,9 +48,27 @@
         </activity>
         <activity android:name=".RelatorioRankingRel" >
         </activity>
-        <activity android:name=".AvaliacaoNfc" >
+        <activity android:name=".AvaliacaoNfc"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
-        <activity android:name=".AvaliacaoNfcLer" >
+        <activity android:name=".AvaliacaoNfcLer"
+            android:windowSoftInputMode="adjustResize" >
+
+            <!--
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+            -->
+
+        </activity>
+        <activity android:name=".StickyNotesActivity" >
+
+
+
         </activity>
     </application>
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="onclick">#E0E0E0</color>
+    <color name="transparente">#00000000</color>
+    <color name="preto">#FF7043</color>
+    <color name="bp_color">#1565C0</color>
+    <color name="bp_color_dark">#0D47A1</color>
+
+</resources>

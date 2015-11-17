@@ -359,7 +359,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
                 col6.setText("NFC");
             }
 
-            col6.setTextColor(Color.GREEN);
+            col6.setTextColor(Color.GRAY);
             col6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col6.setPadding(5, 5, 5, 5);
             tr.addView(col6);

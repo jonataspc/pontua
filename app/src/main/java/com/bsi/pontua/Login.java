@@ -18,6 +18,9 @@ import java.util.List;
 import controle.CadastrosControle;
 import vo.UsuarioVO;
 
+//TODO LIST
+//Bug - atraves de lanc. por NFC permite pontuar entidades que nao sejam do evento cadastrado
+
 public class Login extends AppCompatActivity {
 
     public static Context contextOfApplication;
