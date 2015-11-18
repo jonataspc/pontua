@@ -112,6 +112,11 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
             objEnt = String.valueOf(b.getInt("id_entidade"));
         }
 
+        if(b.getString("perfil").equals("ENT")){
+            final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+            btnExcluir.setVisibility(View.INVISIBLE);
+        }
+
         String[] paramns = new String[]{ String.valueOf(b.getInt("id_evento")), objEnt  };
 
         new popularGridTask().execute(paramns);
@@ -305,12 +310,28 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
             /** Creating a TextView to add to the row **/
-            final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
-            chk.setText(String.valueOf(e.getId()));
-            chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            chk.setPadding(5, 5, 5, 5);
-            chk.setTextColor(Color.GRAY);
-            tr.addView(chk);  // Adding textView to tablerow.
+
+            if(b.getString("perfil").equals("ENT")){
+                //entidade
+
+                final TextView chk = new TextView(this);
+                chk.setText(String.valueOf(e.getId()));
+                chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+                chk.setPadding(5, 5, 5, 5);
+                chk.setTextColor(Color.GRAY);
+                tr.addView(chk);  // Adding textView to tablerow.
+            }else {
+                //adm
+
+                final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
+                chk.setText(String.valueOf(e.getId()));
+                chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+                chk.setPadding(5, 5, 5, 5);
+                chk.setTextColor(Color.GRAY);
+                tr.addView(chk);  // Adding textView to tablerow.
+            }
+
+
 
             col1 = new TextView(this);
             col1.setText(e.getItemInspecao().getEvento().getNome());
