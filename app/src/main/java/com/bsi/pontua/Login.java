@@ -79,6 +79,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 
 //TODO LIST
 //Bug - atraves de lanc. por NFC permite pontuar entidades que nao sejam do evento cadastrado
@@ -243,25 +245,7 @@ public class Login extends AppCompatActivity {
 
     }
 
-
-    public void handleResponse(String response) {
-
-
-        try {
-
-            JSONObject jso = new JSONObject(response);
-
-            String nome = jso.getString("firstName");
-
-
-        } catch (Exception e) {
-            Log.e("", e.getLocalizedMessage(), e);
-        }
-
-    }
-
-
-    private class WebServiceTask extends AsyncTask<String, Integer, String> {
+     private class WebServiceTask extends AsyncTask<String, Integer, UsuarioVO> {
 
         public static final int POST_TASK = 1;
         public static final int GET_TASK = 2;
@@ -315,10 +299,10 @@ public class Login extends AppCompatActivity {
 
         }
 
-        protected String doInBackground(String... urls) {
+        protected UsuarioVO doInBackground(String... urls) {
 
             String url = urls[0];
-            String result = "";
+            UsuarioVO result = null;
 
             HttpResponse response = doResponse(url);
 
@@ -337,7 +321,18 @@ public class Login extends AppCompatActivity {
 
                     inputStream = response.getEntity().getContent();
 
-                    result = convertInputStreamToString(inputStream);
+                    String strJson = convertInputStreamToString(inputStream);
+
+
+
+
+
+                    //converte string json em object
+                    Gson gson = new Gson();
+                    result = gson.fromJson(strJson, UsuarioVO.class);
+
+
+
 
                 } catch (IllegalStateException e) {
                     Log.e(TAG, e.getLocalizedMessage(), e);
@@ -352,13 +347,38 @@ public class Login extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String response) {
-
-            handleResponse(response);
+        protected void onPostExecute(UsuarioVO response) {
 
 
+            try {
 
-            pDlg.dismiss();
+                //JSONObject jso = new JSONObject(response);
+                //String nome = jso.getString("firstName");
+
+                //realiza login!
+
+
+
+
+            } catch (Exception e) {
+                Log.e("", e.getLocalizedMessage(), e);
+            }
+
+
+
+            try {
+                pDlg.dismiss();
+            }catch (Exception e){
+
+            }
+
+
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
+
 
         }
 
