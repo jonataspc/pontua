@@ -259,7 +259,9 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
             String body = new String(msgs[0].getRecords()[0].getPayload());
 
             //TODO: trata
-            body="33" ; //fake;
+            if(body.trim().length()==0) {
+                body = "33"; //fake;
+            }
 
 
             if(body.trim().length()==0){
