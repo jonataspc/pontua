@@ -2,11 +2,24 @@ package com.bsi.pontua;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
+import android.nfc.tech.Ndef;
+import android.nfc.tech.NdefFormatable;
+import android.nfc.tech.NfcA;
+import android.nfc.tech.NfcB;
+import android.nfc.tech.NfcF;
+import android.nfc.tech.NfcV;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +33,7 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import controle.CadastrosControle;
@@ -33,15 +47,99 @@ public class CadastroEntidades extends AppCompatActivity {
     TextView col1, col2;
 
     ProgressDialog progress;
+    AlertDialog writeTagAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_entidades);
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+        final Button btnWriteNfcTag = (Button) findViewById(R.id.btnWriteNfcTag);
+
+        btnWriteNfcTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Write to a tag for as long as the dialog is shown.
+
+
+
+                if (mNfcAdapter == null) {
+                    // Stop here, we definitely need NFC
+                    Toast.makeText(CadastroEntidades.this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+
+                }
+
+                if (!mNfcAdapter.isEnabled()) {
+                    Toast.makeText(CadastroEntidades.this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+
+
+
+                registro = -1;
+                selectedRadio(tl);
+
+                if (registro != -1) {
+
+                    disableNdefExchangeMode();
+                    enableTagWriteMode();
+
+                    writeTagAlert = new AlertDialog.Builder(CadastroEntidades.this).setTitle("Aproxime a tag para a gravação")
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    disableTagWriteMode();
+                                    enableNdefExchangeMode();
+                                }
+                            }).create();
+
+                    writeTagAlert.show();
+
+                }
+
+
+            }
+        });
+
+        //nfc
+
+        // Handle all of our received NFC intents in this activity.
+        mNfcPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        // Intent filters for reading a note from a tag or exchanging over p2p.
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        try {
+            ndefDetected.addDataType("*/*");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+        }
+        mNdefExchangeFilters = new IntentFilter[]{ndefDetected};
+
+        // Intent filters for writing to a tag
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        mWriteTagFilters = new IntentFilter[]{tagDetected};
+
+
+        techListsArray = new String[][]{new String[]{NdefFormatable.class.getName()},
+                new String[]{MifareClassic.class.getName()},
+                new String[]{NfcA.class.getName()},
+                new String[]{Ndef.class.getName()},
+                new String[]{NfcB.class.getName()},
+                new String[]{NfcF.class.getName()},
+                new String[]{Ndef.class.getName()},
+                new String[]{NfcV.class.getName()}};
+
+
+        //end nfc
+
+
         final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
         ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +241,10 @@ public class CadastroEntidades extends AppCompatActivity {
     public void onPause() {
         //evita erro de leak
         super.onPause();
+
+        mResumed = false;
+        mNfcAdapter.disableForegroundDispatch(this);
+
         if (progress != null) {
             progress.dismiss();
             progress = null;
@@ -234,14 +336,12 @@ public class CadastroEntidades extends AppCompatActivity {
         tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 
-
-
         //separator
         TableRow tr = new TableRow(this);
         tr.setBackgroundColor(Color.GRAY);
-        tr.setPadding(0, 0, 0, 2 ); //Border between rows
+        tr.setPadding(0, 0, 0, 2); //Border between rows
 
-        TableRow.LayoutParams llp = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams llp = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 0, 2, 0);//2px right-margin
 
         tl.addView(tr);
@@ -286,13 +386,12 @@ public class CadastroEntidades extends AppCompatActivity {
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 
-
             //separator
             TableRow tr = new TableRow(this);
             tr.setBackgroundColor(Color.GRAY);
-            tr.setPadding(0, 0, 0, 2 ); //Border between rows
+            tr.setPadding(0, 0, 0, 2); //Border between rows
 
-            TableRow.LayoutParams llp = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            TableRow.LayoutParams llp = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             llp.setMargins(0, 0, 2, 0);//2px right-margin
 
             tl.addView(tr);
@@ -383,7 +482,7 @@ public class CadastroEntidades extends AppCompatActivity {
 
                 try {
                     t.get();
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -395,5 +494,128 @@ public class CadastroEntidades extends AppCompatActivity {
         }
 
     }
+
+
+    //region "Gravacao de tag"
+    private boolean mResumed = false;
+    private boolean mWriteMode = false;
+    NfcAdapter mNfcAdapter;
+    PendingIntent mNfcPendingIntent;
+    IntentFilter[] mWriteTagFilters;
+    IntentFilter[] mNdefExchangeFilters;
+    private String techListsArray[][];
+
+    private void disableNdefExchangeMode() {
+        mNfcAdapter.disableForegroundNdefPush(this);
+        mNfcAdapter.disableForegroundDispatch(this);
+    }
+
+    private void enableTagWriteMode() {
+        mWriteMode = true;
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        mWriteTagFilters = new IntentFilter[]{
+                tagDetected
+        };
+        mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mWriteTagFilters, null);
+    }
+
+    private void disableTagWriteMode() {
+        mWriteMode = false;
+        mNfcAdapter.disableForegroundDispatch(this);
+    }
+
+    private void enableNdefExchangeMode() {
+        //mNfcAdapter.enableForegroundNdefPush(StickyNotesActivity.this, getNoteAsNdef());
+        mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, techListsArray);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+/*// NDEF exchange mode
+        if (!mWriteMode && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            NdefMessage[] msgs = getNdefMessages(intent);
+            promptForContent(msgs[0]);
+        }
+
+        if (!mWriteMode && NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+            NdefMessage[] msgs = getNdefMessages(intent);
+            promptForContent(msgs[0]);
+        }*/
+        // Tag writing mode
+        if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+            Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            writeTag(getNoteAsNdef(), detectedTag);
+        }
+    }
+
+
+    boolean writeTag(NdefMessage message, Tag tag) {
+        int size = message.toByteArray().length;
+
+        try {
+            Ndef ndef = Ndef.get(tag);
+            if (ndef != null) {
+                ndef.connect();
+
+                if (!ndef.isWritable()) {
+                    toast("Tag is read-only.");
+                    return false;
+                }
+                if (ndef.getMaxSize() < size) {
+                    toast("Tag capacity is " + ndef.getMaxSize() + " bytes, message is " + size
+                            + " bytes.");
+                    return false;
+                }
+
+                ndef.writeNdefMessage(message);
+                toast("Tag gravada com sucesso!");
+
+                if (writeTagAlert != null) {
+                    writeTagAlert.dismiss();
+                    writeTagAlert = null;
+                }
+
+
+                return true;
+            } else {
+                NdefFormatable format = NdefFormatable.get(tag);
+                if (format != null) {
+                    try {
+                        format.connect();
+                        format.format(message);
+                        toast("Formatted tag and wrote message");
+                        return true;
+                    } catch (IOException e) {
+                        toast("Failed to format tag.");
+                        return false;
+                    }
+                } else {
+                    toast("Tag doesn't support NDEF.");
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            toast("Failed to write tag");
+        }
+
+        return false;
+    }
+
+    private NdefMessage getNoteAsNdef() {
+        byte[] textBytes = String.valueOf(registro).getBytes();
+        NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, "text/plain".getBytes(),
+                new byte[]{}, textBytes);
+        return new NdefMessage(new NdefRecord[]{
+                textRecord
+        });
+    }
+
+    private void toast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    //endregion
+
 
 }
