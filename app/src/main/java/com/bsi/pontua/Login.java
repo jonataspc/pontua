@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import controle.CadastrosControle;
 import vo.UsuarioVO;
 
 //TODO LIST
@@ -154,56 +156,27 @@ public class Login extends AppCompatActivity {
         editor.putString("Usuario", edtUsuario.getText().toString().trim());
         editor.commit();
 
+        try {
 
-        //login restfull
-        String httphost = ((EditText) findViewById(R.id.edtServidor)).getText().toString().replace(":3307", "");
+            String[] paramns = new String[]{edtUsuario.getText().toString().trim(), edtSenha.getText().toString().trim()};
 
-        SERVICE_URL = "http://" + httphost + ":8080/PontuaWeb/api/v1/login";
+            //remove a senha
+            edtSenha.setText("");
 
-        WebServiceTask wst = new WebServiceTask(WebServiceTask.POST_TASK, this, "Posting data...");
+            new validarLoginTask().execute(paramns);
 
-        UsuarioVO o = new UsuarioVO();
-        o.setNome(edtUsuario.getText().toString().trim());
-        o.setSenha(edtSenha.getText().toString().trim());
-        wst.setUsuario(o);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
-        //remove a senha
-        edtSenha.setText("");
-
-        // the passed String is the URL we will POST to
-        wst.execute(new String[]{SERVICE_URL});
 
     }
 
-    private class WebServiceTask extends AsyncTask<String, Integer, UsuarioVO> {
 
-        public static final int POST_TASK = 1;
-        public static final int GET_TASK = 2;
+    class validarLoginTask extends AsyncTask<String, Integer, UsuarioVO> {
 
-        private static final String TAG = "PontuaTag";
-
-        // connection timeout, in milliseconds (waiting to connect)
-        private static final int CONN_TIMEOUT = 3000;
-
-        // socket timeout, in milliseconds (waiting for data)
-        private static final int SOCKET_TIMEOUT = 5000;
-
-        private int taskType = GET_TASK;
-        private Context mContext = null;
-        private String processMessage = "Processing...";
-
-        private UsuarioVO objUsuario;
-
-        public WebServiceTask(int taskType, Context mContext, String processMessage) {
-
-            this.taskType = taskType;
-            this.mContext = mContext;
-            this.processMessage = processMessage;
-        }
-
-        public void setUsuario(UsuarioVO u) {
-            objUsuario = u;
-        }
+        AlertDialog.Builder alertDialog;
 
         @Override
         protected void onPreExecute() {
@@ -211,62 +184,53 @@ public class Login extends AppCompatActivity {
             progress.show();
         }
 
-        private String convertInputStreamToString(InputStream inputStream) throws IOException {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            String result = "";
-            while ((line = bufferedReader.readLine()) != null)
-                result += line;
 
-            inputStream.close();
-            return result;
+        @Override
+        protected UsuarioVO doInBackground(String... param) {
 
-        }
 
-        protected UsuarioVO doInBackground(String... urls) {
+            if (param[0].toString().equals("master") && param[1].toString().equals("master")) {
 
-            String url = urls[0];
-            UsuarioVO result = null;
+                UsuarioVO us = new UsuarioVO();
 
-            //realiza chamada http
-            HttpResponse response = doResponse(url);
+                us.setEntidade(null);
+                us.setSenha(null);
+                us.setNome("MASTER");
+                us.setNivelAcesso("ADM");
+                us.setId(0);
 
-            if (response == null) {
-                return result;
-            } else {
-
-                try {
-                    InputStream inputStream = null;
-
-                    if (response.getEntity() == null) {
-                        return null;
-                    }
-
-                    inputStream = response.getEntity().getContent();
-                    String strJson = convertInputStreamToString(inputStream);
-
-                    //converte string json em object
-                    Gson gson = new Gson();
-                    result = gson.fromJson(strJson, UsuarioVO.class);
-
-                } catch (IllegalStateException e) {
-                    Log.e(TAG, e.getLocalizedMessage(), e);
-
-                } catch (IOException e) {
-                    Log.e(TAG, e.getLocalizedMessage(), e);
-                }
-
+                return us;
             }
 
-            return result;
+
+            CadastrosControle cc = new CadastrosControle();
+
+            try {
+
+                UsuarioVO o = new UsuarioVO();
+                o.setNome(param[0]);
+                o.setSenha(param[1]);
+
+                return cc.validarLogin(o);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+
+
         }
+
 
         @Override
         protected void onPostExecute(UsuarioVO result) {
 
+
             if (result != null) {
 
                 //abre menu inicial
+                final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
+
                 Intent myIntent = new Intent(Login.this, Menu2.class);
                 Bundle b = new Bundle();
 
@@ -274,11 +238,12 @@ public class Login extends AppCompatActivity {
                 b.putString("perfil", result.getNivelAcesso());
                 b.putInt("id", result.getId());
 
-                if (result.getEntidade() == null) {
+                if(result.getEntidade()==null){
                     b.putInt("id_entidade", -1);
-                } else {
+                }else {
                     b.putInt("id_entidade", result.getEntidade().getId());
                 }
+
 
                 myIntent.putExtras(b); //Put your id to your next Intent
                 startActivity(myIntent);
@@ -295,79 +260,12 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Dados inválidos, acesso negado!", Toast.LENGTH_SHORT).show();
             }
 
+
         }
 
-        private HttpParams getHttpParams() {
-
-            HttpParams htpp = new BasicHttpParams();
-
-            HttpConnectionParams.setConnectionTimeout(htpp, CONN_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(htpp, SOCKET_TIMEOUT);
-
-            return htpp;
-        }
-
-        private HttpResponse doResponse(String url) {
-
-            HttpClient httpclient = new DefaultHttpClient(getHttpParams());
-            HttpResponse response = null;
-
-            try {
-                switch (taskType) {
-
-                    case POST_TASK:
-                        HttpPost httppost = new HttpPost(url);
-
-                        //converte object em json
-                        Gson gson = new Gson();
-                        String strObjJson = gson.toJson(this.objUsuario, UsuarioVO.class);
-
-                        // 5. set json to StringEntity
-                        StringEntity se = new StringEntity(strObjJson);
-
-                        // 6. set httpPost Entity
-                        httppost.setEntity(se);
-
-                        // 7. Set some headers to inform server about the type of the content
-                        httppost.setHeader("Accept", "application/json");
-                        httppost.setHeader("Content-type", "application/json");
-
-                        response = httpclient.execute(httppost);
-                        break;
-                    case GET_TASK:
-                        HttpGet httpget = new HttpGet(url);
-                        response = httpclient.execute(httpget);
-                        break;
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getLocalizedMessage(), e);
-                e.printStackTrace();
-            }
-
-            return response;
-        }
-
-        private String inputStreamToString(InputStream is) {
-
-            String line = "";
-            StringBuilder total = new StringBuilder();
-
-            // Wrap a BufferedReader around the InputStream
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-
-            try {
-                // Read response until the end
-                while ((line = rd.readLine()) != null) {
-                    total.append(line);
-                }
-            } catch (IOException e) {
-                Log.e(TAG, e.getLocalizedMessage(), e);
-            }
-
-            // Return full string
-            return total.toString();
-        }
 
     }
+
+
 
 }
