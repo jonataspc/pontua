@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.bellinatiperez.bpapp.DebitoBoleto">
+    <item
+        android:id="@+id/action_settings_SalvarDados"
+        android:checkable="false"
+        android:orderInCategory="100"
+        android:title="Configurações"
+
+        android:visible="true"
+        app:showAsAction="never" />
+
+   <!-- <item
+        android:id="@+id/action_settings_NotificarBoletos"
+        android:checkable="true"
+        android:orderInCategory="99"
+        android:title="@string/debitoBoletoActivityMenuNotifyBoletos"
+
+        android:visible="true"
+        app:showAsAction="never" />-->
+</menu>
