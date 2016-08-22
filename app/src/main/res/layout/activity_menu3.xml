@@ -51,7 +51,7 @@
             android:layout_height="fill_parent">
 
 
-
+<!--
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +100,173 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Relatório de Ranking"
-                android:id="@+id/btnRelRkg" />
+                android:id="@+id/btnRelRkg" />-->
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <!-- Row 2 with 3 columns -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+
+                        android:padding="2dip" />
+                </TableRow>
+                <TableRow android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton android:src="@drawable/cad_event"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+
+                        android:background="?attr/selectableItemBackgroundBorderless"
+
+                        android:layout_weight = "1" />
+                    <ImageButton android:src="@drawable/cad_itens"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+
+                    <ImageButton android:src="@drawable/cad_usr"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+
+                        android:padding="2dip" />
+                </TableRow>
+
+
+                <TableRow android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton android:src="@drawable/doaval"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1" />
+                    <ImageButton android:src="@drawable/doaval2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+
+                    <ImageButton android:src="@drawable/hat"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+
+                        android:padding="2dip" />
+                </TableRow>
+
+                <TableRow android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton android:src="@drawable/nfc"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1" />
+                    <ImageButton android:src="@drawable/nfc2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+
+                    <ImageButton android:src="@drawable/relaval"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1"  />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+
+                        android:padding="2dip" />
+                </TableRow>
+
+
+                <TableRow android:layout_gravity="center_horizontal"
+                    >
+
+                    <ImageButton android:src="@drawable/rkg"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_weight = "1" />
+                    <ImageButton android:src="@drawable/rkg2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="3dp"
+                        android:layout_weight = "1"  />
+
+
+                    <ImageButton android:src="@drawable/cad_event"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:padding="3dp"
+                        android:layout_weight = "1"
+                        android:background="?attr/selectableItemBackgroundBorderless" />
+
+                </TableRow>
+
+
+
+
+
+            </TableLayout>
 
         </LinearLayout>
     </ScrollView>
