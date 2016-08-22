@@ -36,7 +36,9 @@ public class Conexao {
         String  mySqlserver = settings.getString("ServerIP", "192.168.25.1:3307");
 
         DriverManager.setLoginTimeout(15);
-        return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/pontua_bsi?connectTimeout=15000", "root", "123" );
+
+		return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/infosgi03?connectTimeout=15000", "infosgi03", "santacruz" );
+
 
         //ssl: &verifyServerCertificate=false&useSSL=true&requireSSL=true
 
