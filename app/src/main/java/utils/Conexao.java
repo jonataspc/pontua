@@ -33,7 +33,7 @@ public class Conexao {
 
         Context applicationContext = Login.getContextOfApplication();
         SharedPreferences settings = applicationContext.getSharedPreferences("settings", 0);
-        String  mySqlserver = settings.getString("ServerIP", "192.168.25.1:3307");
+        String  mySqlserver = settings.getString("ServerIP", "mysql.infosgi.com.br:3306");
 
         DriverManager.setLoginTimeout(15);
 

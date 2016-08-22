@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -53,6 +56,76 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_debito_boleto, menu);
+
+
+
+        SharedPreferences settings = getSharedPreferences("settings", 0);
+
+        //MenuItem item = menu.findItem(R.id.action_settings_SalvarDados);
+        //item.setChecked(settings.getBoolean("SalvarDados", true));
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        SharedPreferences.Editor editor;
+        SharedPreferences settings;
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+
+//                //esconde keyboard
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//
+//                this.finish();
+//                return true;
+
+
+            case R.id.action_settings_SalvarDados:
+//                item.setChecked(!item.isChecked());
+//                settings = getSharedPreferences("settings", 0);
+//                editor = settings.edit();
+//                editor.putBoolean("SalvarDados", item.isChecked());
+//
+//                if(!item.isChecked()){
+//                    //se nao estiver checado, remove dados...
+//                    editor.putString("Ctto", "");
+//                    editor.putString("Doc","");
+//                    editor.putString("TipoDoc","");
+//                }
+//
+//                editor.commit();
+
+                //abre activ...
+                Intent myIntent = new Intent(Login.this, LoginConfig.class);
+//                myIntent.putExtras(b);
+                startActivity(myIntent);
+
+
+                return true;
+
+
+
+
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -83,12 +156,10 @@ public class Login extends AppCompatActivity {
         });
 
 
-        final EditText edtServidor = (EditText) findViewById(R.id.edtServidor);
         final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
         final EditText edtSenha = (EditText) findViewById(R.id.edtSenha);
 
         SharedPreferences settings = getSharedPreferences("settings", 0);
-        edtServidor.setText(settings.getString("ServerIP", "192.168.25.1:3307"));
         edtUsuario.setText(settings.getString("Usuario", ""));
 
         if (edtUsuario.getText().toString().trim().length() != 0) {
@@ -149,10 +220,9 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        //salva o servidor
+        //salva
         SharedPreferences settings = getSharedPreferences("settings", 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("ServerIP", ((EditText) findViewById(R.id.edtServidor)).getText().toString());
         editor.putString("Usuario", edtUsuario.getText().toString().trim());
         editor.commit();
 
@@ -231,7 +301,7 @@ public class Login extends AppCompatActivity {
                 //abre menu inicial
                 final EditText edtUsuario = (EditText) findViewById(R.id.edtUsuario);
 
-                Intent myIntent = new Intent(Login.this, Menu2.class);
+                Intent myIntent = new Intent(Login.this, Menu3.class);
                 Bundle b = new Bundle();
 
                 b.putString("usuario", result.getNome());
