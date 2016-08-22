@@ -134,7 +134,7 @@ public class UsuarioDAO {
 
             PreparedStatement st;
 
-            st = conn.prepareStatement("SELECT * FROM Usuario WHERE nome=? AND senha=?;");
+            st = conn.prepareStatement("SELECT * FROM usuario WHERE nome=? AND senha=SHA(?);");
             st.setString(1, c.getNome());
             st.setString(2, c.getSenha());
 
@@ -209,7 +209,7 @@ public class UsuarioDAO {
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("UPDATE usuario SET id_entidade=?, nome=?, senha=?, nivel_acesso=? WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("UPDATE usuario SET id_entidade=?, nome=?, senha=SHA(?), nivel_acesso=? WHERE id=?");
 
             if(c.getEntidade()==null){
                 st.setNull(1, Types.INTEGER);
