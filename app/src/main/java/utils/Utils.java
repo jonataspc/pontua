@@ -7,6 +7,11 @@ import java.util.Date;
 
 public class Utils {
 
+
+    public static String nomeUsuario = null;
+    public static String perfilUsuario = null;
+
+
     /**
      * Retorna double arredondado em 2 casas decimais
      * @param val valor a ser arredondado

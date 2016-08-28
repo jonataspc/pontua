@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import utils.Utils;
+
 public class Menu3 extends AppCompatActivity {
 
     @Override
@@ -30,6 +32,9 @@ public class Menu3 extends AppCompatActivity {
         }
 
         String usuario = b.getString("usuario");
+
+        Utils.nomeUsuario = usuario;
+        Utils.perfilUsuario = b.getString("perfil");
 
         ((TextView) findViewById(R.id.txtUsuario)).setText(usuario.toUpperCase());
 
