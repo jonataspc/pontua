@@ -63,22 +63,29 @@
         android:layout_below="@+id/edtServidorPn"
         android:layout_alignEnd="@+id/edtServidorPn" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:id="@+id/btnSalvarLoginConfig"
-        android:layout_below="@+id/ckSsl"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="62dp" />
+        android:layout_below="@+id/ckSsl">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retornar"
-        android:id="@+id/btnRetornarLoginConfig"
-        android:layout_alignTop="@+id/btnSalvarLoginConfig"
-        android:layout_alignEnd="@+id/ckSsl" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:id="@+id/btnSalvarLoginConfig"
+            android:layout_weight="0.1"
+              />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retornar"
+            android:id="@+id/btnRetornarLoginConfig"
+            android:layout_weight="0.1"
+              />
+    </LinearLayout>
 
 
 </RelativeLayout>
