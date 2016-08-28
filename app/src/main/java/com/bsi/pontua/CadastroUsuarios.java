@@ -56,15 +56,14 @@ public class CadastroUsuarios extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuarios);
 
         final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovo);
-        final Button btnEditarUsuario = (Button) findViewById(R.id.btnExcluir);
-        final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
+        final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditar);
+        final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluir);
         final ImageButton ibtCadUsuarioRefresh = (ImageButton) findViewById(R.id.ibtCadUsuarioRefresh);
         final Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
 
@@ -184,8 +183,8 @@ public class CadastroUsuarios extends AppCompatActivity {
             dropdown.setAdapter(adapter);
 
             final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovo);
-            final Button btnEditarUsuario = (Button) findViewById(R.id.btnExcluir);
-            final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluirUsuario);
+            final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditar);
+            final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluir);
 
             dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

@@ -1,6 +1,7 @@
 package com.bsi.pontua;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import vo.EntidadeVO;
 import vo.UsuarioVO;
 
 public class CadastroUsuariosNovoEditar extends AppCompatActivity {
+
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwUsuarioTitle.setText("Cadastro de Usuários - novo");
+        btnCadastrar.setText("Incluir usuário");
 
 
         //editar ou novo?
@@ -57,7 +60,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwUsuarioTitle.setText("Cadastro de Usuários - editar");
+                btnCadastrar.setText("Salvar alterações");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
@@ -80,9 +83,15 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
     class carregarRegistroTask extends AsyncTask<String, Integer, UsuarioVO> {
 
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
         @Override
         protected UsuarioVO doInBackground(String... param) {
-
             CadastrosControle cc = new CadastrosControle();
 
             try {
@@ -105,6 +114,11 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(UsuarioVO result) {
 
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
             final EditText txtNovoUsuario = (EditText) findViewById(R.id.txtNovoUsuario);
             final EditText txtNovoSenha = (EditText) findViewById(R.id.txtNovoSenha);
             final RadioButton rbtAdm =  (RadioButton) findViewById(R.id.rbtAdm);
@@ -115,7 +129,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             if(result != null){
 
                 txtNovoUsuario.setText(result.getNome());
-                txtNovoSenha.setText(result.getSenha());
+                txtNovoSenha.setText("");
 
                 switch (result.getNivelAcesso()){
                     case "ADM":
@@ -156,8 +170,38 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
     public void onRadioButtonClicked(View view) {
 
+    }
 
+    @Override
+    public void onPause() {
+        //evita erro de leak
+        super.onPause();
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
 
+    @Override
+    protected void onStop() {
+        //evita erro de leak
+        super.onStop();
+
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    void inicializaProgressBar() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(CadastroUsuariosNovoEditar.this);
+            progress.setTitle("");
+            progress.setMessage("Aguarde...");
+            progress.setIndeterminate(true);
+            progress.setCancelable(false);
+        }
     }
 
     void salvar(){
@@ -212,9 +256,16 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
     class salvarTask extends AsyncTask<String, Integer, Boolean> {
 
+        String errorMsg;
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
         @Override
         protected Boolean doInBackground(String... param) {
-
             CadastrosControle cc = new CadastrosControle();
 
             try {
@@ -252,6 +303,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
+                errorMsg = e.getMessage();
             }
 
             return false;
@@ -263,6 +315,9 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
 
 
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
             if(result){
 
@@ -275,7 +330,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação:\n" + errorMsg, Toast.LENGTH_SHORT).show();
             }
 
 
