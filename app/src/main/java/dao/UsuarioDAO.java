@@ -89,9 +89,9 @@ public class UsuarioDAO {
             PreparedStatement st;
 
             if (nomePesquisa.trim() == "") {
-                st = conn.prepareStatement("SELECT * FROM Usuario ORDER BY nome;");
+                st = conn.prepareStatement("SELECT * FROM usuario ORDER BY nome;");
             } else {
-                st = conn.prepareStatement("SELECT * FROM Usuario WHERE nome LIKE ? ORDER BY nome;");
+                st = conn.prepareStatement("SELECT * FROM usuario WHERE nome LIKE ? ORDER BY nome;");
                 st.setString(1, "%" + nomePesquisa.trim() + "%");
             }
 
@@ -124,6 +124,36 @@ public class UsuarioDAO {
 
 
     }
+
+    public boolean existeUsuario(String nome) {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+            Boolean localizado = false;
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT COUNT(*) AS total FROM usuario WHERE nome=? ;");
+            st.setString(1, nome.trim());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                if(resultado.getInt("total") == 0){
+                    localizado=false;
+                } else {
+                    localizado=true;
+                }
+            }
+
+            conn.close();
+            return localizado;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 
 
     public UsuarioVO validarLogin(UsuarioVO c) {
@@ -181,7 +211,7 @@ public class UsuarioDAO {
             }
 
 
-            st.setString(2, c.getNome());
+            st.setString(2, c.getNome().toUpperCase());
             st.setString(3, c.getSenha());
             st.setString(4, c.getNivelAcesso());
             st.executeUpdate();
@@ -220,7 +250,7 @@ public class UsuarioDAO {
             }
 
 
-            st.setString(2, c.getNome());
+            st.setString(2, c.getNome().toUpperCase());
             st.setString(3, c.getSenha());
             st.setString(4, c.getNivelAcesso());
             st.setInt(5, c.getId());
