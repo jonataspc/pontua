@@ -115,7 +115,10 @@ public class LoginConfig extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            progress.dismiss();
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
 
 
