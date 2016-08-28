@@ -77,7 +77,7 @@
         android:layout_height="25dp"
         android:id="@+id/ibtCadUsuarioRefresh"
         android:layout_alignEnd="@+id/spnEntidades"
-        android:background="@drawable/Atualizar"
+        android:background="@drawable/atualizar"
         android:layout_alignBottom="@+id/textView3" />
 
 </RelativeLayout>
