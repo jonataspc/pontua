@@ -3,6 +3,7 @@ package utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.bsi.pontua.Login;
 
@@ -34,11 +35,22 @@ public class Conexao {
         Context applicationContext = Login.getContextOfApplication();
         SharedPreferences settings = applicationContext.getSharedPreferences("settings", 0);
         String  mySqlserver = settings.getString("ServerIP", "mysql.infosgi.com.br:3306");
+		Boolean usarSSL = settings.getBoolean("UsarSSL", false);
 
-        DriverManager.setLoginTimeout(15);
+        DriverManager.setLoginTimeout(10);
 
-		//return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/infosgi03?connectTimeout=15000", "infosgi03", "santacruz" );
-		return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/pontua_bsi?connectTimeout=15000&verifyServerCertificate=false&useSSL=true&requireSSL=true", "pontua", "1234" );
+		String connStr;
+		String databaseName = "infosgi03";
+		String userName = "infosgi03";
+		String password = "santacruz";
+
+		connStr = "jdbc:mysql://" + mySqlserver + "/" + databaseName + "?connectTimeout=10000";
+
+		if(usarSSL){
+			connStr += "&verifyServerCertificate=false&useSSL=true&requireSSL=true";
+		}
+
+		return DriverManager.getConnection(connStr, userName, password);
 
 	}
 
