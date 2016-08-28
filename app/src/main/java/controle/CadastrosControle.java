@@ -1,7 +1,9 @@
 package controle;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
+import controle.regrasNegocios.RegrasNegocioUsuario;
 import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
 import dao.EventoDAO;
@@ -88,7 +90,8 @@ public class CadastrosControle {
     }
 
     //usuario
-    public boolean inserirUsuario(UsuarioVO i) {
+    public boolean inserirUsuario(UsuarioVO i) throws Exception {
+        RegrasNegocioUsuario.validarUsuario(i, true);
         return daoUsuario.incluir(i);
     }
 
@@ -109,6 +112,7 @@ public class CadastrosControle {
     }
 
     public boolean editarUsuario(UsuarioVO o) throws Exception {
+        RegrasNegocioUsuario.validarUsuario(o, false);
         return daoUsuario.editar(o);
     }
 

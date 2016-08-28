@@ -330,7 +330,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação:\n" + errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
 
 

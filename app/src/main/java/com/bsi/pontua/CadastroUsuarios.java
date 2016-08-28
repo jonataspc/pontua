@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.List;
 import controle.CadastrosControle;
+import utils.Utils;
 import vo.UsuarioVO;
 
 public class CadastroUsuarios extends AppCompatActivity {
@@ -102,6 +103,14 @@ public class CadastroUsuarios extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                String usuExc = dropdown.getSelectedItem().toString().substring(7,  dropdown.getSelectedItem().toString().length()  );
+
+                if(Utils.nomeUsuario.trim().toUpperCase().equals(usuExc.trim().toUpperCase())){
+                    Toast.makeText(getApplicationContext(), "Não é possível excluir seu próprio usuário!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 new AlertDialog.Builder(CadastroUsuarios.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("")
