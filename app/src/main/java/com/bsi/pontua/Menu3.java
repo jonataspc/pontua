@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -41,172 +43,59 @@ public class Menu3 extends AppCompatActivity {
 
             case "AVAL":
                 perfil = "Avaliador";
+
+                //remove todos exceto
+                //realizar avaliacao 5
+                //avaliacao por nfc 6
+                ((LinearLayout) findViewById(R.id.m1)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m2)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m3)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m4)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m5)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.m6)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.m7)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m8)).setVisibility(View.GONE);
+
+
                 break;
 
             case "ENT":
                 perfil = "Entidade";
+
+                //remove todos exceto
+                //consultar avaliacoes
+                ((LinearLayout) findViewById(R.id.m1)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m2)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m3)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m4)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m5)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m6)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.m7)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.m8)).setVisibility(View.GONE);
+
+
+
                 break;
         }
-
 
         ((TextView) findViewById(R.id.txtPerfil)).setText(perfil);
 
 
-/*
 
+        //insere acoes do menu
 
-
-        ((Button) findViewById(R.id.btnCadastroUsuarios)).setOnClickListener(new View.OnClickListener() {
-
+        //usuarios
+         View.OnClickListener m01 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, CadastroUsuarios.class);
+                Intent myIntent = new Intent(Menu3.this, CadastroUsuarios.class);
                 myIntent.putExtras(b);
                 startActivity(myIntent);
             }
+        };
 
-        });
-
-        ((Button) findViewById(R.id.btnCadastroEventos)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, CadastroEventos.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnCadastroEntidades)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, CadastroEntidades.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnCadastroItensInspecao)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, CadastroItensInspecao.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, Avaliacao.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnConsultarAvaliacoes)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, ConsultarAvaliacoes.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnRelRkg)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, RelatorioRanking.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-        ((Button) findViewById(R.id.btnRealizarAvaliacaoNFC)).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Menu2.this, AvaliacaoNfc.class);
-                myIntent.putExtras(b);
-                startActivity(myIntent);
-            }
-
-        });
-
-
-
-
-        //remover botoes de usuarios que nao tenham permissao!
-        if(b.getString("perfil").equals("AVAL")){
-
-            View myView = findViewById(R.id.btnCadastroUsuarios);
-            ViewGroup parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroEventos);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroEntidades);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroItensInspecao);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnConsultarAvaliacoes);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnRelRkg);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-        }else if(b.getString("perfil").equals("ENT")){
-
-            View myView = findViewById(R.id.btnCadastroUsuarios);
-            ViewGroup parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroEventos);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroEntidades);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnCadastroItensInspecao);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnRelRkg);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnRealizarAvaliacao);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-
-            myView = findViewById(R.id.btnRealizarAvaliacaoNFC);
-            parent = (ViewGroup) myView.getParent();
-            parent.removeView(myView);
-        }
-
-*/
-
+        ((ImageButton) findViewById(R.id.imgCadUsuarios)).setOnClickListener(m01);
+        ((Button) findViewById(R.id.btnCadUsuarios)).setOnClickListener(m01);
 
 
 
