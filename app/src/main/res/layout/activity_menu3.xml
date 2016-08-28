@@ -3,33 +3,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
     tools:context="com.bsi.pontua.Menu3">
 
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Usuário:"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="15dp" />
+        android:id="@+id/ly01"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="0dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/txtUsuario"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_marginStart="10dp"
-        android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Usuário:"
+                android:id="@+id/textView"
+                android:layout_weight="0.1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/txtUsuario"
+                android:textStyle="bold"
+                android:layout_weight="0.1"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/textView"
+                android:layout_alignParentLeft="false"
+                android:layout_marginLeft="5dp" />
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Perfil:"
+                android:id="@+id/textView11"
+                android:layout_weight="0.1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/txtPerfil"
+                android:textStyle="bold"
+                android:layout_weight="0.1"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/textView11"
+                android:layout_marginLeft="5dp" />
+
+        </RelativeLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -37,258 +91,188 @@
         android:id="@+id/scrollView"
         android:layout_alignParentStart="false"
         android:fillViewport="true"
-        android:layout_marginTop="40dp"
         android:layout_alignParentEnd="false"
-        android:layout_alignParentTop="false"
         android:layout_alignParentLeft="false"
         android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="false">
+        android:layout_alignParentRight="false"
+        android:layout_below="@+id/ly01">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-
-<!--
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Cadastro de usuários"
-                android:id="@+id/btnCadastroUsuarios" />
-
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Cadastro de eventos"
-                android:id="@+id/btnCadastroEventos" />
-
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Cadastro de entidades"
-                android:id="@+id/btnCadastroEntidades" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Cadastro de Ítens de Inspeção"
-                android:id="@+id/btnCadastroItensInspecao" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Realizar avaliação"
-                android:id="@+id/btnRealizarAvaliacao" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Avaliação por NFC"
-                android:id="@+id/btnRealizarAvaliacaoNFC" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Consultar avaliações"
-                android:id="@+id/btnConsultarAvaliacoes" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Relatório de Ranking"
-                android:id="@+id/btnRelRkg" />-->
-
-            <TableLayout
+            <LinearLayout android:id="@+id/m1"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
 
-                >
+                <ImageButton
 
-                <!-- Row 2 with 3 columns -->
-                <TableRow
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgCadUsuarios"
+                    android:src="@drawable/cad_usr2" />
+
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="63dp"
+                    android:text="Cadastro de usuários"
+                    android:id="@+id/btnCadUsuarios"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
 
-                    <View
+            </LinearLayout>
 
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m2">
 
-                        android:padding="2dip" />
-                </TableRow>
-                <TableRow android:layout_gravity="center_horizontal"
-                    >
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgCadEventos"
+                    android:src="@drawable/cad_event" />
 
-                    <ImageButton android:src="@drawable/cad_event"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-
-                        android:background="?attr/selectableItemBackgroundBorderless"
-
-                        android:layout_weight = "1" />
-                    <ImageButton android:src="@drawable/cad_itens"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-
-                    <ImageButton android:src="@drawable/cad_usr"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-                </TableRow>
-
-                <TableRow
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="63dp"
+                    android:text="Cadastro de Eventos"
+                    android:id="@+id/btnCadEventos"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
-                    <View
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m3">
 
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgCadEntidades"
+                    android:src="@drawable/cad_usr" />
 
-                        android:padding="2dip" />
-                </TableRow>
-
-
-                <TableRow android:layout_gravity="center_horizontal"
-                    >
-
-                    <ImageButton android:src="@drawable/doaval"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1" />
-                    <ImageButton android:src="@drawable/doaval2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-
-                    <ImageButton android:src="@drawable/hat"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-                </TableRow>
-
-                <TableRow
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="63dp"
+                    android:text="Cadastro de entidades"
+                    android:id="@+id/btnCadEntidades"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
-                    <View
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m4">
 
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgCadItensPontuacao"
+                    android:src="@drawable/doaval" />
 
-                        android:padding="2dip" />
-                </TableRow>
-
-                <TableRow android:layout_gravity="center_horizontal"
-                    >
-
-                    <ImageButton android:src="@drawable/nfc"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1" />
-                    <ImageButton android:src="@drawable/nfc2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-
-                    <ImageButton android:src="@drawable/relaval"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1"  />
-                </TableRow>
-
-                <TableRow
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="63dp"
+                    android:text="Cadastro de itens de pontuação"
+                    android:id="@+id/btnCadItensPontuacao"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
-                    <View
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m5">
 
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_weight="1"
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgRealizarAvaliacao"
+                    android:src="@drawable/doaval2" />
 
-                        android:padding="2dip" />
-                </TableRow>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:text="Realizar avaliação"
+                    android:id="@+id/btnRealizarAvaliacao"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m6">
 
-                <TableRow android:layout_gravity="center_horizontal"
-                    >
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgAvaliacaoNFC"
+                    android:src="@drawable/nfc" />
 
-                    <ImageButton android:src="@drawable/rkg"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:layout_weight = "1" />
-                    <ImageButton android:src="@drawable/rkg2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="3dp"
-                        android:layout_weight = "1"  />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:text="Avaliação por NFC"
+                    android:id="@+id/btnAvaliacaoNFC"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m7">
 
-                    <ImageButton android:src="@drawable/cad_event"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:padding="3dp"
-                        android:layout_weight = "1"
-                        android:background="?attr/selectableItemBackgroundBorderless" />
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgConsultarAvaliacao"
+                    android:src="@drawable/relaval" />
 
-                </TableRow>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:text="Consultar avaliações"
+                    android:id="@+id/btnConsultarAvaliacao"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/m8">
 
+                <ImageButton
+                    android:layout_width="72dp"
+                    android:layout_height="63dp"
+                    android:id="@+id/imgRelatorioRanking"
+                    android:src="@drawable/rkg" />
 
-
-
-            </TableLayout>
-
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:text="Relatorio de ranking"
+                    android:id="@+id/btnRelatorioRanking"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp" />
+            </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/txtPerfil"
-        android:textStyle="bold"
-        android:layout_below="@+id/txtUsuario"
-        android:layout_alignStart="@+id/txtUsuario" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Perfil:"
-        android:id="@+id/textView11"
-        android:layout_alignTop="@+id/txtPerfil"
-        android:layout_alignStart="@+id/textView" />
-
 
 </RelativeLayout>
