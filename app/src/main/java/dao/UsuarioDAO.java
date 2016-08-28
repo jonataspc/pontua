@@ -170,7 +170,7 @@ public class UsuarioDAO {
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("INSERT INTO usuario (id_entidade, nome, senha, nivel_acesso) VALUES (?, ?, ?, ?) ;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO usuario (id_entidade, nome, senha, nivel_acesso) VALUES (?, ?, SHA(?), ?) ;", Statement.RETURN_GENERATED_KEYS);
 
             if(c.getEntidade()==null){
                 st.setNull(1, Types.INTEGER);
