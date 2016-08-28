@@ -37,10 +37,8 @@ public class Conexao {
 
         DriverManager.setLoginTimeout(15);
 
-		return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/infosgi03?connectTimeout=15000", "infosgi03", "santacruz" );
-
-
-        //ssl: &verifyServerCertificate=false&useSSL=true&requireSSL=true
+		//return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/infosgi03?connectTimeout=15000", "infosgi03", "santacruz" );
+		return DriverManager.getConnection("jdbc:mysql://" + mySqlserver + "/pontua_bsi?connectTimeout=15000&verifyServerCertificate=false&useSSL=true&requireSSL=true", "pontua", "1234" );
 
 	}
 
