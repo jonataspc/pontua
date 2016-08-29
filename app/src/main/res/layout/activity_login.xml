@@ -16,7 +16,8 @@
         android:maxLength="25"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/edtSenha"
-        android:layout_marginEnd="0dp" />
+        android:layout_marginEnd="0dp"
+        android:inputType="textCapCharacters|textNoSuggestions"  />
 
     <EditText
         android:id="@+id/edtSenha"
