@@ -107,7 +107,11 @@ public class UsuarioDAO {
                 o.setNome(resultado.getString("nome"));
                 o.setSenha(resultado.getString("senha"));
                 o.setNivelAcesso(resultado.getString("nivel_acesso"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
+
+                if(resultado.getInt("id_entidade") != 0){
+                    o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
+                }
+
 
                 lista.add(o);
 
