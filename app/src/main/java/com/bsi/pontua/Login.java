@@ -41,6 +41,9 @@ import vo.UsuarioVO;
 //Bug - atraves de lanc. por NFC permite pontuar entidades que nao sejam do evento cadastrado
 // nao permitir excluir em consulta de pontuacao por entidades
 
+
+
+
 public class Login extends AppCompatActivity {
 
     public static Context contextOfApplication;
