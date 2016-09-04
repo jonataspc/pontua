@@ -431,9 +431,10 @@ public class CadastroEntidades extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
 
-            return null;
+
         }
 
         @Override
@@ -468,9 +469,10 @@ public class CadastroEntidades extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
 
-            return false;
+
         }
 
         @Override

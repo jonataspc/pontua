@@ -176,9 +176,10 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
+                return null;
             }
 
-            return null;
+
 
         }
 
