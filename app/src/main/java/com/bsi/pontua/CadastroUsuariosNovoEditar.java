@@ -303,7 +303,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
-                errorMsg = "Ocorreu um erro: " + e.getMessage();
+                errorMsg =  e.getMessage();
                 return false;
             }
 
@@ -331,7 +331,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
             }
 
 
