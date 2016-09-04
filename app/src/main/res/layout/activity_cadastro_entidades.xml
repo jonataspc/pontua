@@ -11,23 +11,63 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Cadastro de Entidades"
+        android:text="Entidades"
         android:id="@+id/textView2"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
 
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/linLay2"
+        android:layout_below="@+id/textView2">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nova"
+            android:id="@+id/btnNovo"
+            android:layout_weight="0.33" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar"
+            android:id="@+id/btnEditar"
+            android:layout_weight="0.33" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Excluir"
+            android:id="@+id/btnExcluir"
+            android:layout_weight="0.33" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/linLay3"
+        android:layout_below="@+id/linLay2">
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
-
-
+        android:text="Gravar TAG NFC"
+        android:id="@+id/btnWriteNfcTag"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+         />
+    </LinearLayout>
 
 
     <LinearLayout
@@ -35,11 +75,12 @@
         android:id="@+id/LinearLayout01"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ibtRefresh"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="100dp"
-        android:background="#f4f4f4">
+        android:layout_marginBottom="0dp"
+        android:background="#f4f4f4"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/linLay3"
+         >
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,55 +88,25 @@
             <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:stretchColumns="*"
+                android:stretchColumns="1"
                 android:id="@+id/maintable" >
             </TableLayout>
         </ScrollView>
     </LinearLayout>
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Novo"
-        android:id="@+id/btnNovo"
-        android:layout_marginBottom="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Excluir"
-        android:id="@+id/btnExcluir"
-        android:layout_marginBottom="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Editar"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/btnEditar"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
     <ImageButton
+
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/ibtRefresh"
-        android:background="@drawable/refresh"
+
+        android:background="@drawable/atualizar"
+
+
         android:layout_alignTop="@+id/textView2"
         android:layout_alignEnd="@+id/LinearLayout01" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gravar TAG NFC"
-        android:id="@+id/btnWriteNfcTag"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
