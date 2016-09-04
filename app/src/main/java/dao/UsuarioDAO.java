@@ -16,7 +16,7 @@ import vo.UsuarioVO;
 public class UsuarioDAO {
 
 
-    public UsuarioVO obterPorCodigo(int codigo) {
+    public UsuarioVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
             Connection conn = Conexao.obterConexao();
@@ -46,12 +46,12 @@ public class UsuarioDAO {
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
 
-    public UsuarioVO obterPorEntidade(EntidadeVO e) {
+    public UsuarioVO obterPorEntidade(EntidadeVO e) throws SQLException {
 
         try {
             Connection conn = Conexao.obterConexao();
@@ -77,11 +77,11 @@ public class UsuarioDAO {
             return o;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            throw ex;
         }
-        return null;
     }
 
-    public List<UsuarioVO> listar(String nomePesquisa) {
+    public List<UsuarioVO> listar(String nomePesquisa) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -123,13 +123,13 @@ public class UsuarioDAO {
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-    public boolean existeUsuario(String nome) {
+    public boolean existeUsuario(String nome) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -153,14 +153,14 @@ public class UsuarioDAO {
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
 
     }
 
 
 
-    public UsuarioVO validarLogin(UsuarioVO c) {
+    public UsuarioVO validarLogin(UsuarioVO c) throws SQLException {
 
         try {
 
@@ -191,14 +191,14 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
 
-    public boolean incluir(UsuarioVO c) {
+    public boolean incluir(UsuarioVO c) throws SQLException {
         try {
 
             Connection conn;
@@ -231,13 +231,13 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
 
     }
 
 
-    public boolean editar(UsuarioVO c) {
+    public boolean editar(UsuarioVO c) throws SQLException {
         try {
 
             Connection conn;
@@ -265,12 +265,12 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
 
-    public boolean excluir(UsuarioVO c) {
+    public boolean excluir(UsuarioVO c) throws SQLException {
         try {
 
             Connection conn;
@@ -286,7 +286,7 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
