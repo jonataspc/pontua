@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import controle.regrasNegocios.RegrasNegocioEntidade;
 import controle.regrasNegocios.RegrasNegocioUsuario;
 import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
@@ -66,7 +67,8 @@ public class CadastrosControle {
 
 
     //entidade
-    public boolean inserirEntidade(EntidadeVO i) throws SQLException {
+    public boolean inserirEntidade(EntidadeVO i) throws Exception {
+        RegrasNegocioEntidade.validarEntidade(i, true);
         return daoEntidade.incluir(i);
     }
 
@@ -87,6 +89,7 @@ public class CadastrosControle {
     }
 
     public boolean editarEntidade(EntidadeVO o) throws Exception {
+        RegrasNegocioEntidade.validarEntidade(o, false);
         return daoEntidade.editar(o);
     }
 
