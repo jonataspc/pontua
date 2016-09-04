@@ -14,6 +14,36 @@ import vo.EventoVO;
 
 public class EntidadeDAO {
 
+    public boolean existeEntidade(String nome) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+            Boolean localizado = false;
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT COUNT(*) AS total FROM entidade WHERE nome=? ;");
+            st.setString(1, nome.trim());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                if(resultado.getInt("total") == 0){
+                    localizado=false;
+                } else {
+                    localizado=true;
+                }
+            }
+
+            conn.close();
+            return localizado;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+
 
     public EntidadeVO obterPorCodigo(int codigo) throws SQLException {
 
@@ -139,7 +169,7 @@ public class EntidadeDAO {
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO entidade (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
 
-            st.setString(1, c.getNome());
+            st.setString(1, c.getNome().toUpperCase());
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();
@@ -165,7 +195,7 @@ public class EntidadeDAO {
 
             PreparedStatement st = conn.prepareStatement("UPDATE entidade SET nome=? WHERE id=?");
 
-            st.setString(1, c.getNome());
+            st.setString(1, c.getNome().toUpperCase());
             st.setInt(2, c.getId());
 
             st.executeUpdate();
