@@ -1,6 +1,7 @@
 package com.bsi.pontua;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +24,42 @@ import vo.EventoVO;
 import vo.UsuarioVO;
 
 public class CadastroEntidadesNovoEditar extends AppCompatActivity {
+
+    ProgressDialog progress;
+
+
+    @Override
+    public void onPause() {
+        //evita erro de leak
+        super.onPause();
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        //evita erro de leak
+        super.onStop();
+
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    void inicializaProgressBar() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(CadastroEntidadesNovoEditar.this);
+            progress.setTitle("");
+            progress.setMessage("Aguarde...");
+            progress.setIndeterminate(true);
+            progress.setCancelable(false);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +79,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwTitle.setText("Cadastro de Entidades - novo");
+        tvwTitle.setText("Incluir entidade");
 
-
+/*
         //carrega eventos em spinner
          AsyncTask cet =  new carregarEventosTask().execute("");
 
@@ -56,7 +94,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+*/
 
+        changeUIchkUsuario();
 
         //editar ou novo?
         Bundle b = getIntent().getExtras();
@@ -73,7 +113,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwTitle.setText("Cadastro de Entidades - editar");
+                tvwTitle.setText("Editar entidade");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
@@ -88,7 +128,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     }
 
-    class carregarEventosTask extends AsyncTask<String, Integer, List> {
+   /* class carregarEventosTask extends AsyncTask<String, Integer, List> {
 
 
         @Override
@@ -129,7 +169,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
 
         }
-    }
+    }*/
 
     class ConjuntoEntidadeUsuario{
         private EntidadeVO entidade;
@@ -155,6 +195,12 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
 
     class carregarRegistroTask extends AsyncTask<String, Integer, ConjuntoEntidadeUsuario> {
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
 
         @Override
         protected ConjuntoEntidadeUsuario doInBackground(String... param) {
@@ -187,9 +233,13 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(ConjuntoEntidadeUsuario result) {
 
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
             final EditText txtNome = (EditText) findViewById(R.id.txtNome);
             final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
-            final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
+//            final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
 
             if(result != null){
@@ -199,8 +249,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
                 txtNome.setText(e.getNome());
                 edtUsuarioConsulta.setText(u.getNome());
-                edtUsuarioConsultaSenha.setText(u.getSenha());
+                //edtUsuarioConsultaSenha.setText(u.getSenha());
 
+/*
 
                 try {
                     //seleciona o evento
@@ -213,6 +264,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
                 }
 
+*/
 
 
 
@@ -237,13 +289,33 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     }
 
-    void salvar(){
+    public void onchkUsuarioClicked(View view) {
+        changeUIchkUsuario();
+    }
 
-        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
-        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+    void changeUIchkUsuario(){
+
+        final CheckBox chkUsuario = (CheckBox) findViewById(R.id.chkUsuario);
         final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
         final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
+        if(chkUsuario.isChecked()){
+            edtUsuarioConsulta.setEnabled(true);
+            edtUsuarioConsultaSenha.setEnabled(true);
+        } else {
+            edtUsuarioConsulta.setEnabled(false);
+            edtUsuarioConsultaSenha.setEnabled(false);
+        }
+
+    }
+
+    void salvar(){
+
+        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
+//        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+        final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
+        final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
+        final CheckBox chkUsuario = (CheckBox) findViewById(R.id.chkUsuario);
 
         //validacoes
         if( txtNome.getText().toString().trim().length()==0  ){
@@ -252,26 +324,27 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             return;
         }
 
-        if(dropdown.getSelectedItem().toString().length() == 0 ){
-            Toast.makeText(getApplicationContext(), "Selecione o evento!", Toast.LENGTH_SHORT).show();
-            dropdown.requestFocus();
-            return;
+//        if(dropdown.getSelectedItem().toString().length() == 0 ){
+//            Toast.makeText(getApplicationContext(), "Selecione o evento!", Toast.LENGTH_SHORT).show();
+//            dropdown.requestFocus();
+//            return;
+//        }
+
+        if(chkUsuario.isChecked()){
+
+            if( edtUsuarioConsulta.getText().toString().trim().length()==0  ){
+                Toast.makeText(getApplicationContext(), "Informe o usuário!", Toast.LENGTH_SHORT).show();
+                edtUsuarioConsulta.requestFocus();
+                return;
+            }
+
+            if( edtUsuarioConsultaSenha.getText().toString().trim().length()==0  ){
+                Toast.makeText(getApplicationContext(), "Informe a senha!", Toast.LENGTH_SHORT).show();
+                edtUsuarioConsultaSenha.requestFocus();
+                return;
+            }
+
         }
-
-
-        if( edtUsuarioConsulta.getText().toString().trim().length()==0  ){
-            Toast.makeText(getApplicationContext(), "Informe o usuário!", Toast.LENGTH_SHORT).show();
-            edtUsuarioConsulta.requestFocus();
-            return;
-        }
-
-        if( edtUsuarioConsultaSenha.getText().toString().trim().length()==0  ){
-            Toast.makeText(getApplicationContext(), "Informe a senha!", Toast.LENGTH_SHORT).show();
-            edtUsuarioConsultaSenha.requestFocus();
-            return;
-        }
-
-
 
 
 
@@ -284,7 +357,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             String[] paramns = new String[]{
                     b.getString("registro"),
                     txtNome.getText().toString().trim(),
-                    dropdown.getSelectedItem().toString().substring(1, 6),
+                    String.valueOf(chkUsuario.isChecked()),
                     edtUsuarioConsulta.getText().toString(),
                     edtUsuarioConsultaSenha.getText().toString()
                     };
@@ -303,6 +376,15 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     class salvarTask extends AsyncTask<String, Integer, Boolean> {
 
+        String errorMsg;
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
+
         @Override
         protected Boolean doInBackground(String... param) {
 
@@ -312,12 +394,12 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             try {
 
-                EventoVO oEvt = new EventoVO();
-                oEvt = cc.obterEventoPorId(Integer.parseInt(param[2]));
+//                EventoVO oEvt = new EventoVO();
+//                oEvt = cc.obterEventoPorId(Integer.parseInt(param[2]));
 
-                if(oEvt==null){
-                    throw new Exception("Evento nao existente!");
-                }
+//                if(oEvt==null){
+//                    throw new Exception("Evento nao existente!");
+//                }
 
 
                 EntidadeVO o = new EntidadeVO();
@@ -341,31 +423,34 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 }
 
 
+                boolean chkUsuario = Boolean.parseBoolean(param[2].trim());
 
 
 
-                // remove usuario da entidade, caso seja edicao
-                if(param[0] != null) {
-                    UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
+                if(chkUsuario){
 
-                    if(usuEntid!=null){
-                        cc.excluirUsuario(usuEntid);
+                    // remove usuario da entidade, caso seja edicao
+                    if(param[0] != null) {
+                        UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
+
+                        if(usuEntid!=null){
+                            cc.excluirUsuario(usuEntid);
+                        }
                     }
+
+                    //cadastra novo usuario
+                    UsuarioVO newUs = new UsuarioVO();
+                    newUs.setEntidade(o);
+                    newUs.setNome(param[3].trim());
+                    newUs.setSenha(param[4].trim());
+                    newUs.setNivelAcesso("ENT");
+
+                    if(!cc.inserirUsuario(newUs) ){
+                        return false;
+                        //throw new Exception("Erro no cadastro do novo usuario");
+                    }
+
                 }
-
-                //cadastra novo usuario
-                UsuarioVO newUs = new UsuarioVO();
-                newUs.setEntidade(o);
-                newUs.setNome(param[3].trim());
-                newUs.setSenha(param[4].trim());
-                newUs.setNivelAcesso("ENT");
-
-                if(!cc.inserirUsuario(newUs) ){
-                    return false;
-                    //throw new Exception("Erro no cadastro do novo usuario");
-                }
-
-
 
 
 
@@ -374,6 +459,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
+                errorMsg =  e.getMessage();
                 return false;
             }
 
@@ -385,6 +471,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
 
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
 
             if(result){
@@ -398,7 +487,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
             }
 
 
