@@ -1,5 +1,6 @@
 package controle;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -65,7 +66,7 @@ public class CadastrosControle {
 
 
     //entidade
-    public boolean inserirEntidade(EntidadeVO i) {
+    public boolean inserirEntidade(EntidadeVO i) throws SQLException {
         return daoEntidade.incluir(i);
     }
 
@@ -73,9 +74,9 @@ public class CadastrosControle {
         return daoEntidade.listar(nomePesquisa);
     }
 
-    public List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception {
-        return daoEntidade.listarPorEvento(ev);
-    }
+//    public List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception {
+//        return daoEntidade.listarPorEvento(ev);
+//    }
 
     public boolean excluirEntidade(EntidadeVO o) throws Exception {
         return daoEntidade.excluir(o);
