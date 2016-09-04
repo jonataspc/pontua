@@ -15,7 +15,7 @@ import vo.EventoVO;
 public class EntidadeDAO {
 
 
-    public EntidadeVO obterPorCodigo(int codigo) {
+    public EntidadeVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
             Connection conn = Conexao.obterConexao();
@@ -34,7 +34,7 @@ public class EntidadeDAO {
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
-                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+//                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
                 acho=true;
             }
 
@@ -48,51 +48,52 @@ public class EntidadeDAO {
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
-    }
-
-    public List<EntidadeVO> listarPorEvento(EventoVO evto) {
-        try {
-
-            Connection conn = Conexao.obterConexao();
-            PreparedStatement st;
-
-
-            st = conn.prepareStatement("SELECT * FROM entidade WHERE id_evento=? ORDER BY nome;");
-            st.setInt(1,  evto.getId());
-
-
-            ResultSet resultado = st.executeQuery();
-
-            EventoDAO eventoDAO = new EventoDAO();
-
-            List<EntidadeVO> lista = new ArrayList<EntidadeVO>(0);
-            while (resultado.next()) {
-
-                EntidadeVO o = new EntidadeVO();
-                o.setId(resultado.getInt("id"));
-                o.setNome(resultado.getString("Nome"));
-                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
-
-                lista.add(o);
-
-            }
-
-
-
-            conn.close();
-            return lista;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
 
     }
 
+//    public List<EntidadeVO> listarPorEvento(EventoVO evto) {
+//        try {
+//
+//            Connection conn = Conexao.obterConexao();
+//            PreparedStatement st;
+//
+//
+//            st = conn.prepareStatement("SELECT * FROM entidade WHERE id_evento=? ORDER BY nome;");
+//            st.setInt(1,  evto.getId());
+//
+//
+//            ResultSet resultado = st.executeQuery();
+//
+//            EventoDAO eventoDAO = new EventoDAO();
+//
+//            List<EntidadeVO> lista = new ArrayList<EntidadeVO>(0);
+//            while (resultado.next()) {
+//
+//                EntidadeVO o = new EntidadeVO();
+//                o.setId(resultado.getInt("id"));
+//                o.setNome(resultado.getString("Nome"));
+////                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
+//
+//                lista.add(o);
+//
+//            }
+//
+//
+//
+//            conn.close();
+//            return lista;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//
+//    }
 
-    public List<EntidadeVO> listar(String nomePesquisa) {
+
+    public List<EntidadeVO> listar(String nomePesquisa) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -108,16 +109,12 @@ public class EntidadeDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-
             List<EntidadeVO> lista = new ArrayList<EntidadeVO>(0);
             while (resultado.next()) {
 
                 EntidadeVO o = new EntidadeVO();
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("Nome"));
-                o.setEvento(eventoDAO.obterPorCodigo(resultado.getInt("id_evento")));
-
                 lista.add(o);
 
             }
@@ -128,24 +125,21 @@ public class EntidadeDAO {
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-
-
-    public boolean incluir(EntidadeVO c) {
+    public boolean incluir(EntidadeVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("INSERT INTO entidade (id_evento, Nome) VALUES (?, ?) ;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO entidade (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
 
-            st.setInt(1, c.getEvento().getId());
-            st.setString(2, c.getNome());
+            st.setString(1, c.getNome());
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();
@@ -153,29 +147,26 @@ public class EntidadeDAO {
                 c.setId(rs.getInt(1));
             }
 
-
             conn.close();
             return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
 
     }
 
-
-    public boolean editar(EntidadeVO c) {
+    public boolean editar(EntidadeVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("UPDATE Entidade SET nome=?, id_evento=? WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("UPDATE entidade SET nome=? WHERE id=?");
 
             st.setString(1, c.getNome());
-            st.setInt(2, c.getEvento().getId());
-            st.setInt(3, c.getId());
+            st.setInt(2, c.getId());
 
             st.executeUpdate();
             conn.close();
@@ -183,12 +174,11 @@ public class EntidadeDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
-
-    public boolean excluir(EntidadeVO c) {
+    public boolean excluir(EntidadeVO c) throws SQLException {
         try {
 
             Connection conn;
@@ -204,7 +194,7 @@ public class EntidadeDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
