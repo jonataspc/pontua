@@ -35,6 +35,7 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 
 public class ConsultarAvaliacoesRel extends AppCompatActivity {
+/*
 
     Bundle b=null;
 
@@ -181,13 +182,17 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
 
     public void addHeaders() {
 
-        /** Create a TableRow **/
+        */
+/** Create a TableRow **//*
+
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(
                 LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        /** Creating a TextView to add to the row **/
+        */
+/** Creating a TextView to add to the row **//*
+
         TextView col1 = new TextView(this);
         col1.setText("Cód");
         col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -195,7 +200,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         col1.setPadding(5, 5, 15, 0);
         tr.addView(col1);  // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView col2 = new TextView(this);
         col2.setText("Evento");
         col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -203,7 +210,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(col2); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol2 = new TextView(this);
         ncol2.setText("Área");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -211,7 +220,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol2); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol3 = new TextView(this);
         ncol3.setText("Ítem");
         ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -219,7 +230,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol4 = new TextView(this);
         ncol4.setText("Entidade");
         ncol4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -227,7 +240,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol4); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol5 = new TextView(this);
         ncol5.setText("Pontuação");
         ncol5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -237,7 +252,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
 
 
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol6 = new TextView(this);
         ncol6.setText("Método");
         ncol6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -245,7 +262,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         ncol6.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol6); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol7 = new TextView(this);
         ncol7.setText("Usuário");
         ncol7.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -253,7 +272,9 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         ncol7.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol7); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol8 = new TextView(this);
         ncol8.setText("Data/Hora");
         ncol8.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -269,8 +290,13 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
+*/
 /*
-        *//** Creating another textview **//*
+        *//*
+*/
+/** Creating another textview **//*
+*/
+/*
         TextView divider = new TextView(this);
         divider.setText("-----------------");
         divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -283,7 +309,8 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
         divider2.setPadding(5, 0, 0, 0);
         divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*/
+        tr.addView(divider2); // Adding textView to tablerow.*//*
+
 
         // Add the TableRow to the TableLayout
         tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -305,11 +332,15 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
 
         for (AvaliacaoVO e : obj) {
 
-            /** Create a TableRow dynamically **/
+            */
+/** Create a TableRow dynamically **//*
+
             tr = new TableRow(this);
             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-            /** Creating a TextView to add to the row **/
+            */
+/** Creating a TextView to add to the row **//*
+
 
             if(b.getString("perfil").equals("ENT")){
                 //entidade
@@ -513,5 +544,6 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         }
 
     }
+*/
 
 }

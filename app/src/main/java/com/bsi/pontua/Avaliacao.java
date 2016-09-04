@@ -28,6 +28,7 @@ import vo.UsuarioVO;
 
 public class Avaliacao extends AppCompatActivity {
 
+/*
     ProgressDialog progress;
 
     @Override
@@ -166,7 +167,8 @@ public class Avaliacao extends AppCompatActivity {
             newItem.setId(-1);
             result.add(0, newItem);
 
-           /*
+           */
+/*
            List<EventoVO> lista = result;
 
            String[] items = new String[lista.size()+1];
@@ -179,7 +181,8 @@ public class Avaliacao extends AppCompatActivity {
             for (EventoVO item : lista) {
                 items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
                 cont++;
-            }*/
+            }*//*
+
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEventos.setAdapter(adapter);
@@ -276,7 +279,8 @@ public class Avaliacao extends AppCompatActivity {
             newItem.setId(-1);
             result.add(0, newItem);
 
-            /*
+            */
+/*
             List<EntidadeVO> lista = result;
 
             String[] items = new String[lista.size()+1];
@@ -291,7 +295,8 @@ public class Avaliacao extends AppCompatActivity {
                 cont++;
             }
 
-            */
+            *//*
+
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEntidades.setAdapter(adapter);
@@ -479,7 +484,8 @@ public class Avaliacao extends AppCompatActivity {
             Spinner spnItens = (Spinner) findViewById(R.id.spnItens);
 
 
-            /*
+            */
+/*
             List<ItemInspecaoVO> lista = result;
 
             String[] items = new String[lista.size()];
@@ -490,7 +496,8 @@ public class Avaliacao extends AppCompatActivity {
                 items[cont] = item.getNome() ;
                 cont++;
             }
-            */
+            *//*
+
 
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
@@ -527,7 +534,8 @@ public class Avaliacao extends AppCompatActivity {
 
 
                     //carrega detalhes do item...
-                    /*
+                    */
+/*
                         Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
                         Spinner spnAreas= (Spinner) findViewById(R.id.spnAreas);
 
@@ -536,7 +544,8 @@ public class Avaliacao extends AppCompatActivity {
 
                         new carregarItensTask().execute(paramns);
 
-                        */
+                        *//*
+
 
                 }
 
@@ -686,5 +695,6 @@ public class Avaliacao extends AppCompatActivity {
         }
     }
 
+*/
 
 }
