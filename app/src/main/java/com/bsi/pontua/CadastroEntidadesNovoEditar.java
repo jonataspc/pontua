@@ -321,7 +321,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
                 EntidadeVO o = new EntidadeVO();
                 o.setNome(param[1]);
-                o.setEvento(oEvt);
+//                o.setEvento(oEvt);
 
 
                 if(param[0] != null){
@@ -369,12 +369,14 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
 
 
+                return retorno;
 
             }catch (Exception e){
                 e.printStackTrace();
+                return false;
             }
 
-            return retorno;
+
 
         }
 

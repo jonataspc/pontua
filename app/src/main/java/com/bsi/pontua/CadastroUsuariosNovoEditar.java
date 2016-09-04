@@ -303,7 +303,8 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
-                errorMsg = e.getMessage();
+                errorMsg = "Ocorreu um erro: " + e.getMessage();
+                return false;
             }
 
             return false;
