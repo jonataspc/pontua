@@ -104,5 +104,20 @@ public class Menu3 extends AppCompatActivity {
 
 
 
+        //entidades
+        View.OnClickListener m02 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, CadastroEntidades.class);
+                myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+        };
+
+        ((ImageButton) findViewById(R.id.imgCadEntidades)).setOnClickListener(m02);
+        ((Button) findViewById(R.id.btnCadEntidades)).setOnClickListener(m02);
+
+
+
     }
 }
