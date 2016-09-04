@@ -70,14 +70,14 @@ public class CadastroEntidades extends AppCompatActivity {
                 if (mNfcAdapter == null) {
                     // Stop here, we definitely need NFC
                     Toast.makeText(CadastroEntidades.this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
-                    finish();
+//                    finish();
                     return;
 
                 }
 
                 if (!mNfcAdapter.isEnabled()) {
                     Toast.makeText(CadastroEntidades.this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
-                    finish();
+//                    finish();
                     return;
                 }
 
@@ -175,6 +175,8 @@ public class CadastroEntidades extends AppCompatActivity {
                     b.putString("registro", String.valueOf(registro));
                     myIntent.putExtras(b); //Put your id to your next Intent
                     startActivityForResult(myIntent, 1);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a editar!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -203,6 +205,8 @@ public class CadastroEntidades extends AppCompatActivity {
                             })
                             .setNegativeButton("Não", null)
                             .show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a excluir!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -243,7 +247,11 @@ public class CadastroEntidades extends AppCompatActivity {
         super.onPause();
 
         mResumed = false;
-        mNfcAdapter.disableForegroundDispatch(this);
+
+        if(mNfcAdapter!=null){
+            mNfcAdapter.disableForegroundDispatch(this);
+        }
+
 
         if (progress != null) {
             progress.dismiss();
@@ -292,17 +300,17 @@ public class CadastroEntidades extends AppCompatActivity {
         col1.setPadding(5, 5, 5, 0);
         tr.addView(col1);  // Adding textView to tablerow.
 
-        /** Creating another textview **/
-        TextView col2 = new TextView(this);
-        col2.setText("Evento");
-        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        col2.setPadding(5, 5, 5, 0);
-        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(col2); // Adding textView to tablerow.
+//        /** Creating another textview **/
+//        TextView col2 = new TextView(this);
+//        col2.setText("Evento");
+//        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//        col2.setPadding(5, 5, 5, 0);
+//        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(col2); // Adding textView to tablerow.
 
         /** Creating another textview **/
         TextView ncol2 = new TextView(this);
-        ncol2.setText("Entidade");
+        ncol2.setText("Nome");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol2.setPadding(5, 5, 5, 0);
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -366,21 +374,22 @@ public class CadastroEntidades extends AppCompatActivity {
             chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             chk.setPadding(5, 5, 5, 5);
             chk.setTextColor(Color.BLACK);
+            chk.setWidth(200);
             tr.addView(chk);  // Adding textView to tablerow.
 
             col1 = new TextView(this);
-            col1.setText(e.getEvento().getNome());
+            col1.setText(e.getNome());
             col1.setTextColor(Color.BLACK);
             col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col1.setPadding(5, 5, 5, 5);
             tr.addView(col1);
 
-            col2 = new TextView(this);
-            col2.setText(e.getNome());
-            col2.setTextColor(Color.BLACK);
-            col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col2.setPadding(5, 5, 5, 5);
-            tr.addView(col2);
+//            col2 = new TextView(this);
+//            col2.setText(e.getNome());
+//            col2.setTextColor(Color.BLACK);
+//            col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//            col2.setPadding(5, 5, 5, 5);
+//            tr.addView(col2);
 
             // Add the TableRow to the TableLayout
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -439,6 +448,10 @@ public class CadastroEntidades extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List result) {
+
+            if(result==null){
+                return;
+            }
 
             tl = (TableLayout) findViewById(R.id.maintable);
             tl.removeAllViewsInLayout();
