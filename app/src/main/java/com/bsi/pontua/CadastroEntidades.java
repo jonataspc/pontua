@@ -70,14 +70,14 @@ public class CadastroEntidades extends AppCompatActivity {
                 if (mNfcAdapter == null) {
                     // Stop here, we definitely need NFC
                     Toast.makeText(CadastroEntidades.this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
-//                    finish();
+                    finish();
                     return;
 
                 }
 
                 if (!mNfcAdapter.isEnabled()) {
                     Toast.makeText(CadastroEntidades.this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
-//                    finish();
+                    finish();
                     return;
                 }
 
