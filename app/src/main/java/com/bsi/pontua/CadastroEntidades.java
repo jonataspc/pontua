@@ -70,14 +70,12 @@ public class CadastroEntidades extends AppCompatActivity {
                 if (mNfcAdapter == null) {
                     // Stop here, we definitely need NFC
                     Toast.makeText(CadastroEntidades.this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
-                    finish();
                     return;
 
                 }
 
                 if (!mNfcAdapter.isEnabled()) {
                     Toast.makeText(CadastroEntidades.this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
-                    finish();
                     return;
                 }
 
@@ -468,6 +466,12 @@ public class CadastroEntidades extends AppCompatActivity {
     class excluirRegistroTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
+        @Override
         protected Boolean doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
@@ -490,6 +494,10 @@ public class CadastroEntidades extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
             if (result) {
                 //atualiza lista de Entidades
