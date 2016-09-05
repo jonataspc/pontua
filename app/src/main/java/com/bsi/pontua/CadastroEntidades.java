@@ -22,6 +22,7 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,18 +140,29 @@ public class CadastroEntidades extends AppCompatActivity {
                 new String[]{NfcV.class.getName()}};
 
 
+
         //end nfc
 
-
-        final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
-
-        ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
+        // Lookup the swipe container view
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                //atualiza grid
+            public void onRefresh() {
+                swipeContainer.setRefreshing(false);
+
+                //atualiza lista de usuarios
                 new popularGridTask().execute("");
             }
         });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_green_light,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+
 
         btnNovo.setOnClickListener(new View.OnClickListener() {
             @Override

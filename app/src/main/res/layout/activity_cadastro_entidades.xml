@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -95,18 +101,7 @@
     </LinearLayout>
 
 
-    <ImageButton
-
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:id="@+id/ibtRefresh"
-
-        android:background="@drawable/atualizar"
-
-
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignEnd="@+id/LinearLayout01" />
-
 
 
 </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
