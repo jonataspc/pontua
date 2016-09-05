@@ -404,7 +404,36 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
                 EntidadeVO o = new EntidadeVO();
                 o.setNome(param[1]);
-//                o.setEvento(oEvt);
+
+
+
+
+
+
+                //valida dados de usuario...
+                boolean chkUsuario = Boolean.parseBoolean(param[2].trim());
+                if(chkUsuario){
+
+                    // remove usuario da entidade, caso seja edicao
+                    if(param[0] != null) {
+                        UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
+
+                        if(usuEntid!=null){
+                            cc.excluirUsuario(usuEntid);
+                        }
+                    }
+
+                    UsuarioVO newUs = new UsuarioVO();
+                    newUs.setEntidade(o);
+                    newUs.setNome(param[3].trim());
+                    newUs.setSenha(param[4].trim());
+                    newUs.setNivelAcesso("ENT");
+
+                    cc.validarInclusaoUsuario(newUs);
+                }
+
+
+
 
 
                 if(param[0] != null){
@@ -423,7 +452,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 }
 
 
-                boolean chkUsuario = Boolean.parseBoolean(param[2].trim());
+
 
 
 

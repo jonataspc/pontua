@@ -72,6 +72,8 @@ public class CadastrosControle {
         return daoEntidade.incluir(i);
     }
 
+
+
     public List<EntidadeVO> listarEntidade(String nomePesquisa) throws Exception {
         return daoEntidade.listar(nomePesquisa);
     }
@@ -94,6 +96,10 @@ public class CadastrosControle {
     }
 
     //usuario
+    public void validarInclusaoUsuario(UsuarioVO i) throws Exception {
+        RegrasNegocioUsuario.validarUsuario(i, true);
+    }
+
     public boolean inserirUsuario(UsuarioVO i) throws Exception {
         RegrasNegocioUsuario.validarUsuario(i, true);
         return daoUsuario.incluir(i);
