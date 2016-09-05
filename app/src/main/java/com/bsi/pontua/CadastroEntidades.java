@@ -148,10 +148,11 @@ public class CadastroEntidades extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeContainer.setRefreshing(false);
+                //atualiza
+                popularGridTask task = new popularGridTask();
+                task.isSwipe = true;
+                task.execute("");
 
-                //atualiza lista de usuarios
-                new popularGridTask().execute("");
             }
         });
         // Configure the refreshing colors
@@ -436,10 +437,14 @@ public class CadastroEntidades extends AppCompatActivity {
 
     class popularGridTask extends AsyncTask<String, Integer, List> {
 
+        boolean isSwipe = false;
+
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            if(!isSwipe){
+                inicializaProgressBar();
+                progress.show();
+            }
         }
 
         @Override
@@ -476,6 +481,15 @@ public class CadastroEntidades extends AppCompatActivity {
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
             }
+
+
+            if(isSwipe){
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(false);
+            }
+
+
+
         }
     }
 
