@@ -22,7 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Menu2" />
         <activity android:name=".CadastroUsuarios">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

@@ -30,6 +30,7 @@ import vo.UsuarioVO;
 
 public class AvaliacaoNfc extends AppCompatActivity {
 
+/*
 
     ProgressDialog progress;
     Bundle b=null;
@@ -482,5 +483,6 @@ public class AvaliacaoNfc extends AppCompatActivity {
     }
 
 
+*/
 
 }

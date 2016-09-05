@@ -23,6 +23,7 @@ import vo.EventoVO;
 
 public class CadastroEventos extends AppCompatActivity {
 
+/*
 
     ProgressDialog progress;
 
@@ -256,4 +257,5 @@ public class CadastroEventos extends AppCompatActivity {
         }
 
     }
+*/
 }

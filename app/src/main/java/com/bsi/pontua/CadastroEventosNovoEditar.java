@@ -16,6 +16,7 @@ import vo.EventoVO;
 
 public class CadastroEventosNovoEditar extends AppCompatActivity {
 
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,5 +221,6 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
 
     }
+*/
 
 }

@@ -31,6 +31,7 @@ import vo.ItemInspecaoVO;
 
 public class CadastroItensInspecao extends AppCompatActivity {
 
+/*
     TableLayout tl;
     TableRow tr;
     TextView col1, col2, col3, col4, col5;
@@ -178,18 +179,24 @@ public class CadastroItensInspecao extends AppCompatActivity {
         }
     }
 
-    /**
+    */
+/**
      * This function add the headers to the table
-     **/
+     **//*
+
     public void addHeaders() {
 
-        /** Create a TableRow **/
+        */
+/** Create a TableRow **//*
+
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(
                 LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        /** Creating a TextView to add to the row **/
+        */
+/** Creating a TextView to add to the row **//*
+
         TextView col1 = new TextView(this);
         col1.setText("Cód");
         col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -197,7 +204,9 @@ public class CadastroItensInspecao extends AppCompatActivity {
         col1.setPadding(5, 5, 5, 0);
         tr.addView(col1);  // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView col2 = new TextView(this);
         col2.setText("Evento");
         col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -205,7 +214,9 @@ public class CadastroItensInspecao extends AppCompatActivity {
         col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(col2); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol2 = new TextView(this);
         ncol2.setText("Área");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -213,7 +224,9 @@ public class CadastroItensInspecao extends AppCompatActivity {
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol2); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol3 = new TextView(this);
         ncol3.setText("Nome Ítem");
         ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -221,7 +234,9 @@ public class CadastroItensInspecao extends AppCompatActivity {
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol4 = new TextView(this);
         ncol4.setText("P. Mín");
         ncol4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -229,7 +244,9 @@ public class CadastroItensInspecao extends AppCompatActivity {
         ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol4); // Adding textView to tablerow.
 
-        /** Creating another textview **/
+        */
+/** Creating another textview **//*
+
         TextView ncol5 = new TextView(this);
         ncol5.setText("P. Máx");
         ncol5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -245,8 +262,13 @@ public class CadastroItensInspecao extends AppCompatActivity {
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
+*/
 /*
-        *//** Creating another textview **//*
+        *//*
+*/
+/** Creating another textview **//*
+*/
+/*
         TextView divider = new TextView(this);
         divider.setText("-----------------");
         divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -259,7 +281,8 @@ public class CadastroItensInspecao extends AppCompatActivity {
         divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
         divider2.setPadding(5, 0, 0, 0);
         divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*/
+        tr.addView(divider2); // Adding textView to tablerow.*//*
+
 
         // Add the TableRow to the TableLayout
         tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -277,18 +300,24 @@ public class CadastroItensInspecao extends AppCompatActivity {
 
     }
 
-    /**
+    */
+/**
      * This function add the data to the table
-     **/
+     **//*
+
     public void addData(List<ItemInspecaoVO> obj) {
 
         for (ItemInspecaoVO e : obj) {
 
-            /** Create a TableRow dynamically **/
+            */
+/** Create a TableRow dynamically **//*
+
             tr = new TableRow(this);
             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-            /** Creating a TextView to add to the row **/
+            */
+/** Creating a TextView to add to the row **//*
+
             final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
             chk.setText(String.valueOf(e.getId()));
             chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -447,4 +476,5 @@ public class CadastroItensInspecao extends AppCompatActivity {
 
     }
 
+*/
 }

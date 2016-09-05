@@ -32,6 +32,7 @@ import vo.ItemInspecaoVO;
 
 public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
+/*
     private String TXT_AREA_NOVA = "[Nova área...]";
 
     // this context will use when we work with Alert Dialog
@@ -263,7 +264,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                     //selecionou o [Novo] ?
                     if (parentView.getSelectedItem().toString().equals(TXT_AREA_NOVA)) {
 
-                         /* Alert Dialog Code Start*/
+                         */
+/* Alert Dialog Code Start*//*
+
                         AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         alert.setTitle("Nova área de inspeção"); //Set Alert dialog title here
                         alert.setMessage("");
@@ -325,7 +328,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
-                         /* Alert Dialog Code End*/
+                         */
+/* Alert Dialog Code End*//*
+
 
 
                     }
@@ -604,4 +609,5 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
 
     }
+*/
 }

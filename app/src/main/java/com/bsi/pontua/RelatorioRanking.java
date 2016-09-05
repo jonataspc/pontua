@@ -60,6 +60,7 @@ import vo.UsuarioVO;
 
 public class RelatorioRanking extends AppCompatActivity {
 
+/*
 
 
     ProgressDialog progress;
@@ -216,5 +217,6 @@ public class RelatorioRanking extends AppCompatActivity {
             }
         }
     }
+*/
 
 }
