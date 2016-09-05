@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import controle.CadastrosControle;
+import utils.Utils;
 import vo.UsuarioVO;
 
 //TODO LIST
@@ -306,17 +307,21 @@ public class Login extends AppCompatActivity {
 
                 Intent myIntent = new Intent(Login.this, Menu3.class);
                 Bundle b = new Bundle();
+//
+//                b.putString("usuario", result.getNome());
+//                b.putString("perfil", result.getNivelAcesso());
+//                b.putInt("id", result.getId());
+//
+//                if(result.getEntidade()==null){
+//                    b.putInt("id_entidade", -1);
+//                }else {
+//                    b.putInt("id_entidade", result.getEntidade().getId());
+//                }
+//
 
-                b.putString("usuario", result.getNome());
-                b.putString("perfil", result.getNivelAcesso());
-                b.putInt("id", result.getId());
 
-                if(result.getEntidade()==null){
-                    b.putInt("id_entidade", -1);
-                }else {
-                    b.putInt("id_entidade", result.getEntidade().getId());
-                }
-
+                Utils.nomeUsuario = result.getNome();
+                Utils.perfilUsuario = result.getNivelAcesso();
 
                 myIntent.putExtras(b); //Put your id to your next Intent
                 startActivity(myIntent);

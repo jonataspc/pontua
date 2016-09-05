@@ -24,24 +24,24 @@ public class Menu3 extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //recupera usuario
-        final Bundle b = getIntent().getExtras();
+//        //recupera usuario
+//        final Bundle b = getIntent().getExtras();
+//
+//        if(b==null){
+//            finish();
+//        }
 
-        if(b==null){
-            finish();
-        }
 
-        String usuario = b.getString("usuario");
 
-        Utils.nomeUsuario = usuario;
-        Utils.perfilUsuario = b.getString("perfil");
 
-        ((TextView) findViewById(R.id.txtUsuario)).setText(usuario.toUpperCase());
+
+
+        ((TextView) findViewById(R.id.txtUsuario)).setText(Utils.nomeUsuario.toUpperCase());
 
 
         String perfil=null;
 
-        switch (b.getString("perfil")){
+        switch (Utils.perfilUsuario){
             case "ADM":
                 perfil = "Administrador";
                 break;
@@ -94,7 +94,7 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroUsuarios.class);
-                myIntent.putExtras(b);
+                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -109,7 +109,7 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroEntidades.class);
-                myIntent.putExtras(b);
+                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
