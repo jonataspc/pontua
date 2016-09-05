@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class Menu2 extends AppCompatActivity {
+/*
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,4 +188,5 @@ public class Menu2 extends AppCompatActivity {
 
 
     }
+*/
 }

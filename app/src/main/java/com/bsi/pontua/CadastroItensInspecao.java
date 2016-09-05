@@ -41,7 +41,7 @@ public class CadastroItensInspecao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_itens_inspecao);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);

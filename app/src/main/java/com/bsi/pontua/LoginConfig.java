@@ -28,6 +28,8 @@ public class LoginConfig extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_config);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
          //new testexx().execute("");
         final Button btnSalvarLoginConfig = (Button) findViewById(R.id.btnSalvarLoginConfig);

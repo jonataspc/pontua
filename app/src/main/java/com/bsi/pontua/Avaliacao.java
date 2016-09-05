@@ -77,7 +77,7 @@ public class Avaliacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avaliacao);
-
+getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
         txtPontuacao.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10, 2)});

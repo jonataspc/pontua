@@ -160,7 +160,8 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_avaliacao_nfc_ler);
-//
+//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //
 //        Intent intent = getIntent();

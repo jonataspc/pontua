@@ -107,6 +107,7 @@ public class RelatorioRanking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relatorio_ranking);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //recupera usuario
         b = getIntent().getExtras();

@@ -20,6 +20,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_eventos_novo_editar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
         final EditText txtNovoEvento = (EditText) findViewById(R.id.txtNovoEvento);

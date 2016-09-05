@@ -80,6 +80,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_itens_inspecao_novo_editar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
         final EditText txtNome = (EditText) findViewById(R.id.txtNome);

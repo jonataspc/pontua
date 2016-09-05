@@ -61,6 +61,7 @@ public class CadastroUsuarios extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_usuarios);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovo);
         final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditar);

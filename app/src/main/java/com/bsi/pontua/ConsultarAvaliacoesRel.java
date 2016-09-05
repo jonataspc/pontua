@@ -49,6 +49,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_avaliacoes_rel);
+getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);

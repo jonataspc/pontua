@@ -102,7 +102,8 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_consultar_avaliacoes);
-//
+//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        //recupera usuario
 //        b = getIntent().getExtras();
 //

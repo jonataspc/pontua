@@ -53,6 +53,8 @@ public class CadastroEntidades extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_entidades);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
@@ -100,6 +102,8 @@ public class CadastroEntidades extends AppCompatActivity {
 
                     writeTagAlert.show();
 
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro!", Toast.LENGTH_SHORT).show();
                 }
 
 

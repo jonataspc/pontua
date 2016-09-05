@@ -53,6 +53,7 @@ public class RelatorioRankingRel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relatorio_ranking_rel);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
