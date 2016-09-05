@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.bellinatiperez.bpapp.DebitoBoleto">
+     
+    <item
+        android:id="@+id/action_exit"
+        android:checkable="false"
+        android:orderInCategory="99"
+        android:title="Finalizar sessão"
+
+        android:visible="true"
+        app:showAsAction="never" />
+</menu>

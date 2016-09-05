@@ -1,8 +1,11 @@
 package com.bsi.pontua;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -15,6 +18,54 @@ import android.widget.TextView;
 import utils.Utils;
 
 public class Menu3 extends AppCompatActivity {
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_menu3, menu);
+
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        SharedPreferences.Editor editor;
+        SharedPreferences settings;
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+
+//                //esconde keyboard
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//
+//                this.finish();
+//                return true;
+
+
+            case R.id.action_exit:
+finish();
+
+                return true;
+
+
+
+
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
