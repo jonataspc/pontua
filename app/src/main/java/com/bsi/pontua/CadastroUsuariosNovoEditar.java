@@ -19,7 +19,6 @@ import vo.UsuarioVO;
 
 public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
-/*
     ProgressDialog progress;
 
     @Override
@@ -344,5 +343,4 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
     }
 
-*/
 }
