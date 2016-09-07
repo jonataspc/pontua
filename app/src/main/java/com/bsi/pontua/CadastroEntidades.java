@@ -27,7 +27,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -61,7 +60,7 @@ public class CadastroEntidades extends AppCompatActivity {
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
-        final Button btnWriteNfcTag = (Button) findViewById(R.id.btnWriteNfcTag);
+        final Button btnWriteNfcTag = (Button) findViewById(R.id.btnGravarTagNFC);
 
         btnWriteNfcTag.setOnClickListener(new View.OnClickListener() {
             @Override

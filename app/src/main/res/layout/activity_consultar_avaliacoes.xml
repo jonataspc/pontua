@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Evento:"
-            android:id="@+id/textView4"
+            android:id="@+id/txtEvento"
             android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true"
             android:layout_marginTop="25dp" />
@@ -40,7 +40,7 @@
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView4"
+            android:layout_below="@+id/txtEvento"
             android:layout_alignParentLeft="true" />
 
         <TextView
@@ -48,18 +48,18 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Entidade:"
-            android:id="@+id/textView5"
+            android:id="@+id/txtArea"
             android:layout_below="@+id/spnEventos"
             android:layout_alignParentStart="true"
             android:layout_marginTop="15dp" />
 
         <Spinner
-            android:id="@+id/spnEntidades"
+            android:id="@+id/spnAreas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
-            android:layout_below="@+id/textView5"
+            android:layout_below="@+id/txtArea"
             android:layout_alignParentStart="true" />
 
         <Button
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="Consultar"
             android:id="@+id/btnConsAvaliacoes"
-            android:layout_below="@+id/spnEntidades"
+            android:layout_below="@+id/spnAreas"
             android:layout_centerHorizontal="true"
             android:enabled="false" />
 

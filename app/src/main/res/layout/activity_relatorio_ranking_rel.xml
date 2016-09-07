@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Relatório de Ranking"
-        android:id="@+id/textView2"
+        android:id="@+id/txtTitulo"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin" />
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/txtTitulo"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" />
 
@@ -33,7 +33,7 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/LinearLayout01"
+        android:id="@+id/linLay1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ibtRefresh"
@@ -69,8 +69,8 @@
         android:layout_height="25dp"
         android:id="@+id/ibtRefresh"
         android:background="@drawable/refresh"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignEnd="@+id/LinearLayout01" />
+        android:layout_alignTop="@+id/txtTitulo"
+        android:layout_alignEnd="@+id/linLay1" />
 
 
 </RelativeLayout>

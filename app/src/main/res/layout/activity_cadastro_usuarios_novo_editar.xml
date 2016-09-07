@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.bsi.pontua.CadastroUsuariosNovoEditar">
 
     <ScrollView
@@ -10,103 +11,96 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Usuários"
+                android:id="@+id/tvwUsuarioTitle"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Usuários"
-        android:id="@+id/tvwUsuarioTitle"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+            <EditText
+                android:id="@+id/edtNovoUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="0dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:hint="Usuário"
+                android:maxLength="25"
+                android:layout_below="@+id/tvwUsuarioTitle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="38dp" />
 
-    <EditText
-        android:id="@+id/txtNovoUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginLeft="0dp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:hint="Usuário"
-        android:maxLength="25"
-        android:layout_below="@+id/tvwUsuarioTitle"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="38dp" />
+            <EditText
+                android:id="@+id/edtNovoSenha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Senha"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:maxLength="20"
+                android:layout_alignParentEnd="true"
+                android:password="true"
+                android:layout_below="@+id/edtNovoUsuario"
+                android:layout_alignParentLeft="true" />
 
-    <EditText
-        android:id="@+id/txtNovoSenha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Senha"
-        android:textSize="20sp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:maxLength="20"
-        android:layout_alignParentEnd="true"
-        android:password="true"
-        android:layout_below="@+id/txtNovoUsuario"
-        android:layout_alignParentLeft="true" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salvar"
+                android:id="@+id/btnSalvar"
+                android:layout_below="@+id/radioGroup"
+                android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:id="@+id/btnCadastrar"
-        android:layout_below="@+id/radioGroup"
-        android:layout_centerHorizontal="true" />
+            <RadioGroup
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioGroup"
+                android:layout_below="@+id/edtNovoSenha"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="26dp">
 
-    <RadioGroup
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioGroup"
-        android:layout_below="@+id/txtNovoSenha"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Administrador"
+                    android:id="@+id/rbtAdm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:onClick="onRadioButtonClicked"
+                    android:checked="true" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Administrador"
-            android:id="@+id/rbtAdm"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:onClick="onRadioButtonClicked"
-            android:checked="true" />
+                <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avaliador"
+                android:id="@+id/rbtAval"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:onClick="onRadioButtonClicked" />
 
-        <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Avaliador"
-        android:id="@+id/rbtAval"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:onClick="onRadioButtonClicked" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Entidade"
-            android:id="@+id/rbtEnt"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:onClick="onRadioButtonClicked" />
-
-
-    </RadioGroup>
-
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Entidade"
+                    android:id="@+id/rbtEnt"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:onClick="onRadioButtonClicked" />
+            </RadioGroup>
         </RelativeLayout>
-
     </ScrollView>
 </RelativeLayout>

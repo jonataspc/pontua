@@ -9,16 +9,12 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 
 import java.util.List;
 import controle.CadastrosControle;
@@ -99,7 +95,7 @@ public class CadastroUsuarios extends AppCompatActivity {
         final Button btnNovoUsuario = (Button) findViewById(R.id.btnNovo);
         final Button btnEditarUsuario = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluirUsuario = (Button) findViewById(R.id.btnExcluir);
-        final Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
+        final Spinner dropdown = (Spinner) findViewById(R.id.spnUsuarios);
 
 
         btnNovoUsuario.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +205,7 @@ public class CadastroUsuarios extends AppCompatActivity {
         protected void onPostExecute(List result) {
 
             //popula o spinner
-            Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
+            Spinner dropdown = (Spinner) findViewById(R.id.spnAreas);
 
             List<UsuarioVO> lista = result;
             String[] items = new String[lista.size()];

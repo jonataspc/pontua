@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import controle.CadastrosControle;
-import vo.EntidadeVO;
 import vo.UsuarioVO;
 
 public class CadastroUsuariosNovoEditar extends AppCompatActivity {
@@ -27,10 +26,10 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_usuarios_novo_editar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
-        final EditText txtNovoUsuario = (EditText) findViewById(R.id.txtNovoUsuario);
+        final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
+        final EditText txtNovoUsuario = (EditText) findViewById(R.id.edtNovoUsuario);
         final TextView tvwUsuarioTitle = (TextView) findViewById(R.id.tvwUsuarioTitle);
-        final EditText txtNovoSenha = (EditText) findViewById(R.id.txtNovoSenha);
+        final EditText txtNovoSenha = (EditText) findViewById(R.id.edtNovoSenha);
         final RadioButton rbtAdm =  (RadioButton) findViewById(R.id.rbtAdm);
         final RadioButton rbtAval =  (RadioButton) findViewById(R.id.rbtAval);
         final RadioButton rbtEnt =  (RadioButton) findViewById(R.id.rbtEnt);
@@ -120,8 +119,8 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
                 progress.dismiss();
             }
 
-            final EditText txtNovoUsuario = (EditText) findViewById(R.id.txtNovoUsuario);
-            final EditText txtNovoSenha = (EditText) findViewById(R.id.txtNovoSenha);
+            final EditText txtNovoUsuario = (EditText) findViewById(R.id.edtNovoUsuario);
+            final EditText txtNovoSenha = (EditText) findViewById(R.id.edtNovoSenha);
             final RadioButton rbtAdm =  (RadioButton) findViewById(R.id.rbtAdm);
             final RadioButton rbtAval =  (RadioButton) findViewById(R.id.rbtAval);
             final RadioButton rbtEnt =  (RadioButton) findViewById(R.id.rbtEnt);
@@ -207,8 +206,8 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
     void salvar(){
 
-        final EditText txtNovoUsuario = (EditText) findViewById(R.id.txtNovoUsuario);
-        final EditText txtNovoSenha = (EditText) findViewById(R.id.txtNovoSenha);
+        final EditText txtNovoUsuario = (EditText) findViewById(R.id.edtNovoUsuario);
+        final EditText txtNovoSenha = (EditText) findViewById(R.id.edtNovoSenha);
         final RadioButton rbtAdm =  (RadioButton) findViewById(R.id.rbtAdm);
         final RadioButton rbtAval =  (RadioButton) findViewById(R.id.rbtAval);
         final RadioButton rbtEnt =  (RadioButton) findViewById(R.id.rbtEnt);

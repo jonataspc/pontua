@@ -5,86 +5,86 @@
     android:scrollbars="none"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.bsi.pontua.CadastroEntidadesNovoEditar">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Titulo"
-        android:id="@+id/tvwTitle"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:id="@+id/txtNome"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginLeft="0dp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:hint="Nome"
-        android:maxLength="30"
-        android:layout_marginTop="26dp"
-        android:layout_below="@+id/tvwTitle"
-        android:layout_alignParentStart="true" />
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.bsi.pontua.CadastroEntidadesNovoEditar">
 
-    <Button
-        android:layout_marginTop="29dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:id="@+id/btnCadastrar"
-        android:layout_below="@+id/edtUsuarioConsultaSenha"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Titulo"
+            android:id="@+id/tvwTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
+        <EditText
+            android:id="@+id/edtNomeEntidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="0dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:hint="Nome"
+            android:maxLength="30"
+            android:layout_marginTop="26dp"
+            android:layout_below="@+id/tvwTitle"
+            android:layout_alignParentStart="true" />
 
+        <Button
+            android:layout_marginTop="29dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:id="@+id/btnSalvar"
+            android:layout_below="@+id/edtUsuarioConsultaSenha"
+            android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:id="@+id/edtUsuarioConsulta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginLeft="0dp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:hint="Usuário"
-        android:maxLength="25"
+        <EditText
+            android:id="@+id/edtUsuarioConsulta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="0dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:hint="Usuário"
+            android:maxLength="25"
+            android:layout_below="@+id/chkUsuario"
+            android:layout_alignParentStart="true" />
 
-        android:layout_below="@+id/chkUsuario"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:id="@+id/edtUsuarioConsultaSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Senha"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:maxLength="20"
+            android:layout_alignParentEnd="true"
+            android:password="true"
+            android:layout_below="@+id/edtUsuarioConsulta"
+            android:layout_alignParentLeft="true" />
 
-    <EditText
-        android:id="@+id/edtUsuarioConsultaSenha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Senha"
-        android:textSize="20sp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:maxLength="20"
-        android:layout_alignParentEnd="true"
-        android:password="true"
-        android:layout_below="@+id/edtUsuarioConsulta"
-        android:layout_alignParentLeft="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuário para consulta?"
+            android:layout_marginTop="29dp"
+            android:id="@+id/chkUsuario"
+            android:onClick="onchkUsuarioClicked"
+            android:layout_below="@+id/edtNomeEntidade"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Usuário para consulta?"
-        android:layout_marginTop="29dp"
-        android:id="@+id/chkUsuario"
-        android:onClick="onchkUsuarioClicked"
-    android:layout_below="@+id/txtNome"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

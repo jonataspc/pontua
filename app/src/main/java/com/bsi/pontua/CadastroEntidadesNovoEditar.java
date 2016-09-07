@@ -7,20 +7,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import controle.CadastrosControle;
 import vo.EntidadeVO;
-import vo.EventoVO;
 import vo.UsuarioVO;
 
 public class CadastroEntidadesNovoEditar extends AppCompatActivity {
@@ -67,8 +61,8 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_entidades_novo_editar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
-        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
+        final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
+        final EditText txtNome = (EditText) findViewById(R.id.edtNomeEntidade);
         final TextView tvwTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +231,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 progress.dismiss();
             }
 
-            final EditText txtNome = (EditText) findViewById(R.id.txtNome);
+            final EditText txtNome = (EditText) findViewById(R.id.txtNomeEvento);
             final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
 //            final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
@@ -311,7 +305,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     void salvar(){
 
-        final EditText txtNome = (EditText) findViewById(R.id.txtNome);
+        final EditText txtNome = (EditText) findViewById(R.id.txtNomeEvento);
 //        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
         final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
         final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
