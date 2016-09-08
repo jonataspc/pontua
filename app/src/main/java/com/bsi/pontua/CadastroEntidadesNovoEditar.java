@@ -231,7 +231,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                 progress.dismiss();
             }
 
-            final EditText txtNome = (EditText) findViewById(R.id.txtNomeEvento);
+            final EditText txtNome = (EditText) findViewById(R.id.edtNomeEntidade);
             final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
 //            final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
 
@@ -305,7 +305,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
     void salvar(){
 
-        final EditText txtNome = (EditText) findViewById(R.id.txtNomeEvento);
+        final EditText txtNome = (EditText) findViewById(R.id.edtNomeEntidade);
 //        final Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
         final EditText edtUsuarioConsulta = (EditText) findViewById(R.id.edtUsuarioConsulta);
         final EditText edtUsuarioConsultaSenha = (EditText) findViewById(R.id.edtUsuarioConsultaSenha);
