@@ -205,7 +205,7 @@ public class CadastroUsuarios extends AppCompatActivity {
         protected void onPostExecute(List result) {
 
             //popula o spinner
-            Spinner dropdown = (Spinner) findViewById(R.id.spnAreas);
+            Spinner dropdown = (Spinner) findViewById(R.id.spnUsuarios);
 
             List<UsuarioVO> lista = result;
             String[] items = new String[lista.size()];
