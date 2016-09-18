@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import controle.regrasNegocios.RegrasNegocioEntidade;
+import controle.regrasNegocios.RegrasNegocioEvento;
 import controle.regrasNegocios.RegrasNegocioUsuario;
 import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
@@ -45,7 +46,8 @@ public class CadastrosControle {
 
 
     //evento
-    public boolean inserirEvento(EventoVO i) throws SQLException {
+    public boolean inserirEvento(EventoVO i) throws Exception {
+        RegrasNegocioEvento.validarEvento(i, true);
         return daoEvento.incluir(i);
     }
 
@@ -62,6 +64,7 @@ public class CadastrosControle {
     }
 
     public boolean editarEvento(EventoVO o) throws Exception {
+        RegrasNegocioEvento.validarEvento(o, false);
         return daoEvento.editar(o);
     }
 
