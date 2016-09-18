@@ -45,7 +45,7 @@ public class CadastrosControle {
 
 
     //evento
-    public boolean inserirEvento(EventoVO i) {
+    public boolean inserirEvento(EventoVO i) throws SQLException {
         return daoEvento.incluir(i);
     }
 
