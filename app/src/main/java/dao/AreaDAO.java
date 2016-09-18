@@ -46,6 +46,54 @@ public class AreaDAO {
     }
 
 
+    public AreaVO obterPorNome(String nome) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT id, nome FROM area WHERE nome=? ORDER BY nome;");
+            st.setString(1, nome);
+            ResultSet resultado = st.executeQuery();
+
+
+            AreaVO o = new AreaVO();
+            while (resultado.next()) {
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("nome"));
+            }
+
+            conn.close();
+            return o;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
+
+    public void removerAreasOrfas()throws SQLException {
+
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("DELETE `area` FROM `area` LEFT JOIN item_inspecao ON item_inspecao.id_area = area.id WHERE item_inspecao.id IS NULL;");
+            st.executeUpdate();
+
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public List<AreaVO> listar() throws SQLException {
         try {
 
@@ -62,7 +110,7 @@ public class AreaDAO {
             while (resultado.next()) {
                 AreaVO o = new AreaVO();
                 o.setId(resultado.getInt("id"));
-                o.setNome(resultado.getString("area"));
+                o.setNome(resultado.getString("nome"));
                 lista.add(o);
             }
 
@@ -85,7 +133,7 @@ public class AreaDAO {
             conn = Conexao.obterConexao();
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO area (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
-            st.setString(1, c.getNome());
+            st.setString(1, c.getNome().toUpperCase());
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();

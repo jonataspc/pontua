@@ -101,7 +101,7 @@ public class ItemInspecaoDAO {
             PreparedStatement st = conn.prepareStatement("INSERT INTO item_inspecao (id_area, nome, pontuacao_minima, pontuacao_maxima) VALUES (?, ?, ?, ?) ;", Statement.RETURN_GENERATED_KEYS);
 
             st.setInt(1, c.getArea().getId());
-            st.setString(2, c.getNome());
+            st.setString(2, c.getNome().toUpperCase());
             st.setDouble(3, c.getPontuacaoMinima().doubleValue());
             st.setDouble(4, c.getPontuacaoMaxima().doubleValue());
             st.executeUpdate();
@@ -139,7 +139,7 @@ public class ItemInspecaoDAO {
 //            }
 
             st.setInt(1, c.getArea().getId());
-            st.setString(2, c.getNome());
+            st.setString(2, c.getNome().toUpperCase());
             st.setDouble(3, c.getPontuacaoMinima().doubleValue());
             st.setDouble(4, c.getPontuacaoMaxima().doubleValue());
             st.setInt(5, c.getId());

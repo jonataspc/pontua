@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,19 +22,20 @@ import android.widget.Toast;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
-import vo.EventoVO;
+import vo.AreaVO;
 import vo.ItemInspecaoVO;
 
 
 public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
-/*
     private String TXT_AREA_NOVA = "[Nova área...]";
+    private String TXT_AREA_DEFAULT = "[SELECIONE]";
 
     // this context will use when we work with Alert Dialog
     final Context context = this;
@@ -73,22 +75,18 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         }
     }
 
-    private String lastMinPont = "";
-    private String lastMaxPont = "";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_itens_inspecao_novo_editar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
+        final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
         final EditText txtNome = (EditText) findViewById(R.id.txtNome);
         final TextView tvwTitle = (TextView) findViewById(R.id.tvwTitle);
 
-        final EditText txtPontMin = (EditText) findViewById(R.id.txtPontMin);
-        final EditText txtPontMax = (EditText) findViewById(R.id.txtPontMax);
+        final EditText txtPontMin = (EditText) findViewById(R.id.edtPontMinima);
+        final EditText txtPontMax = (EditText) findViewById(R.id.edtPontMaxima);
 
         txtPontMin.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(10,2)});
         txtPontMax.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(10,2)});
@@ -104,11 +102,11 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwTitle.setText("Cadastro de Ítens de Inspeção - novo");
+        tvwTitle.setText("Incluir ítem de inspeção");
 
 
-        //carrega eventos em spinner
-        AsyncTask cEt =  new carregarEventosTask().execute("");
+//        //carrega eventos em spinner
+//        AsyncTask cEt =  new carregarEventosTask().execute("");
 
         //carrega areas
         AsyncTask cAt =  new carregarAreasTask().execute("");
@@ -117,7 +115,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         try {
             //aguarda conclusao
-            cEt.get();
+            //cEt.get();
             cAt.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -141,7 +139,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwTitle.setText("Cadastro de Ítens de Inspeção - editar");
+                tvwTitle.setText("Editar ítem de inspeção");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
@@ -154,58 +152,59 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         }
 
+        
     }
 
-    class carregarEventosTask extends AsyncTask<String, Integer, List> {
-
-        @Override
-        protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
-        }
-
-        @Override
-        protected List<EventoVO> doInBackground(String... param) {
-
-            CadastrosControle cc = new CadastrosControle();
-
-            try {
-
-                List<EventoVO> lista = cc.listarEvento("");
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List result) {
-
-            //popula o spinner
-            Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
-
-            List<EventoVO> lista = result;
-            String[] items = new String[lista.size()];
-
-            int cont = 0;
-            for (EventoVO item : lista) {
-                items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
-                cont++;
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroItensInspecaoNovoEditar.this, android.R.layout.simple_spinner_dropdown_item, items);
-            dropdown.setAdapter(adapter);
-
-
-
-            if (progress != null && progress.isShowing()) {
-                progress.dismiss();
-            }
-        }
-    }
+//    class carregarEventosTask extends AsyncTask<String, Integer, List> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            inicializaProgressBar();
+//            progress.show();
+//        }
+//
+//        @Override
+//        protected List<EventoVO> doInBackground(String... param) {
+//
+//            CadastrosControle cc = new CadastrosControle();
+//
+//            try {
+//
+//                List<EventoVO> lista = cc.listarEvento("");
+//                return lista;
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List result) {
+//
+//            //popula o spinner
+//            Spinner dropdown = (Spinner) findViewById(R.id.spnEventos);
+//
+//            List<EventoVO> lista = result;
+//            String[] items = new String[lista.size()];
+//
+//            int cont = 0;
+//            for (EventoVO item : lista) {
+//                items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
+//                cont++;
+//            }
+//
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroItensInspecaoNovoEditar.this, android.R.layout.simple_spinner_dropdown_item, items);
+//            dropdown.setAdapter(adapter);
+//
+//
+//
+//            if (progress != null && progress.isShowing()) {
+//                progress.dismiss();
+//            }
+//        }
+//    }
 
     class carregarAreasTask extends AsyncTask<String, Integer, List> {
 
@@ -216,13 +215,13 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         }
 
         @Override
-        protected List<String> doInBackground(String... param) {
+        protected List<AreaVO> doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                List<String> lista = cc.listarAreas(null);
+                List<AreaVO> lista = cc.listarAreas();
                 return lista;
 
             } catch (Exception e) {
@@ -236,12 +235,23 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         protected void onPostExecute(List result) {
 
             //popula o spinner
-            Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
+            Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
 
-            listaAreas = result;
+
+            List<AreaVO> res2 = result;
+
+            listaAreas = new ArrayList<String>(0);
+
+            for (AreaVO item : res2) {
+                listaAreas.add(item.getNome());
+            }
+
+
 
             listaAreas.add(0, TXT_AREA_NOVA);
-            listaAreas.add(0, "Nenhuma");
+            listaAreas.add(0, TXT_AREA_DEFAULT);
+
+
 
             String[] items = new String[listaAreas.size()];
 
@@ -264,8 +274,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                     //selecionou o [Novo] ?
                     if (parentView.getSelectedItem().toString().equals(TXT_AREA_NOVA)) {
 
-                         */
-/* Alert Dialog Code Start*//*
+ //Alert Dialog Code Start
 
                         AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         alert.setTitle("Nova área de inspeção"); //Set Alert dialog title here
@@ -297,8 +306,11 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                                         cont++;
                                     }
 
+                                    //adiciona nova area...
+                                    new incluirArea().execute( srt );
+
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroItensInspecaoNovoEditar.this, android.R.layout.simple_spinner_dropdown_item, items);
-                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
+                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
                                     spnAreas.setAdapter(adapter);
 
                                     //pre seleciona o inserido
@@ -307,8 +319,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                                 else
                                 {
                                     //seleciona 'nenhuma'
-                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
-                                    spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition("Nenhuma"));
+                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
+                                    spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition(TXT_AREA_DEFAULT));
                                 }
 
 
@@ -319,8 +331,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
                                 //seleciona 'nenhuma'
-                                Spinner spnAreas = (Spinner) findViewById(R.id.spnEntidades);
-                                spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition("Nenhuma"));
+                                Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
+                                spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition(TXT_AREA_DEFAULT));
 
                                 dialog.cancel();
                             }
@@ -328,8 +340,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
-                         */
-/* Alert Dialog Code End*//*
+ //Alert Dialog Code End
 
 
 
@@ -389,10 +400,10 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         protected void onPostExecute(ItemInspecaoVO result) {
 
             final EditText txtNome = (EditText) findViewById(R.id.txtNome);
-            final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-            final Spinner spnArea = (Spinner) findViewById(R.id.spnEntidades);
-            final EditText txtPontMin = (EditText) findViewById(R.id.txtPontMin);
-            final EditText txtPontMax = (EditText) findViewById(R.id.txtPontMax);
+            //final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
+            final Spinner spnArea = (Spinner) findViewById(R.id.spnAreas);
+            final EditText txtPontMin = (EditText) findViewById(R.id.edtPontMinima);
+            final EditText txtPontMax = (EditText) findViewById(R.id.edtPontMaxima);
 
 
             if(result != null){
@@ -407,8 +418,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                 try {
                     //seleciona o evento
-                    spnEventos.setSelection(((ArrayAdapter)spnEventos.getAdapter()).getPosition("[" + String.format("%05d", result.getEvento().getId()) + "] " + result.getEvento().getNome()));
-                    spnArea.setSelection(((ArrayAdapter)spnArea.getAdapter()).getPosition(result.getArea()));
+                   // spnEventos.setSelection(((ArrayAdapter)spnEventos.getAdapter()).getPosition("[" + String.format("%05d", result.getEvento().getId()) + "] " + result.getEvento().getNome()));
+                    spnArea.setSelection(((ArrayAdapter)spnArea.getAdapter()).getPosition(result.getArea().getNome()));
 
                 }catch (Exception ex){
                     ex.printStackTrace();
@@ -447,10 +458,10 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
     void salvar(){
 
         final EditText txtNome = (EditText) findViewById(R.id.txtNome);
-        final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-        final Spinner spnArea = (Spinner) findViewById(R.id.spnEntidades);
-        final EditText txtPontMin = (EditText) findViewById(R.id.txtPontMin);
-        final EditText txtPontMax = (EditText) findViewById(R.id.txtPontMax);
+        //final Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
+        final Spinner spnArea = (Spinner) findViewById(R.id.spnAreas);
+        final EditText txtPontMin = (EditText) findViewById(R.id.edtPontMinima);
+        final EditText txtPontMax = (EditText) findViewById(R.id.edtPontMaxima);
 
 
 
@@ -461,9 +472,10 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             return;
         }
 
-        if(spnEventos.getSelectedItem().toString().length() == 0 ){
-            Toast.makeText(getApplicationContext(), "Selecione o evento!", Toast.LENGTH_SHORT).show();
-            spnEventos.requestFocus();
+        if(spnArea.getSelectedItem().toString().length() == 0 ||
+                spnArea.getSelectedItem().toString() == TXT_AREA_DEFAULT ){
+            Toast.makeText(getApplicationContext(), "Selecione a área!", Toast.LENGTH_SHORT).show();
+            spnArea.requestFocus();
             return;
         }
 
@@ -504,7 +516,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             String[] paramns = new String[]{
                     b.getString("registro"),
                     txtNome.getText().toString().trim(),
-                    spnEventos.getSelectedItem().toString().substring(1, 6),
+                    null , //spnEventos.getSelectedItem().toString().substring(1, 6),
                     spnArea.getSelectedItem().toString(),
                     txtPontMin.getText().toString(),
                     txtPontMax.getText().toString()
@@ -526,6 +538,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
     class salvarTask extends AsyncTask<String, Integer, Boolean> {
 
+        String errorMsg;
+
         @Override
         protected void onPreExecute() {
             inicializaProgressBar();
@@ -543,14 +557,11 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                 ItemInspecaoVO o = new ItemInspecaoVO();
                 o.setNome(param[1]);
-                o.setEvento(cc.obterEventoPorId(Integer.parseInt(param[2])));
-                o.setArea(param[3]);
+             //   o.setEvento(cc.obterEventoPorId(Integer.parseInt(param[2])));
+                o.setArea(  cc.obterAreaPorNome(param[3])   );
                 o.setPontuacaoMinima(new BigDecimal(param[4]));
                 o.setPontuacaoMaxima( new BigDecimal(param[5]));
 
-                if(o.getArea().toString().equals("Nenhuma")){
-                    o.setArea(null);
-                }
 
                 if(param[0] != null){
                     //editar
@@ -571,6 +582,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
+                errorMsg =  e.getMessage();
             }
 
             return retorno;
@@ -599,7 +611,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
 
 
@@ -609,5 +621,69 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
 
     }
-*/
+
+
+    class incluirArea  extends AsyncTask<String, Integer, Boolean> {
+
+        String errorMsg;
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... param) {
+
+            CadastrosControle cc = new CadastrosControle();
+
+            try {
+
+                AreaVO o = new AreaVO();
+                o.setNome(param[0]);
+
+                return cc.incluirArea(o);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                errorMsg =  e.getMessage();
+            }
+
+            return false;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
+//
+//            if(result){
+//
+//                Toast.makeText(getApplicationContext(), "Alterações salvas com sucesso", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent();
+//                setResult(Activity.RESULT_OK, intent);
+//                finish();
+//
+//            }
+//            else
+//            {
+//
+//                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+//            }
+//
+
+
+
+        }
+
+
+    }
 }

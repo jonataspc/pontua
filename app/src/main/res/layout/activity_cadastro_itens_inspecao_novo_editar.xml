@@ -26,7 +26,7 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:id="@+id/edtNomeEvento"
+            android:id="@+id/txtNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -38,25 +38,6 @@
             android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Evento:"
-            android:id="@+id/tvwEvento"
-            android:layout_below="@+id/edtNomeEvento"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp" />
-
-        <Spinner
-            android:id="@+id/spnEventos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvwEvento"
-            android:layout_alignParentLeft="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,7 +45,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Área:"
             android:id="@+id/tvwArea"
-            android:layout_below="@+id/spnEventos"
+            android:layout_below="@+id/txtNome"
             android:layout_alignParentStart="true"
             android:layout_marginTop="15dp" />
 
@@ -105,7 +86,7 @@
                 android:layout_marginLeft="170dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:layout_alignParentRight="true"
                 android:id="@+id/edtPontMinima"
                 android:layout_gravity="center"
@@ -142,7 +123,7 @@
                 android:layout_marginLeft="170dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:layout_alignParentRight="true"
                 android:id="@+id/edtPontMaxima"
                 android:layout_gravity="center"

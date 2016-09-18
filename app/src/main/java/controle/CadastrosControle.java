@@ -156,7 +156,12 @@ public class CadastrosControle {
 //    }
 
     public boolean excluirItemInspecao(ItemInspecaoVO o) throws Exception {
-        return daoItemInspecao.excluir(o);
+        //remove orfas..
+        boolean retorno = daoItemInspecao.excluir(o);
+        daoArea.removerAreasOrfas();
+
+        return retorno;
+
     }
 
     public ItemInspecaoVO obterItemInspecaoPorId(int a) throws Exception {
@@ -171,6 +176,17 @@ public class CadastrosControle {
             return daoArea.listar();
     }
 
+    public AreaVO obterAreaPorId(int a) throws Exception {
+        return daoArea.obterPorId(a);
+    }
+
+    public AreaVO obterAreaPorNome(String a) throws Exception {
+        return daoArea.obterPorNome(a);
+    }
+
+    public boolean incluirArea(AreaVO a) throws Exception {
+        return daoArea.incluir(a);
+    }
 
 
 
