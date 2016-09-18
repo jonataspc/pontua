@@ -32,7 +32,7 @@ public class AreaDAO {
             AreaVO o = new AreaVO();
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
-                o.setNome(resultado.getString("area"));
+                o.setNome(resultado.getString("nome"));
             }
 
             conn.close();

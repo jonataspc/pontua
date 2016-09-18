@@ -57,9 +57,9 @@ public class ItemInspecaoDAO {
             PreparedStatement st;
 
             if (nomePesquisa.trim() == "") {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao ORDER BY id_evento, id_area, nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao ORDER BY id_area, nome;");
             } else {
-                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE nome LIKE ? ORDER BY id_evento, id_area, nome;");
+                st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE nome LIKE ? ORDER BY id_area, nome;");
                 st.setString(1, "%" + nomePesquisa.trim() + "%");
             }
 
