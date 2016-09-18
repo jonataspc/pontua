@@ -5,11 +5,10 @@ import java.math.BigDecimal;
 
 public class ItemInspecaoVO implements Serializable {
 
-    private static final long serialVersionUID = 4L;
+    private static final long serialVersionUID = 4109L;
 
     private int id;
-    private EventoVO evento;
-    private String area;
+    private AreaVO area;
     private String nome;
     private BigDecimal pontuacaoMinima;
     private BigDecimal pontuacaoMaxima;
@@ -22,19 +21,11 @@ public class ItemInspecaoVO implements Serializable {
         this.id = id;
     }
 
-    public EventoVO getEvento() {
-        return evento;
-    }
-
-    public void setEvento(EventoVO evento) {
-        this.evento = evento;
-    }
-
-    public String getArea() {
+    public AreaVO getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(AreaVO area) {
         this.area = area;
     }
 

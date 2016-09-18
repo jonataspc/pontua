@@ -17,6 +17,33 @@ import vo.AreaVO;
  */
 public class AreaDAO {
 
+    public AreaVO obterPorId(int codigo) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT id, nome FROM area WHERE id=? ORDER BY nome;");
+            st.setInt(1, codigo);
+            ResultSet resultado = st.executeQuery();
+
+
+            AreaVO o = new AreaVO();
+            while (resultado.next()) {
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("area"));
+            }
+
+            conn.close();
+            return o;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
 
 
     public List<AreaVO> listar() throws SQLException {

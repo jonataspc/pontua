@@ -7,12 +7,14 @@ import java.util.regex.Pattern;
 import controle.regrasNegocios.RegrasNegocioEntidade;
 import controle.regrasNegocios.RegrasNegocioEvento;
 import controle.regrasNegocios.RegrasNegocioUsuario;
+import dao.AreaDAO;
 import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
 import dao.RelRankingDAO;
 import dao.UsuarioDAO;
+import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
@@ -28,6 +30,7 @@ public class CadastrosControle {
     private ItemInspecaoDAO daoItemInspecao;
     private AvaliacaoDAO daoAvaliacao;
     private RelRankingDAO daoRelRanking;
+    private AreaDAO daoArea;
 
     public CadastrosControle() {
         daoEvento = new EventoDAO();
@@ -36,6 +39,7 @@ public class CadastrosControle {
         daoItemInspecao = new ItemInspecaoDAO();
         daoAvaliacao = new AvaliacaoDAO();
         daoRelRanking = new RelRankingDAO();
+        daoArea= new AreaDAO();
     }
 
 
@@ -135,7 +139,7 @@ public class CadastrosControle {
 
 
     //itemINspecao
-    public boolean inserirItemInspecao(ItemInspecaoVO i) {
+    public boolean inserirItemInspecao(ItemInspecaoVO i) throws SQLException {
         return daoItemInspecao.incluir(i);
     }
 
@@ -143,13 +147,13 @@ public class CadastrosControle {
         return daoItemInspecao.listar(nomePesquisa);
     }
 
-    public List<ItemInspecaoVO> listarItemInspecaoPendentesPorEventoEntidadeArea(EventoVO evt, EntidadeVO ent, String area) throws Exception {
-        return daoItemInspecao.listarPendentesPorEventoEntidade(evt, ent, area);
-    }
-
-    public List<ItemInspecaoVO> listarItemInspecaoPorEvento(EventoVO evt, String area) throws Exception {
-        return daoItemInspecao.listarPorEvento(evt, area);
-    }
+//    public List<ItemInspecaoVO> listarItemInspecaoPendentesPorEventoEntidadeArea(EventoVO evt, EntidadeVO ent, String area) throws Exception {
+//        return daoItemInspecao.listarPendentesPorEventoEntidade(evt, ent, area);
+//    }
+//
+//    public List<ItemInspecaoVO> listarItemInspecaoPorEvento(EventoVO evt, String area) throws Exception {
+//        return daoItemInspecao.listarPorEvento(evt, area);
+//    }
 
     public boolean excluirItemInspecao(ItemInspecaoVO o) throws Exception {
         return daoItemInspecao.excluir(o);
@@ -163,15 +167,13 @@ public class CadastrosControle {
         return daoItemInspecao.editar(o);
     }
 
-    public List<String> listarAreas(EventoVO evt) throws Exception {
-
-        if (evt == null) {
-            return daoItemInspecao.listarAreas();
-        } else {
-            return daoItemInspecao.listarAreasPorEvento(evt);
-        }
-
+    public List<AreaVO> listarAreas() throws Exception {
+            return daoArea.listar();
     }
+
+
+
+    
 
 
     //Avaliacao
