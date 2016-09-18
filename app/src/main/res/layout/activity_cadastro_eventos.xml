@@ -87,14 +87,16 @@
             android:layout_below="@+id/linLay3" >
 
             <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scrollbars="none">
 
+
                 <HorizontalScrollView
+                    android:fillViewport="true"
                     android:id="@+id/hview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
                 <TableLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
