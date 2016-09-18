@@ -169,6 +169,19 @@ finish();
         ((Button) findViewById(R.id.btnCadEntidades)).setOnClickListener(m02);
 
 
+        //eventos
+        View.OnClickListener m03 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, CadastroEventos.class);
+                //myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+        };
+
+        ((ImageButton) findViewById(R.id.imgCadEventos)).setOnClickListener(m03);
+        ((Button) findViewById(R.id.btnCadEventos)).setOnClickListener(m03);
+
 
     }
 }
