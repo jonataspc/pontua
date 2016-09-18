@@ -183,5 +183,20 @@ finish();
         ((Button) findViewById(R.id.btnCadEventos)).setOnClickListener(m03);
 
 
+        //itens de inspecao
+        View.OnClickListener m04 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, CadastroItensInspecao.class);
+                //myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+        };
+
+        ((ImageButton) findViewById(R.id.imgCadItensPontuacao)).setOnClickListener(m04);
+        ((Button) findViewById(R.id.btnCadItensPontuacao)).setOnClickListener(m04);
+
+
+
     }
 }
