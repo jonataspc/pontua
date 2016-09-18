@@ -1,5 +1,6 @@
 package com.bsi.pontua;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -31,7 +32,6 @@ import vo.ItemInspecaoVO;
 
 public class CadastroItensInspecao extends AppCompatActivity {
 
-/*
     TableLayout tl;
     TableRow tr;
     TextView col1, col2, col3, col4, col5;
@@ -47,15 +47,29 @@ public class CadastroItensInspecao extends AppCompatActivity {
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
-        final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
-        ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
+        // Lookup the swipe container view
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                //atualiza grid
-                new popularGridTask().execute("");
+            public void onRefresh() {
+                //atualiza
+                popularGridTask task = new popularGridTask();
+                task.isSwipe = true;
+                task.execute("");
+
             }
         });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_green_light,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+
+
 
         btnNovo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +96,8 @@ public class CadastroItensInspecao extends AppCompatActivity {
                     b.putString("registro", String.valueOf(registro));
                     myIntent.putExtras(b); //Put your id to your next Intent
                     startActivityForResult(myIntent, 1);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a editar!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -110,6 +126,8 @@ public class CadastroItensInspecao extends AppCompatActivity {
                             })
                             .setNegativeButton("Não", null)
                             .show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a excluir!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -179,23 +197,20 @@ public class CadastroItensInspecao extends AppCompatActivity {
         }
     }
 
-    */
-/**
-     * This function add the headers to the table
-     **//*
+//*
+//     * This function add the headers to the table
+//     *
 
     public void addHeaders() {
 
-        */
-/** Create a TableRow **//*
+//* Create a TableRow *
 
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(
                 LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        */
-/** Creating a TextView to add to the row **//*
+//* Creating a TextView to add to the row *
 
         TextView col1 = new TextView(this);
         col1.setText("Cód");
@@ -204,53 +219,48 @@ public class CadastroItensInspecao extends AppCompatActivity {
         col1.setPadding(5, 5, 5, 0);
         tr.addView(col1);  // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+//* Creating another textview *
 
-        TextView col2 = new TextView(this);
-        col2.setText("Evento");
-        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        col2.setPadding(5, 5, 5, 0);
-        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(col2); // Adding textView to tablerow.
+//        TextView col2 = new TextView(this);
+//        col2.setText("Evento");
+//        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//        col2.setPadding(5, 5, 5, 0);
+//        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(col2); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+//* Creating another textview *
 
         TextView ncol2 = new TextView(this);
         ncol2.setText("Área");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        ncol2.setPadding(5, 5, 5, 0);
+        ncol2.setPadding(50, 5, 5, 0);
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol2); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+//* Creating another textview *
 
         TextView ncol3 = new TextView(this);
-        ncol3.setText("Nome Ítem");
+        ncol3.setText("Nome");
         ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        ncol3.setPadding(5, 5, 5, 0);
+        ncol3.setPadding(50, 5, 5, 0);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+//* Creating another textview *
 
         TextView ncol4 = new TextView(this);
-        ncol4.setText("P. Mín");
+        ncol4.setText("Pont. Mín");
         ncol4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        ncol4.setPadding(5, 5, 5, 0);
+        ncol4.setPadding(50, 5, 5, 0);
         ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol4); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+//* Creating another textview *
 
         TextView ncol5 = new TextView(this);
-        ncol5.setText("P. Máx");
+        ncol5.setText("Pont. Máx");
         ncol5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        ncol5.setPadding(5, 5, 5, 0);
+        ncol5.setPadding(50, 5, 5, 0);
         ncol5.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol5); // Adding textView to tablerow.
 
@@ -262,26 +272,21 @@ public class CadastroItensInspecao extends AppCompatActivity {
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-*/
-/*
-        *//*
-*/
-/** Creating another textview **//*
-*/
-/*
-        TextView divider = new TextView(this);
-        divider.setText("-----------------");
-        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        divider.setPadding(5, 0, 0, 0);
-        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider); // Adding textView to tablerow.
 
-        TextView divider2 = new TextView(this);
-        divider2.setText("-------------------------");
-        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        divider2.setPadding(5, 0, 0, 0);
-        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*//*
+//* Creating another textview *
+//        TextView divider = new TextView(this);
+//        divider.setText("-----------------");
+//        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//        divider.setPadding(5, 0, 0, 0);
+//        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(divider); // Adding textView to tablerow.
+//
+//        TextView divider2 = new TextView(this);
+//        divider2.setText("-------------------------");
+//        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+//        divider2.setPadding(5, 0, 0, 0);
+//        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(divider2); // Adding textView to tablerow.
 
 
         // Add the TableRow to the TableLayout
@@ -300,23 +305,20 @@ public class CadastroItensInspecao extends AppCompatActivity {
 
     }
 
-    */
-/**
-     * This function add the data to the table
-     **//*
+//*
+//     * This function add the data to the table
+//     *
 
     public void addData(List<ItemInspecaoVO> obj) {
 
         for (ItemInspecaoVO e : obj) {
 
-            */
-/** Create a TableRow dynamically **//*
+//* Create a TableRow dynamically *
 
             tr = new TableRow(this);
             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-            */
-/** Creating a TextView to add to the row **//*
+//* Creating a TextView to add to the row *
 
             final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
             chk.setText(String.valueOf(e.getId()));
@@ -325,39 +327,39 @@ public class CadastroItensInspecao extends AppCompatActivity {
             chk.setTextColor(Color.BLACK);
             tr.addView(chk);  // Adding textView to tablerow.
 
-            col1 = new TextView(this);
-            col1.setText(e.getEvento().getNome());
-            col1.setTextColor(Color.BLACK);
-            col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col1.setPadding(5, 5, 5, 5);
-            tr.addView(col1);
+//            col1 = new TextView(this);
+//            col1.setText(e.getEvento().getNome());
+//            col1.setTextColor(Color.BLACK);
+//            col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//            col1.setPadding(5, 5, 5, 5);
+//            tr.addView(col1);
 
             col2 = new TextView(this);
-            col2.setText(e.getArea());
-            col2.setTextColor(Color.GRAY);
+            col2.setText(e.getArea().getNome());
+            col2.setTextColor(Color.BLACK);
             col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col2.setPadding(5, 5, 5, 5);
+            col2.setPadding(50, 5, 5, 5);
             tr.addView(col2);
 
             col3 = new TextView(this);
             col3.setText(e.getNome());
             col3.setTextColor(Color.BLACK);
             col3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col3.setPadding(5, 5, 5, 5);
+            col3.setPadding(50, 5, 5, 5);
             tr.addView(col3);
 
             col4 = new TextView(this);
             col4.setText(String.valueOf(e.getPontuacaoMinima().doubleValue()));
-            col4.setTextColor(Color.BLUE);
+            col4.setTextColor(Color.RED);
             col4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col4.setPadding(5, 5, 5, 5);
+            col4.setPadding(50, 5, 5, 5);
             tr.addView(col4);
 
             col5 = new TextView(this);
             col5.setText(String.valueOf(e.getPontuacaoMaxima().doubleValue()));
-            col5.setTextColor(Color.BLUE);
+            col5.setTextColor(Color.GREEN);
             col5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            col5.setPadding(5, 5, 5, 5);
+            col5.setPadding(50, 5, 5, 5);
             tr.addView(col5);
 
             // Add the TableRow to the TableLayout
@@ -394,10 +396,14 @@ public class CadastroItensInspecao extends AppCompatActivity {
 
     class popularGridTask extends AsyncTask<String, Integer, List> {
 
+        boolean isSwipe = false;
+
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            if(!isSwipe){
+                inicializaProgressBar();
+                progress.show();
+            }
         }
 
         @Override
@@ -429,6 +435,13 @@ public class CadastroItensInspecao extends AppCompatActivity {
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
             }
+
+            if(isSwipe){
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(false);
+            }
+
+
         }
     }
 
@@ -476,5 +489,4 @@ public class CadastroItensInspecao extends AppCompatActivity {
 
     }
 
-*/
 }
