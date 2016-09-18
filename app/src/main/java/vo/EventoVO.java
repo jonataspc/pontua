@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class EventoVO implements Serializable {
 
@@ -8,6 +9,24 @@ public class EventoVO implements Serializable {
 
     private int id;
     private String nome;
+    private Date dataHoraCriacao;
+    private UsuarioVO Usuario;
+
+    public UsuarioVO getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(UsuarioVO usuario) {
+        Usuario = usuario;
+    }
+
+    public Date getDataHoraCriacao() {
+        return dataHoraCriacao;
+    }
+
+    public void setDataHoraCriacao(Date dataHoraCriacao) {
+        this.dataHoraCriacao = dataHoraCriacao;
+    }
 
     public int getId() {
         return id;

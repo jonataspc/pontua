@@ -5,16 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
 import vo.EventoVO;
+import vo.UsuarioVO;
 
 public class EventoDAO {
 
 
-    public EventoVO obterPorCodigo(int codigo) {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public EventoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
             Connection conn = Conexao.obterConexao();
@@ -29,17 +33,41 @@ public class EventoDAO {
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
+
+                try {
+                    o.setDataHoraCriacao(  new java.sql.Date(format.parse(resultado.getString("datahora_criacao")).getTime())  );
+                }catch (Exception e){
+                    o.setDataHoraCriacao(null);
+                }
+
+
+                int usuarioID = resultado.getInt("usuario");
+
+                if(usuarioID != 0){
+
+                    UsuarioDAO oUsuarioVO = new UsuarioDAO();
+
+                    UsuarioVO usuario = oUsuarioVO.obterPorCodigo(usuarioID);
+
+                    if(usuario!=null){
+                        o.setUsuario(usuario);
+                    }
+
+                }
+
+
             }
 
             conn.close();
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
+
     }
 
-    public List<EventoVO> listar(String nomePesquisa) {
+    public List<EventoVO> listar(String nomePesquisa) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
@@ -55,12 +83,33 @@ public class EventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
+            UsuarioDAO oUsuarioVO = new UsuarioDAO();
+
+
             List<EventoVO> lista = new ArrayList<EventoVO>(0);
             while (resultado.next()) {
 
                 EventoVO o = new EventoVO();
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("Nome"));
+
+
+                try {
+                    o.setDataHoraCriacao(  new java.sql.Date(format.parse(resultado.getString("datahora_criacao")).getTime())  );
+                }catch (Exception e){
+                    o.setDataHoraCriacao(null);
+                }
+
+                int usuarioID = resultado.getInt("usuario");
+
+                if(usuarioID != 0){
+                    UsuarioVO usuario = oUsuarioVO.obterPorCodigo(usuarioID);
+
+                    if(usuario!=null){
+                        o.setUsuario(usuario);
+                    }
+                }
+
 
                 lista.add(o);
 
@@ -72,22 +121,25 @@ public class EventoDAO {
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
 
-    public boolean incluir(EventoVO c) {
+    public boolean incluir(EventoVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("INSERT INTO evento (Nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO evento (Nome, datahora_criacao, usuario) VALUES (?,?,?) ;", Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1, c.getNome());
+            st.setTimestamp(2, new java.sql.Timestamp(c.getDataHoraCriacao().getTime()));
+            st.setInt(3, c.getUsuario().getId());
+
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();
@@ -101,22 +153,24 @@ public class EventoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
 
     }
 
 
-    public boolean editar(EventoVO c) {
+    public boolean editar(EventoVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("UPDATE evento SET nome=? WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("UPDATE evento SET nome=?, datahora_criacao=?, usuario=? WHERE id=?");
 
             st.setString(1, c.getNome());
-            st.setInt(2, c.getId());
+            st.setTimestamp(2, new java.sql.Timestamp(c.getDataHoraCriacao().getTime()));
+            st.setInt(3, c.getUsuario().getId());
+            st.setInt(4, c.getId());
 
             st.executeUpdate();
             conn.close();
@@ -124,12 +178,12 @@ public class EventoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
 
-    public boolean excluir(EventoVO c) {
+    public boolean excluir(EventoVO c) throws SQLException {
         try {
 
             Connection conn;
@@ -145,7 +199,7 @@ public class EventoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
