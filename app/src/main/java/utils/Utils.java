@@ -8,6 +8,7 @@ import java.util.Date;
 public class Utils {
 
 
+    public static Integer idUsuario;
     public static String nomeUsuario = null;
     public static String perfilUsuario = null;
 

@@ -319,7 +319,7 @@ public class Login extends AppCompatActivity {
 //                }
 //
 
-
+                Utils.idUsuario = result.getId();
                 Utils.nomeUsuario = result.getNome();
                 Utils.perfilUsuario = result.getNivelAcesso();
 
