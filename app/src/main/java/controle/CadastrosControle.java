@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import controle.regrasNegocios.RegrasNegocioEntidade;
 import controle.regrasNegocios.RegrasNegocioEvento;
+import controle.regrasNegocios.RegrasNegocioItemInspecao;
 import controle.regrasNegocios.RegrasNegocioUsuario;
 import dao.AreaDAO;
 import dao.AvaliacaoDAO;
@@ -139,7 +140,8 @@ public class CadastrosControle {
 
 
     //itemINspecao
-    public boolean inserirItemInspecao(ItemInspecaoVO i) throws SQLException {
+    public boolean inserirItemInspecao(ItemInspecaoVO i) throws Exception {
+        RegrasNegocioItemInspecao.validarItemInspecao(i, true);
         return daoItemInspecao.incluir(i);
     }
 
@@ -169,6 +171,7 @@ public class CadastrosControle {
     }
 
     public boolean editarItemInspecao(ItemInspecaoVO o) throws Exception {
+        RegrasNegocioItemInspecao.validarItemInspecao(o, false);
         return daoItemInspecao.editar(o);
     }
 

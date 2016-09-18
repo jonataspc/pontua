@@ -18,6 +18,36 @@ import vo.ItemInspecaoVO;
 public class ItemInspecaoDAO {
 
 
+
+    public boolean existeItemInspecao(String nome) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+            Boolean localizado = false;
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT COUNT(*) AS total FROM item_inspecao WHERE nome=? ;");
+            st.setString(1, nome.trim());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                if(resultado.getInt("total") == 0){
+                    localizado=false;
+                } else {
+                    localizado=true;
+                }
+            }
+
+            conn.close();
+            return localizado;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public ItemInspecaoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {

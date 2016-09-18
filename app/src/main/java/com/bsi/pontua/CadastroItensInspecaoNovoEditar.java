@@ -152,7 +152,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         }
 
-        
+
     }
 
 //    class carregarEventosTask extends AsyncTask<String, Integer, List> {
