@@ -1,0 +1,122 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+
+import utils.Conexao;
+import vo.AreaVO;
+
+/**
+ * Created by Jonatas on 17/09/2016.
+ */
+public class AreaDAO {
+
+
+
+    public List<AreaVO> listar() throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT id, nome FROM area ORDER BY nome;");
+
+            ResultSet resultado = st.executeQuery();
+
+            List<AreaVO> lista = new ArrayList<AreaVO>(0);
+
+            while (resultado.next()) {
+                AreaVO o = new AreaVO();
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("area"));
+                lista.add(o);
+            }
+
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
+
+
+
+    public boolean incluir(AreaVO c) throws SQLException {
+        try {
+
+            Connection conn;
+            conn = Conexao.obterConexao();
+
+            PreparedStatement st = conn.prepareStatement("INSERT INTO area (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, c.getNome());
+            st.executeUpdate();
+
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()){
+                c.setId(rs.getInt(1));
+            }
+
+            conn.close();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+
+    public boolean editar(AreaVO c) throws SQLException {
+        try {
+
+            Connection conn;
+            conn = Conexao.obterConexao();
+
+            PreparedStatement st = conn.prepareStatement("UPDATE area SET nome=? WHERE id=?");
+
+            st.setString(1, c.getNome());
+            st.setInt(2, c.getId());
+
+            st.executeUpdate();
+            conn.close();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+    public boolean excluir(AreaVO c) throws SQLException {
+        try {
+
+            Connection conn;
+            conn = Conexao.obterConexao();
+
+            PreparedStatement st = conn.prepareStatement("DELETE FROM area WHERE id=?");
+
+            st.setInt(1, c.getId());
+
+            st.executeUpdate();
+            conn.close();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+}
