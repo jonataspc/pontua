@@ -1,6 +1,7 @@
 package com.bsi.pontua;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,20 +12,59 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 import controle.CadastrosControle;
+import utils.Utils;
 import vo.EventoVO;
+import vo.UsuarioVO;
 
 public class CadastroEventosNovoEditar extends AppCompatActivity {
 
-/*
+
+    ProgressDialog progress;
+
+
+    @Override
+    public void onPause() {
+        //evita erro de leak
+        super.onPause();
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        //evita erro de leak
+        super.onStop();
+
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    void inicializaProgressBar() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(CadastroEventosNovoEditar.this);
+            progress.setTitle("");
+            progress.setMessage("Aguarde...");
+            progress.setIndeterminate(true);
+            progress.setCancelable(false);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_eventos_novo_editar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Button btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
-        final EditText txtNovoEvento = (EditText) findViewById(R.id.txtNovoEvento);
+        final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
+        final EditText txtNovoEvento = (EditText) findViewById(R.id.edtNomeEvento);
         final TextView tvwEventoTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +75,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwEventoTitle.setText("Cadastro de Eventos - novo");
+        tvwEventoTitle.setText("Incluir evento");
 
 
         //editar ou novo?
@@ -53,7 +93,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwEventoTitle.setText("Cadastro de Eventos - editar");
+                tvwEventoTitle.setText("Editar evento");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
@@ -70,6 +110,12 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
     }
 
     class carregarRegistroTask extends AsyncTask<String, Integer, EventoVO> {
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
 
         @Override
         protected EventoVO doInBackground(String... param) {
@@ -96,8 +142,11 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(EventoVO result) {
 
-            final EditText txtNovoEvento = (EditText) findViewById(R.id.txtNovoEvento);
+            final EditText txtNovoEvento = (EditText) findViewById(R.id.edtNomeEvento);
 
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
             if(result != null){
 
@@ -126,7 +175,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
     void salvar(){
 
-        final EditText txtNovoEvento = (EditText) findViewById(R.id.txtNovoEvento);
+        final EditText txtNovoEvento = (EditText) findViewById(R.id.edtNomeEvento);
 
 
 
@@ -144,8 +193,27 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
             //editar ou novo?
             Bundle b = getIntent().getExtras();
 
-            String[] paramns = new String[]{txtNovoEvento.getText().toString().trim(), b.getString("registro")};
-            new salvarTask().execute(paramns );
+            //String[] paramns = new String[]{, };
+            //new salvarTask().execute(paramns );
+
+            salvarTask oSalvarTask = new salvarTask();
+
+
+            UsuarioVO usuario = new UsuarioVO();
+            usuario.setId(Utils.idUsuario);
+
+            EventoVO o = new EventoVO();
+            o.setNome(txtNovoEvento.getText().toString().trim());
+            o.setDataHoraCriacao(new Date());
+            o.setUsuario(usuario);
+
+            if(b.getString("registro") != null) {
+                o.setId( Integer.parseInt(b.getString("registro")));
+                oSalvarTask.IsEditar = true;
+            }
+
+            oSalvarTask.evento = o;
+            oSalvarTask.execute("");
 
         }catch (Exception e)
         {
@@ -158,6 +226,16 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
     class salvarTask extends AsyncTask<String, Integer, Boolean> {
 
+        String errorMsg;
+        public EventoVO evento;
+        public boolean IsEditar;
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
         @Override
         protected Boolean doInBackground(String... param) {
 
@@ -165,32 +243,30 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             try {
 
-                EventoVO o = new EventoVO();
-                o.setNome(param[0]);
-
-                if(param[1] != null){
+                if(IsEditar){
                     //editar
-                    o.setId( Integer.parseInt(param[1]));
-                    if(cc.editarEvento(o) ){
+                    if(cc.editarEvento(evento) ){
                         return true;
                     }
                 }
                 else
                 {
                     //novo registro
-                    if(cc.inserirEvento(o)){
+                    if(cc.inserirEvento(evento)){
                         return true;
                     }
                 }
 
-
+                return false;
 
 
             }catch (Exception e){
                 e.printStackTrace();
+                errorMsg =  e.getMessage();
+                return false;
             }
 
-            return false;
+
 
         }
 
@@ -198,7 +274,9 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
 
-
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
 
             if(result){
 
@@ -211,7 +289,8 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
             else
             {
 
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a operação!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+
             }
 
 
@@ -221,6 +300,5 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
 
     }
-*/
 
 }

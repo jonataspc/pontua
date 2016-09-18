@@ -2,35 +2,178 @@ package com.bsi.pontua;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import controle.CadastrosControle;
+import utils.SoftRadioButton;
+import utils.Utils;
+import vo.EventoVO;
 import vo.EventoVO;
 
 public class CadastroEventos extends AppCompatActivity {
 
-/*
+    TableLayout tl;
+    TableRow tr;
+    TextView col1, col2, col3;
 
     ProgressDialog progress;
+    AlertDialog writeTagAlert;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cadastro_eventos);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        final Button btnNovo = (Button) findViewById(R.id.btnNovo);
+        final Button btnEditar = (Button) findViewById(R.id.btnEditar);
+        final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+
+
+        // Lookup the swipe container view
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //atualiza
+                popularGridTask task = new popularGridTask();
+                task.isSwipe = true;
+                task.execute("");
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_green_light,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+
+
+        btnNovo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
+                Bundle b = new Bundle();
+                b.putString("registro", null);
+                myIntent.putExtras(b); //Put your id to your next Intent
+                startActivityForResult(myIntent, 1);
+            }
+        });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                registro = -1;
+                selectedRadio(tl);
+
+                if (registro != -1) {
+                    Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
+                    Bundle b = new Bundle();
+                    b.putString("registro", String.valueOf(registro));
+                    myIntent.putExtras(b); //Put your id to your next Intent
+                    startActivityForResult(myIntent, 1);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a editar!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                registro = -1;
+                selectedRadio(tl);
+                if (registro != -1) {
+                    new AlertDialog.Builder(CadastroEventos.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("")
+                            .setMessage("Deseja realmente excluir o registro selecionado?")
+                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    //remove
+                                    String[] paramns = new String[]{String.valueOf(registro)};
+                                    new excluirRegistroTask().execute(paramns);
+                                }
+
+                            })
+                            .setNegativeButton("Não", null)
+                            .show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione algum registro a excluir!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        //atualiza lista
+        new popularGridTask().execute("");
+
+    }
+
+    int registro = -1;
+
+    public void selectedRadio(ViewGroup layout) {
+
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+
+            if (v instanceof ViewGroup) {
+                selectedRadio((ViewGroup) v);
+            } else if (v instanceof TableRow) {
+                selectedRadio((TableRow) v);
+            } else if (v instanceof SoftRadioButton) {
+
+                if (((SoftRadioButton) v).isChecked()) {
+                    registro = Integer.parseInt(((SoftRadioButton) v).getText().toString());
+                }
+
+
+            }
+
+        }
+
+    }
 
     @Override
     public void onPause() {
         //evita erro de leak
         super.onPause();
+
+
         if (progress != null) {
             progress.dismiss();
             progress = null;
@@ -59,96 +202,179 @@ public class CadastroEventos extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_eventos);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    /**
+     * This function add the headers to the table
+     **/
+    public void addHeaders() {
 
-        final Button btnNovoEvento = (Button) findViewById(R.id.btnNovo);
-        final Button btnEditarEvento = (Button) findViewById(R.id.btnExcluir);
-        final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
-        final ImageButton ibtCadEventoRefresh = (ImageButton) findViewById(R.id.ibtCadEventoRefresh);
-        final Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
+        /** Create a TableRow **/
+        tr = new TableRow(this);
+        tr.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
 
-        ibtCadEventoRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //atualiza lista de Eventos
-                new popularSpinnerTask().execute("");
-            }
-        });
+        /** Creating a TextView to add to the row **/
+        TextView col1 = new TextView(this);
+        col1.setText("Cód");
+        col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        col1.setPadding(5, 5, 5, 0);
+        tr.addView(col1);  // Adding textView to tablerow.
 
-        btnNovoEvento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
-                Bundle b = new Bundle();
-                b.putString("registro", null);
-                myIntent.putExtras(b); //Put your id to your next Intent
-                startActivityForResult(myIntent, 1);
-            }
-        });
+        /** Creating another textview **/
+        TextView ncol2 = new TextView(this);
+        ncol2.setText("Nome");
+        ncol2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        ncol2.setPadding(5, 5, 5, 0);
+        ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol2); // Adding textView to tablerow.
 
-        btnEditarEvento.setOnClickListener(new View.OnClickListener() {
+        TextView ncol3 = new TextView(this);
+        ncol3.setText("Data/Hora");
+        ncol3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        ncol3.setPadding(5, 5, 5, 0);
+        ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol3); // Adding textView to tablerow.
 
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosNovoEditar.class);
-                Bundle b = new Bundle();
-                b.putString("registro", dropdown.getSelectedItem().toString().substring(1, 6));
-                myIntent.putExtras(b); //Put your id to your next Intent
-                startActivityForResult(myIntent, 1);
-            }
-        });
-
-        btnExcluirEvento.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(CadastroEventos.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("")
-                        .setMessage("Deseja realmente excluir o registro selecionado?")
-                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //remove
-                                String[] paramns = new String[]{dropdown.getSelectedItem().toString().substring(1, 6)};
-                                new excluirRegistroTask().execute(paramns);
-                            }
-
-                        })
-                        .setNegativeButton("Não", null)
-                        .show();
-            }
-        });
+        TextView ncol4 = new TextView(this);
+        ncol4.setText("Autor");
+        ncol4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        ncol4.setPadding(5, 5, 5, 0);
+        ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol4); // Adding textView to tablerow.
 
 
-        //atualiza lista de Eventos
-        new popularSpinnerTask().execute("");
+
+
+        // Add the TableRow to the TableLayout
+        tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+        // we are adding two textviews for the <span id="IL_AD5" class="IL_AD">divider</span> because we have two columns
+        tr = new TableRow(this);
+        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+/*
+        *//** Creating another textview **//*
+        TextView divider = new TextView(this);
+        divider.setText("-----------------");
+        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        divider.setPadding(5, 0, 0, 0);
+        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(divider); // Adding textView to tablerow.
+
+        TextView divider2 = new TextView(this);
+        divider2.setText("-------------------------");
+        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+        divider2.setPadding(5, 0, 0, 0);
+        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(divider2); // Adding textView to tablerow.*/
+
+        // Add the TableRow to the TableLayout
+        tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+
+        //separator
+        TableRow tr = new TableRow(this);
+        tr.setBackgroundColor(Color.GRAY);
+        tr.setPadding(0, 0, 0, 2); //Border between rows
+
+        TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0, 0, 2, 0);//2px right-margin
+
+        tl.addView(tr);
+
+
     }
 
+    /**
+     * This function add the data to the table
+     **/
+    public void addData(List<EventoVO> obj) {
 
+        for (EventoVO e : obj) {
+
+            /** Create a TableRow dynamically **/
+            tr = new TableRow(this);
+            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            /** Creating a TextView to add to the row **/
+            final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
+            chk.setText(String.valueOf(e.getId()));
+            chk.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            chk.setPadding(5, 5, 5, 5);
+            chk.setTextColor(Color.BLACK);
+            chk.setWidth(200);
+            tr.addView(chk);  // Adding textView to tablerow.
+
+            col1 = new TextView(this);
+            col1.setText(e.getNome());
+            col1.setTextColor(Color.BLACK);
+            col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            col1.setPadding(5, 5, 5, 5);
+            tr.addView(col1);
+
+            col2 = new TextView(this);
+            col2.setText(Utils.formatarData(e.getDataHoraCriacao()));
+            col2.setTextColor(Color.BLACK);
+            col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            col2.setPadding(5, 5, 5, 5);
+            tr.addView(col2);
+
+
+            String nome;
+            if(e.getUsuario()!=null){
+                nome = e.getUsuario().getNome();
+            } else {
+                nome = "";
+            }
+
+
+            col3 = new TextView(this);
+            col3.setText(nome);
+            col3.setTextColor(Color.BLACK);
+            col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            col3.setPadding(5, 5, 5, 5);
+            tr.addView(col3);
+
+            // Add the TableRow to the TableLayout
+            tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+
+            //separator
+            TableRow tr = new TableRow(this);
+            tr.setBackgroundColor(Color.GRAY);
+            tr.setPadding(0, 0, 0, 2); //Border between rows
+
+            TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            llp.setMargins(0, 0, 2, 0);//2px right-margin
+
+            tl.addView(tr);
+
+
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                //atualiza lista de Eventos
-                new popularSpinnerTask().execute("");
+                //atualiza lista
+                new popularGridTask().execute("");
             }
         }
     }
 
-    class popularSpinnerTask extends AsyncTask<String, Integer, List> {
+    class popularGridTask extends AsyncTask<String, Integer, List> {
+
+        boolean isSwipe = false;
 
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            if(!isSwipe){
+                inicializaProgressBar();
+                progress.show();
+            }
         }
 
         @Override
@@ -163,64 +389,47 @@ public class CadastroEventos extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
 
-            return null;
-        }
 
+        }
 
         @Override
         protected void onPostExecute(List result) {
 
-            //popula o spinner
-            Spinner dropdown = (Spinner) findViewById(R.id.spnEntidades);
-
-            List<EventoVO> lista = result;
-            String[] items = new String[lista.size()];
-
-            int cont = 0;
-            for (EventoVO item : lista) {
-                items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
-                cont++;
+            if(result==null){
+                return;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroEventos.this, android.R.layout.simple_spinner_dropdown_item, items);
-            dropdown.setAdapter(adapter);
+            tl = (TableLayout) findViewById(R.id.maintable);
+            tl.removeAllViewsInLayout();
 
-            final Button btnNovoEvento = (Button) findViewById(R.id.btnNovo);
-            final Button btnEditarEvento = (Button) findViewById(R.id.btnExcluir);
-            final Button btnExcluirEvento = (Button) findViewById(R.id.btnExcluirEvento);
-
-            dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    btnEditarEvento.setEnabled(true);
-                    btnExcluirEvento.setEnabled(true);
-                    btnEditarEvento.setClickable(true);
-                    btnExcluirEvento.setClickable(true);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    btnEditarEvento.setEnabled(false);
-                    btnExcluirEvento.setEnabled(false);
-                    btnEditarEvento.setClickable(false);
-                    btnExcluirEvento.setClickable(false);
-                }
-            });
-
-            btnEditarEvento.setEnabled(false);
-            btnExcluirEvento.setEnabled(false);
-            btnEditarEvento.setClickable(false);
-            btnExcluirEvento.setClickable(false);
+            addHeaders();
+            addData(result);
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
             }
+
+
+            if(isSwipe){
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(false);
+            }
+
+
+
         }
     }
 
     class excluirRegistroTask extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
 
         @Override
         protected Boolean doInBackground(String... param) {
@@ -237,18 +446,29 @@ public class CadastroEventos extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
 
-            return false;
-        }
 
+        }
 
         @Override
         protected void onPostExecute(Boolean result) {
 
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
             if (result) {
                 //atualiza lista de Eventos
-                new popularSpinnerTask().execute("");
+                AsyncTask t = new popularGridTask().execute("");
+
+                try {
+                    t.get();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 Toast.makeText(getApplicationContext(), "Registro removido com sucesso!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Erro ao realizar a exclusão!", Toast.LENGTH_SHORT).show();
@@ -257,5 +477,7 @@ public class CadastroEventos extends AppCompatActivity {
         }
 
     }
-*/
+
+
+
 }
