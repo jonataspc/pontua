@@ -93,6 +93,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
 
 
+        inicializaProgressBar();
+        progress.show();
+
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
 
@@ -150,6 +153,11 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             }
 
 
+        } else {
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
         }
 
 
@@ -210,8 +218,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+
         }
 
         @Override
@@ -354,9 +361,9 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             });
 
 
-            if (progress != null && progress.isShowing()) {
-                progress.dismiss();
-            }
+//            if (progress != null && progress.isShowing()) {
+//                progress.dismiss();
+//            }
 
 
         }
