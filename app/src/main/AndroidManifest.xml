@@ -21,39 +21,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".CadastroUsuarios">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Menu3" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Menu3" />
         </activity>
-
         <activity android:name=".CadastroUsuariosNovoEditar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroUsuarios" />
         </activity>
-
-
         <activity android:name=".CadastroEventos">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
         <activity android:name=".CadastroEventosNovoEditar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroEventos" />
         </activity>
-
-
         <activity android:name=".CadastroEntidades">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
         <activity
             android:name=".CadastroEntidadesNovoEditar"
             android:windowSoftInputMode="adjustResize">
@@ -61,15 +53,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroEntidades" />
         </activity>
-
-
         <activity android:name=".CadastroItensInspecao">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
-
         <activity
             android:name=".CadastroItensInspecaoNovoEditar"
             android:windowSoftInputMode="adjustResize">
@@ -77,8 +65,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroItensInspecao" />
         </activity>
-
-
         <activity
             android:name=".Avaliacao"
             android:windowSoftInputMode="adjustResize">
@@ -86,15 +72,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
-
         <activity android:name=".ConsultarAvaliacoes">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
-
         <activity
             android:name=".ConsultarAvaliacoesRel"
             android:windowSoftInputMode="adjustResize">
@@ -102,9 +84,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ConsultarAvaliacoes" />
         </activity>
-
-
-
         <activity
             android:name=".RelatorioRanking"
             android:windowSoftInputMode="adjustResize">
@@ -112,16 +91,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
-
         <activity android:name=".RelatorioRankingRel">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RelatorioRanking" />
         </activity>
-
-
-
         <activity
             android:name=".AvaliacaoNfc"
             android:windowSoftInputMode="adjustResize">
@@ -129,8 +103,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-
-
         <activity
             android:name=".AvaliacaoNfcLer"
             android:windowSoftInputMode="adjustResize">
@@ -148,16 +120,17 @@
             -->
 
         </activity>
-        <!--<activity android:name=".StickyNotesActivity" />-->
+        <!-- <activity android:name=".StickyNotesActivity" /> -->
         <activity android:name=".LoginConfig">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Login" />
         </activity>
-
-
-        <activity android:name=".Menu3">
-
+        <activity android:name=".Menu3" />
+        <activity android:name=".CadastroEventosConfigurar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CadastroEventos" />
         </activity>
     </application>
 

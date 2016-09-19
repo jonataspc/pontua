@@ -43,6 +43,9 @@ public class CadastroEventos extends AppCompatActivity {
     ProgressDialog progress;
     AlertDialog writeTagAlert;
 
+    //lista de eventos exibidos
+    List<EventoVO> listaEventos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,7 @@ public class CadastroEventos extends AppCompatActivity {
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
+        final Button btnConfigurar = (Button) findViewById(R.id.btnConfigEvento);
 
 
         // Lookup the swipe container view
@@ -134,6 +138,34 @@ public class CadastroEventos extends AppCompatActivity {
                             .show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Selecione algum registro a excluir!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnConfigurar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                registro = -1;
+                selectedRadio(tl);
+
+                if (registro != -1) {
+                    Intent myIntent = new Intent(CadastroEventos.this, CadastroEventosConfigurar.class);
+
+
+                    EventoVO evtAtual = null;
+
+                    for(EventoVO item : listaEventos){
+                        if(registro == item.getId()){
+                            evtAtual = item;
+                        }
+                    }
+
+                    myIntent.putExtra("oEvento", evtAtual);
+                    startActivityForResult(myIntent, 1);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Selecione o evento", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -407,6 +439,8 @@ public class CadastroEventos extends AppCompatActivity {
 
             addHeaders();
             addData(result);
+
+            listaEventos = result;
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();

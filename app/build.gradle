@@ -23,8 +23,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('D:/Projetos/android/Pontua/libs/mysql-connector-java-5.1.34-bin.jar')
+    compile files('D:/Projetos/android/Pontua/libs/gson-2.4.jar')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
-    compile files('D:/Projetos/android/Pontua/libs/gson-2.4.jar')
 }
