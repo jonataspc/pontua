@@ -293,6 +293,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                         InputFilter[] fArray = new InputFilter[1];
                         fArray[0] = new InputFilter.LengthFilter(maxLength);
                         input.setFilters(fArray);
+                        input.setSingleLine(true);
+                        input.setMaxLines(1);
                         input.setHint("Insira o nome da área");
                         alert.setView(input);
 
