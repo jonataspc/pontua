@@ -15,9 +15,38 @@
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="0dp"
+        android:layout_below="@+id/tvwTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/linLay22">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selecionar todas"
+            android:id="@+id/checkBox"
+            android:layout_weight="0.66" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:id="@+id/btnExcluir"
+            android:layout_weight="0.33" />
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -36,7 +65,7 @@
         android:layout_marginBottom="0dp"
         android:background="#f4f4f4"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/tvwTitulo" >
+        android:layout_below="@+id/linLay22" >
 
         <ScrollView
             android:layout_width="wrap_content"
@@ -49,6 +78,9 @@
                 android:id="@+id/maintable" >
             </TableLayout>
         </ScrollView>
+
+
+
     </LinearLayout>
 
 

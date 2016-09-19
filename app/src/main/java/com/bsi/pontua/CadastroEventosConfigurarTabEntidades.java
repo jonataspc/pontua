@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import java.util.List;
 import controle.CadastrosControle;
 import utils.SoftRadioButton;
 import vo.EntidadeVO;
+import vo.EventoVO;
 
 
 public class CadastroEventosConfigurarTabEntidades extends Fragment {
@@ -120,6 +122,8 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
     ProgressDialog progress;
     AlertDialog writeTagAlert;
 
+    //lista de eventos exibidos
+    List<EventoVO> listaEventos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -205,7 +209,7 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
 
         /** Creating a TextView to add to the row **/
         TextView col1 = new TextView(getActivity());
-        col1.setText("Cód");
+        col1.setText("");
         col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         col1.setPadding(5, 5, 5, 0);
@@ -279,14 +283,24 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
             tr = new TableRow(getActivity());
             tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-            /** Creating a TextView to add to the row **/
+            /** Creating a TextView to add to the row **//*
             final SoftRadioButton chk = new SoftRadioButton(getActivity(), "RadioBtn1");
             chk.setText(String.valueOf(e.getId()));
             chk.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             chk.setPadding(5, 5, 5, 5);
             chk.setTextColor(Color.BLACK);
             chk.setWidth(200);
+            tr.addView(chk);  // Adding textView to tablerow.*/
+
+            /** Creating a TextView to add to the row **/
+            final CheckBox chk = new CheckBox(getActivity());
+            chk.setText(""); //String.valueOf(e.getId())
+            chk.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            chk.setPadding(5, 5, 0, 5);
+            chk.setTextColor(Color.BLACK);
+            //chk.setWidth(150);
             tr.addView(chk);  // Adding textView to tablerow.
+
 
             col1 = new TextView(getActivity());
             col1.setText(e.getNome());
@@ -357,6 +371,8 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
             if(result==null){
                 return;
             }
+
+            listaEventos = result;
 
             tl = (TableLayout) getActivity().findViewById(R.id.maintable);
             tl.removeAllViewsInLayout();
