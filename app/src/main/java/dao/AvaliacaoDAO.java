@@ -15,7 +15,6 @@ import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
-import vo.RelRankingVO;
 import vo.UsuarioVO;
 
 public class AvaliacaoDAO {

@@ -1,8 +1,6 @@
 package controle;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import controle.regrasNegocios.RegrasNegocioArea;
 import controle.regrasNegocios.RegrasNegocioEntidade;
@@ -14,14 +12,13 @@ import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
-import dao.RelRankingDAO;
+import dao.RepRankingDAO;
 import dao.UsuarioDAO;
 import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
-import vo.RelRankingVO;
 import vo.UsuarioVO;
 
 public class CadastrosControle {
@@ -31,7 +28,7 @@ public class CadastrosControle {
     private UsuarioDAO daoUsuario;
     private ItemInspecaoDAO daoItemInspecao;
     private AvaliacaoDAO daoAvaliacao;
-    private RelRankingDAO daoRelRanking;
+    private RepRankingDAO daoRelRanking;
     private AreaDAO daoArea;
 
     public CadastrosControle() {
@@ -40,15 +37,15 @@ public class CadastrosControle {
         daoUsuario = new UsuarioDAO();
         daoItemInspecao = new ItemInspecaoDAO();
         daoAvaliacao = new AvaliacaoDAO();
-        daoRelRanking = new RelRankingDAO();
+        daoRelRanking = new RepRankingDAO();
         daoArea= new AreaDAO();
     }
 
-
-    //relatorio rkg
-    public List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception {
-        return daoRelRanking.relatorioRanking(e);
-    }
+//
+//    //relatorio rkg
+//    public List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception {
+//        return daoRelRanking.relatorioRanking(e);
+//    }
 
 
     //evento

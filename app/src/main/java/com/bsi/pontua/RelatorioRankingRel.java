@@ -35,7 +35,6 @@ import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
-import vo.RelRankingVO;
 
 public class RelatorioRankingRel extends AppCompatActivity {
 

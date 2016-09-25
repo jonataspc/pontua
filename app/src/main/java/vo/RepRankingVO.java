@@ -3,7 +3,7 @@ package vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class RelRankingVO implements Serializable {
+public class RepRankingVO implements Serializable {
 
     private static final long serialVersionUID = 5L;
 
