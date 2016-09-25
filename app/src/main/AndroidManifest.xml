@@ -127,7 +127,11 @@
                 android:value=".Login" />
         </activity>
         <activity android:name=".Menu3" />
-        <activity android:name=".CadastroEventosConfigurar">
+        <activity android:name=".CadastroEventosConfigurar"
+
+            android:windowSoftInputMode="stateHidden|adjustResize"
+
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroEventos" />
