@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Escolha as entidades que participarão deste evento"
         android:id="@+id/tvwTitulo"
         android:paddingLeft="10dp"
@@ -16,10 +16,16 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center" />
 
 
     <LinearLayout
+
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -29,14 +35,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:id="@+id/linLay22">
+        android:id="@+id/linLay22"
+        android:background="#e2e4e6">
 
-        <CheckBox
+
+        <LinearLayout
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:layout_weight="0.66"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Selecionar todas"
-            android:id="@+id/chkCheckAll"
-            android:layout_weight="0.66" />
+            android:weightSum="1"
+            android:id="@+id/linLay2222"
+            >
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecionar todas"
+                android:id="@+id/chkCheckAll"
+                  />
+
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:hint="Pesquisar"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </LinearLayout>
+
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -64,7 +106,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="0dp"
         android:background="#f4f4f4"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:layout_below="@+id/linLay22" >
 
         <!--<ScrollView

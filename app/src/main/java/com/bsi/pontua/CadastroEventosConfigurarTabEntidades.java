@@ -10,13 +10,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -127,7 +132,8 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
     AlertDialog writeTagAlert;
 
     //lista de eventos exibidos
-    private List<EntidadeVO> listaEntidades;
+    private List<EntidadeVO> listaEntidades; // lista total de obj retornados
+    private List<EntidadeVO> listaEntidadesPesquisadas; // lista contendo um subgrupo do listaEntidades que casam com o texto pesquisado
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -161,6 +167,36 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
         final CheckBox chkCheckAll = (CheckBox) vw.findViewById(R.id.chkCheckAll);
         chkCheckAll.setOnClickListener(this);
 
+        final EditText inputSearch = (EditText) vw.findViewById(R.id.inputSearch);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+                //gera nova lista com apenas os casos que conferem com a pesquisa
+                listaEntidadesPesquisadas = new ArrayList<EntidadeVO>(0);
+
+                if(listaEntidades==null){
+                    return;
+                }
+
+                //verifica quais os items que casam
+                for(EntidadeVO item : listaEntidades){
+                    if(item.getNome().toUpperCase().contains(inputSearch.getText().toString().toUpperCase())){
+                        listaEntidadesPesquisadas.add(item);
+                    }
+                }
+
+                verificarAllChecked();
+                carregaListView();
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+
 
         //atualiza lista
         new popularGridTask().execute("");
@@ -187,10 +223,14 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
             case R.id.chkCheckAll:
                 //check all
 
+                //se estiver pesquisando e clicar em selecionar todos, o 'todos' deverá ser apenas os exibidos
+                //final EditText inputSearch = (EditText) vw.findViewById(R.id.inputSearch);
+                //final boolean isSearching = inputSearch.getText()
+
                 final CheckBox chk = (CheckBox) v;
                 final ListView lv = (ListView) getActivity().findViewById(R.id.listView1);
 
-                for(int i=0; i < listaEntidades.size(); i++){
+                for(int i=0; i < listaEntidadesPesquisadas.size(); i++){
                     LinearLayout itemLayout = (LinearLayout)lv.getChildAt(i);
 
                     if(itemLayout != null){
@@ -199,12 +239,12 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
                     }
 
                     if(chk.isChecked()){
-                        if(!selecionados.contains(listaEntidades.get(i))){
-                            selecionados.add(listaEntidades.get(i));
+                        if(!selecionados.contains(listaEntidadesPesquisadas.get(i))){
+                            selecionados.add(listaEntidadesPesquisadas.get(i));
                         }
                     } else {
-                        if(selecionados.contains(listaEntidades.get(i)))
-                            selecionados.remove(listaEntidades.get(i));
+                        if(selecionados.contains(listaEntidadesPesquisadas.get(i)))
+                            selecionados.remove(listaEntidadesPesquisadas.get(i));
                     }
 
                 }
@@ -249,7 +289,120 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
         }
     }
 
+    private void verificarAllChecked(){
+        //verifica se todos os item ja estao checados. Caso estejam, deixa checado o chkAll
+        boolean allSelected = true;
 
+        if(listaEntidadesPesquisadas.size()==0){
+            allSelected = false;
+        }
+
+        for(EntidadeVO item : listaEntidadesPesquisadas){
+            if(!selecionados.contains(item)){
+                allSelected = false;
+            }
+        }
+
+        final CheckBox chkCheckAll = (CheckBox) getActivity().findViewById(R.id.chkCheckAll);
+        chkCheckAll.setChecked(allSelected);
+
+    }
+
+    private void carregaListView() {
+
+        final List<EntidadeVO> lst = listaEntidadesPesquisadas;
+
+        final ListView lv;
+        lv = (ListView) getActivity().findViewById(R.id.listView1);
+
+        //altera txt do marcar todos
+        final CheckBox chkCheckAll = (CheckBox) getActivity().findViewById(R.id.chkCheckAll);
+        chkCheckAll.setText("Selecionar todas (" + lst.size() + ")");
+
+        // Adapter para implementar o layout customizado de cada item
+        ArrayAdapter<List> lsvEstadosAdapter = new ArrayAdapter<List>(getActivity(), R.layout.row ) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                LayoutInflater inflater = ((Activity)getActivity()).getLayoutInflater();
+                convertView = inflater.inflate(R.layout.row, parent, false);
+
+                CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                cb.setText(lst.get(position).getNome());
+
+                if(selecionados.contains(lst.get(position))) {
+                    cb.setChecked(true);
+                } else {
+                    cb.setChecked(false);
+                }
+
+                cb.setTag(lst.get(position));
+
+                cb.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        CheckBox chk = (CheckBox) v;
+
+                        EntidadeVO obj = (EntidadeVO) chk.getTag();
+
+                        if(chk.isChecked()) {
+                            if(!selecionados.contains(obj))
+                                selecionados.add(obj);
+                        } else {
+                            if(selecionados.contains(obj))
+                                selecionados.remove(obj);
+                        }
+
+                        verificarAllChecked();
+                    }
+                });
+
+                return convertView;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public int getCount() {
+                return lst.size();
+            }
+        };
+        lv.setAdapter(lsvEstadosAdapter);
+
+
+        ///
+        lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(lv != null && lv.getChildCount() > 0){
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = lv.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = lv.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeContainer);
+
+                swipeContainer.setEnabled(enable);
+            }
+
+        });
+
+
+
+    }
 
     class popularGridTask extends AsyncTask<String, Integer, List> {
 
@@ -291,97 +444,14 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
             //reinicializa obj
             selecionados = new ArrayList<EntidadeVO>(0);
             listaEntidades = result;
+            listaEntidadesPesquisadas = listaEntidades;
 
             //desmarca chkAll
             final CheckBox chkCheckAll = (CheckBox) getActivity().findViewById(R.id.chkCheckAll);
             chkCheckAll.setChecked(false);
 
 
-            final ListView lv;
-            lv = (ListView) getActivity().findViewById(R.id.listView1);
-
-
-
-            // Adapter para implementar o layout customizado de cada item
-            ArrayAdapter<List> lsvEstadosAdapter = new ArrayAdapter<List>(getActivity(), R.layout.row ) {
-
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-
-                    LayoutInflater inflater = ((Activity)getActivity()).getLayoutInflater();
-                    convertView = inflater.inflate(R.layout.row, parent, false);
-
-                    CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
-                    cb.setText(listaEntidades.get(position).getNome());
-
-                    if(selecionados.contains(listaEntidades.get(position))) {
-                        cb.setChecked(true);
-                    } else {
-                        cb.setChecked(false);
-                    }
-
-                    cb.setTag(listaEntidades.get(position));
-
-                    cb.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            CheckBox chk = (CheckBox) v;
-
-                            EntidadeVO obj = (EntidadeVO) chk.getTag();
-
-                            if(chk.isChecked()) {
-                                if(!selecionados.contains(obj))
-                                    selecionados.add(obj);
-                            } else {
-                                if(selecionados.contains(obj))
-                                    selecionados.remove(obj);
-                            }
-                        }
-                    });
-
-                    return convertView;
-                }
-
-                @Override
-                public long getItemId(int position) {
-                    return position;
-                }
-
-                @Override
-                public int getCount() {
-                    return listaEntidades.size();
-                }
-            };
-            lv.setAdapter(lsvEstadosAdapter);
-
-
-            ///
-            lv.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem,
-                                     int visibleItemCount, int totalItemCount) {
-                    boolean enable = false;
-                    if(lv != null && lv.getChildCount() > 0){
-                        // check if the first item of the list is visible
-                        boolean firstItemVisible = lv.getFirstVisiblePosition() == 0;
-                        // check if the top of the first item is visible
-                        boolean topOfFirstItemVisible = lv.getChildAt(0).getTop() == 0;
-                        // enabling or disabling the refresh layout
-                        enable = firstItemVisible && topOfFirstItemVisible;
-                    }
-                    final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeContainer);
-
-                    swipeContainer.setEnabled(enable);
-                }
-
-            });
-
-
+            carregaListView();
 
 
             if (progress != null && progress.isShowing()) {
@@ -397,6 +467,8 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
 
 
         }
+
+
     }
 
 
