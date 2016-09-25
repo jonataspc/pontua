@@ -17,6 +17,36 @@ import vo.AreaVO;
  */
 public class AreaDAO {
 
+
+    public boolean existeArea(String nome) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+            Boolean localizado = false;
+            PreparedStatement st;
+
+            st = conn.prepareStatement("SELECT COUNT(*) AS total FROM area  WHERE nome=? ;");
+            st.setString(1, nome.trim());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                if(resultado.getInt("total") == 0){
+                    localizado=false;
+                } else {
+                    localizado=true;
+                }
+            }
+
+            conn.close();
+            return localizado;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public AreaVO obterPorId(int codigo) throws SQLException {
         try {
 

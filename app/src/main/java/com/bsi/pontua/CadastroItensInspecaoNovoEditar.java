@@ -216,6 +216,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
     class carregarAreasTask extends AsyncTask<String, Integer, List> {
 
+        public String itemSelecionado=null;
+
         @Override
         protected void onPreExecute() {
 
@@ -274,6 +276,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             spnAreas.setAdapter(adapter);
 
 
+
+
             //add evento
             spnAreas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -318,12 +322,6 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                                     //adiciona nova area...
                                     new incluirArea().execute( srt );
 
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroItensInspecaoNovoEditar.this, android.R.layout.simple_spinner_dropdown_item, items);
-                                    Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
-                                    spnAreas.setAdapter(adapter);
-
-                                    //pre seleciona o inserido
-                                    spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition(srt));
                                 }
                                 else
                                 {
@@ -361,6 +359,12 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                 }
             });
+
+            ////pre seleciona o inserido
+            if(itemSelecionado!=null){
+                spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition(itemSelecionado.toUpperCase()));
+            }
+
 
 
 //            if (progress != null && progress.isShowing()) {
@@ -635,6 +639,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
     class incluirArea  extends AsyncTask<String, Integer, Boolean> {
 
         String errorMsg;
+        private String nomeArea;
 
         @Override
         protected void onPreExecute() {
@@ -651,6 +656,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
                 AreaVO o = new AreaVO();
                 o.setNome(param[0]);
+
+                nomeArea = param[0];
 
                 return cc.incluirArea(o);
 
@@ -673,21 +680,28 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                 progress.dismiss();
             }
 
-//
-//            if(result){
-//
-//                Toast.makeText(getApplicationContext(), "Dados salvos com sucesso", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent();
-//                setResult(Activity.RESULT_OK, intent);
-//                finish();
-//
-//            }
-//            else
-//            {
-//
-//                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-//            }
-//
+
+            if(result){
+
+                Toast.makeText(getApplicationContext(), "Área cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
+
+
+                carregarAreasTask cAt =  new carregarAreasTask();
+                cAt.itemSelecionado = nomeArea;
+                cAt.execute("");
+
+
+            }
+            else
+            {
+
+                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+
+                //seleciona 'nenhuma'
+                Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
+                spnAreas.setSelection(((ArrayAdapter) spnAreas.getAdapter()).getPosition(TXT_AREA_DEFAULT));
+            }
+
 
 
 

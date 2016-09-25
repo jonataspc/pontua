@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import controle.regrasNegocios.RegrasNegocioArea;
 import controle.regrasNegocios.RegrasNegocioEntidade;
 import controle.regrasNegocios.RegrasNegocioEvento;
 import controle.regrasNegocios.RegrasNegocioItemInspecao;
@@ -188,6 +189,7 @@ public class CadastrosControle {
     }
 
     public boolean incluirArea(AreaVO a) throws Exception {
+        RegrasNegocioArea.validarArea(a, true);
         return daoArea.incluir(a);
     }
 
