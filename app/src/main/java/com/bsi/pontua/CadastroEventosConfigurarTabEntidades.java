@@ -1,11 +1,11 @@
 package com.bsi.pontua;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,20 +13,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import controle.CadastrosControle;
-import utils.SoftRadioButton;
 import vo.EntidadeVO;
 import vo.EventoVO;
 
 
-public class CadastroEventosConfigurarTabEntidades extends Fragment {
+public class CadastroEventosConfigurarTabEntidades extends Fragment  implements View.OnClickListener {
 //    /*// TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -115,19 +117,20 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
 //        void onFragmentInteraction(Uri uri);
 //    }*/
 
-    TableLayout tl;
-    TableRow tr;
-    TextView col1, col2;
+    //TableLayout tl;
+    //TableRow tr;
+    //TextView col1, col2;
+
+    private List<EntidadeVO> selecionados ;
 
     ProgressDialog progress;
     AlertDialog writeTagAlert;
 
     //lista de eventos exibidos
-    List<EventoVO> listaEventos;
+    private List<EntidadeVO> listaEntidades;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 
         // Lookup the swipe container view
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeContainer);
@@ -149,16 +152,67 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
 
 
 
+        View vw = inflater.inflate(R.layout.fragment_cadastro_eventos_configurar_tab_entidades, container, false);
+
+        //salvar
+        final Button btnSalvarConfig = (Button) vw.findViewById(R.id.btnSalvarConfig);
+        btnSalvarConfig.setOnClickListener(this);
+
+        final CheckBox chkCheckAll = (CheckBox) vw.findViewById(R.id.chkCheckAll);
+        chkCheckAll.setOnClickListener(this);
+
+
         //atualiza lista
         new popularGridTask().execute("");
 
 
-        return inflater.inflate(R.layout.fragment_cadastro_eventos_configurar_tab_entidades, container, false);
+        return vw;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSalvarConfig:
+
+                Toast.makeText(getActivity(), String.valueOf(selecionados.size()), Toast.LENGTH_SHORT).show();
+
+                break;
+
+
+            case R.id.chkCheckAll:
+                //check all
+
+                final CheckBox chk = (CheckBox) v;
+                final ListView lv = (ListView) getActivity().findViewById(R.id.listView1);
+
+                for(int i=0; i < listaEntidades.size(); i++){
+                    LinearLayout itemLayout = (LinearLayout)lv.getChildAt(i);
+
+                    if(itemLayout != null){
+                        CheckBox cb = (CheckBox)itemLayout.findViewById(R.id.checkBox1);
+                        cb.setChecked(chk.isChecked());
+                    }
+
+                    if(chk.isChecked()){
+                        if(!selecionados.contains(listaEntidades.get(i))){
+                            selecionados.add(listaEntidades.get(i));
+                        }
+                    } else {
+                        if(selecionados.contains(listaEntidades.get(i)))
+                            selecionados.remove(listaEntidades.get(i));
+                    }
+
+                }
+
+
+                break;
+
+        }
     }
 
     @Override
@@ -195,144 +249,6 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
         }
     }
 
-
-    /**
-     * This function add the headers to the table
-     **/
-    public void addHeaders() {
-
-        /** Create a TableRow **/
-        tr = new TableRow(getActivity());
-        tr.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.FILL_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-
-        /** Creating a TextView to add to the row **/
-        TextView col1 = new TextView(getActivity());
-        col1.setText("");
-        col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        col1.setPadding(5, 5, 5, 0);
-        tr.addView(col1);  // Adding textView to tablerow.
-
-//        /** Creating another textview **/
-//        TextView col2 = new TextView(getActivity());
-//        col2.setText("Evento");
-//        col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-//        col2.setPadding(5, 5, 5, 0);
-//        col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//        tr.addView(col2); // Adding textView to tablerow.
-
-        /** Creating another textview **/
-        TextView ncol2 = new TextView(getActivity());
-        ncol2.setText("Nome");
-        ncol2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        ncol2.setPadding(5, 5, 5, 0);
-        ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(ncol2); // Adding textView to tablerow.
-
-
-        // Add the TableRow to the TableLayout
-        tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-        // we are adding two textviews for the <span id="IL_AD5" class="IL_AD">divider</span> because we have two columns
-        tr = new TableRow(getActivity());
-        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-/*
-        *//** Creating another textview **//*
-        TextView divider = new TextView(getActivity());
-        divider.setText("-----------------");
-        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        divider.setPadding(5, 0, 0, 0);
-        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider); // Adding textView to tablerow.
-
-        TextView divider2 = new TextView(getActivity());
-        divider2.setText("-------------------------");
-        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        divider2.setPadding(5, 0, 0, 0);
-        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*/
-
-        // Add the TableRow to the TableLayout
-        tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-
-        //separator
-        TableRow tr = new TableRow(getActivity());
-        tr.setBackgroundColor(Color.GRAY);
-        tr.setPadding(0, 0, 0, 2); //Border between rows
-
-        TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0, 0, 2, 0);//2px right-margin
-
-        tl.addView(tr);
-
-
-    }
-
-    /**
-     * getActivity() function add the data to the table
-     **/
-    public void addData(List<EntidadeVO> obj) {
-
-        for (EntidadeVO e : obj) {
-
-            /** Create a TableRow dynamically **/
-            tr = new TableRow(getActivity());
-            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-            /** Creating a TextView to add to the row **//*
-            final SoftRadioButton chk = new SoftRadioButton(getActivity(), "RadioBtn1");
-            chk.setText(String.valueOf(e.getId()));
-            chk.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            chk.setPadding(5, 5, 5, 5);
-            chk.setTextColor(Color.BLACK);
-            chk.setWidth(200);
-            tr.addView(chk);  // Adding textView to tablerow.*/
-
-            /** Creating a TextView to add to the row **/
-            final CheckBox chk = new CheckBox(getActivity());
-            chk.setText(""); //String.valueOf(e.getId())
-            chk.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            chk.setPadding(5, 5, 0, 5);
-            chk.setTextColor(Color.BLACK);
-            //chk.setWidth(150);
-            tr.addView(chk);  // Adding textView to tablerow.
-
-
-            col1 = new TextView(getActivity());
-            col1.setText(e.getNome());
-            col1.setTextColor(Color.BLACK);
-            col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            col1.setPadding(5, 5, 5, 5);
-            tr.addView(col1);
-
-//            col2 = new TextView(getActivity());
-//            col2.setText(e.getNome());
-//            col2.setTextColor(Color.BLACK);
-//            col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-//            col2.setPadding(5, 5, 5, 5);
-//            tr.addView(col2);
-
-            // Add the TableRow to the TableLayout
-            tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-
-            //separator
-            TableRow tr = new TableRow(getActivity());
-            tr.setBackgroundColor(Color.GRAY);
-            tr.setPadding(0, 0, 0, 2); //Border between rows
-
-            TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(0, 0, 2, 0);//2px right-margin
-
-            tl.addView(tr);
-
-
-        }
-    }
 
 
     class popularGridTask extends AsyncTask<String, Integer, List> {
@@ -372,13 +288,101 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment {
                 return;
             }
 
-            listaEventos = result;
+            //reinicializa obj
+            selecionados = new ArrayList<EntidadeVO>(0);
+            listaEntidades = result;
 
-            tl = (TableLayout) getActivity().findViewById(R.id.maintable);
-            tl.removeAllViewsInLayout();
+            //desmarca chkAll
+            final CheckBox chkCheckAll = (CheckBox) getActivity().findViewById(R.id.chkCheckAll);
+            chkCheckAll.setChecked(false);
 
-            addHeaders();
-            addData(result);
+
+            final ListView lv;
+            lv = (ListView) getActivity().findViewById(R.id.listView1);
+
+
+
+            // Adapter para implementar o layout customizado de cada item
+            ArrayAdapter<List> lsvEstadosAdapter = new ArrayAdapter<List>(getActivity(), R.layout.row ) {
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+
+                    LayoutInflater inflater = ((Activity)getActivity()).getLayoutInflater();
+                    convertView = inflater.inflate(R.layout.row, parent, false);
+
+                    CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                    cb.setText(listaEntidades.get(position).getNome());
+
+                    if(selecionados.contains(listaEntidades.get(position))) {
+                        cb.setChecked(true);
+                    } else {
+                        cb.setChecked(false);
+                    }
+
+                    cb.setTag(listaEntidades.get(position));
+
+                    cb.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            CheckBox chk = (CheckBox) v;
+
+                            EntidadeVO obj = (EntidadeVO) chk.getTag();
+
+                            if(chk.isChecked()) {
+                                if(!selecionados.contains(obj))
+                                    selecionados.add(obj);
+                            } else {
+                                if(selecionados.contains(obj))
+                                    selecionados.remove(obj);
+                            }
+                        }
+                    });
+
+                    return convertView;
+                }
+
+                @Override
+                public long getItemId(int position) {
+                    return position;
+                }
+
+                @Override
+                public int getCount() {
+                    return listaEntidades.size();
+                }
+            };
+            lv.setAdapter(lsvEstadosAdapter);
+
+
+            ///
+            lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem,
+                                     int visibleItemCount, int totalItemCount) {
+                    boolean enable = false;
+                    if(lv != null && lv.getChildCount() > 0){
+                        // check if the first item of the list is visible
+                        boolean firstItemVisible = lv.getFirstVisiblePosition() == 0;
+                        // check if the top of the first item is visible
+                        boolean topOfFirstItemVisible = lv.getChildAt(0).getTop() == 0;
+                        // enabling or disabling the refresh layout
+                        enable = firstItemVisible && topOfFirstItemVisible;
+                    }
+                    final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeContainer);
+
+                    swipeContainer.setEnabled(enable);
+                }
+
+            });
+
+
+
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();

@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Selecionar todas"
-            android:id="@+id/checkBox"
+            android:id="@+id/chkCheckAll"
             android:layout_weight="0.66" />
 
         <Button
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Salvar"
-            android:id="@+id/btnExcluir"
+            android:id="@+id/btnSalvarConfig"
             android:layout_weight="0.33" />
     </LinearLayout>
 
@@ -54,9 +54,9 @@
         android:id="@+id/linLay1"
 
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
 
 
         android:layout_width="match_parent"
@@ -67,7 +67,7 @@
         android:layout_marginTop="5dp"
         android:layout_below="@+id/linLay22" >
 
-        <ScrollView
+        <!--<ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none">
@@ -77,8 +77,13 @@
                 android:stretchColumns="1"
                 android:id="@+id/maintable" >
             </TableLayout>
-        </ScrollView>
+        </ScrollView>-->
 
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
 
     </LinearLayout>
