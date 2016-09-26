@@ -12,6 +12,7 @@ import dao.AvaliacaoDAO;
 import dao.EntidadeDAO;
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
+import dao.RelEntidadeEventoDAO;
 import dao.RepRankingDAO;
 import dao.UsuarioDAO;
 import vo.AreaVO;
@@ -19,6 +20,7 @@ import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.RelEntidadeEventoVO;
 import vo.UsuarioVO;
 
 public class CadastrosControle {
@@ -30,6 +32,7 @@ public class CadastrosControle {
     private AvaliacaoDAO daoAvaliacao;
     private RepRankingDAO daoRelRanking;
     private AreaDAO daoArea;
+    private RelEntidadeEventoDAO daoRelEntidadeEvento;
 
     public CadastrosControle() {
         daoEvento = new EventoDAO();
@@ -39,6 +42,7 @@ public class CadastrosControle {
         daoAvaliacao = new AvaliacaoDAO();
         daoRelRanking = new RepRankingDAO();
         daoArea= new AreaDAO();
+        daoRelEntidadeEvento = new RelEntidadeEventoDAO();
     }
 
 //
@@ -190,6 +194,27 @@ public class CadastrosControle {
         return daoArea.incluir(a);
     }
 
+
+    //RelEntidadeEvento
+    public boolean incluirRelEntidadeEvento(RelEntidadeEventoVO a) throws Exception {
+        return daoRelEntidadeEvento.incluir(a);
+    }
+
+    public boolean excluirRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
+        return daoRelEntidadeEvento.excluir(o);
+    }
+
+    public List<RelEntidadeEventoVO> listarRelEntidadeEventoPorEvento(EventoVO evento) throws Exception {
+        return daoRelEntidadeEvento.listarPorEvento(evento);
+    }
+
+    public RelEntidadeEventoVO obterRelEntidadeEventoPorCodigo(int cod) throws Exception {
+        return daoRelEntidadeEvento.obterPorCodigo(cod);
+    }
+
+    public boolean existeRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
+        return daoRelEntidadeEvento.existeItem(o);
+    }
 
 
 
