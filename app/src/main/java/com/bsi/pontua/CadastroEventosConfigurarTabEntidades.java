@@ -29,8 +29,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import controle.CadastrosControle;
+import dao.RelEntidadeEventoDAO;
 import vo.EntidadeVO;
 import vo.EventoVO;
+import vo.RelEntidadeEventoVO;
 
 
 public class CadastroEventosConfigurarTabEntidades extends Fragment  implements View.OnClickListener {
@@ -126,7 +128,7 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
     //TableRow tr;
     //TextView col1, col2;
 
-    private List<EntidadeVO> selecionados ;
+
 
     ProgressDialog progress;
     AlertDialog writeTagAlert;
@@ -134,6 +136,13 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
     //lista de eventos exibidos
     private List<EntidadeVO> listaEntidades; // lista total de obj retornados
     private List<EntidadeVO> listaEntidadesPesquisadas; // lista contendo um subgrupo do listaEntidades que casam com o texto pesquisado
+    private List<EntidadeVO> selecionados; // lista de itens checados!
+
+    //evento selecionado
+    private EventoVO evento;
+
+    //relacao de relacionamentos atuais pesquisados na database
+    List<RelEntidadeEventoVO> lstRelEntidadeEventoVO = new ArrayList<RelEntidadeEventoVO>(0);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,7 +153,7 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
             @Override
             public void onRefresh() {
                 //atualiza
-                popularGridTask task = new popularGridTask();
+                carregarEntidades task = new carregarEntidades();
                 task.isSwipe = true;
                 task.execute("");
 
@@ -157,6 +166,8 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
                 android.R.color.holo_red_light);
 
 
+        //define evento
+        evento = (EventoVO) getActivity().getIntent().getSerializableExtra("oEvento");
 
         View vw = inflater.inflate(R.layout.fragment_cadastro_eventos_configurar_tab_entidades, container, false);
 
@@ -199,7 +210,7 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
 
 
         //atualiza lista
-        new popularGridTask().execute("");
+        new carregarEntidades().execute("");
 
 
         return vw;
@@ -215,8 +226,10 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
         switch (v.getId()) {
             case R.id.btnSalvarConfig:
 
-                Toast.makeText(getActivity(), String.valueOf(selecionados.size()), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), String.valueOf(selecionados.size()), Toast.LENGTH_SHORT).show();
 
+                salvarRelac task = new salvarRelac();
+                task.execute("");
                 break;
 
 
@@ -404,7 +417,7 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
 
     }
 
-    class popularGridTask extends AsyncTask<String, Integer, List> {
+    class carregarEntidades extends AsyncTask<String, Integer, List> {
 
         boolean isSwipe = false;
 
@@ -424,6 +437,10 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
             try {
 
                 List<EntidadeVO> lista = cc.listarEntidade("");
+
+                //obtem lista de eventos
+                lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
+
                 return lista;
 
             } catch (Exception e) {
@@ -446,13 +463,30 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
             listaEntidades = result;
             listaEntidadesPesquisadas = listaEntidades;
 
+
+            //obtem registros já inseridos em DB e mantem marcados...
+            for(RelEntidadeEventoVO relItem : lstRelEntidadeEventoVO){
+
+                for(EntidadeVO entItem : listaEntidades){
+
+                    if(entItem.getId() == relItem.getEntidade().getId()){
+                        //adiciona em selecionados
+                        if(!selecionados.contains(entItem)){
+                            selecionados.add(entItem);
+                        }
+                    }
+
+                }
+            }
+
+
             //desmarca chkAll
             final CheckBox chkCheckAll = (CheckBox) getActivity().findViewById(R.id.chkCheckAll);
             chkCheckAll.setChecked(false);
 
 
             carregaListView();
-
+            verificarAllChecked();
 
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
@@ -471,6 +505,105 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
 
     }
 
+
+
+    class salvarRelac extends AsyncTask<String, Integer, Boolean> {
+
+        private boolean isSwipe = false;
+        String errorMsg;
+
+        private int totalInseridos = 0;
+        private int totalRemovidos = 0;
+
+        @Override
+        protected void onPreExecute() {
+            if(!isSwipe){
+                inicializaProgressBar();
+                progress.show();
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(String... param) {
+
+            CadastrosControle cc = new CadastrosControle();
+
+            try {
+
+                //obtem items selecionados
+                for(EntidadeVO item : selecionados){
+
+                    //instancia novo objeto e define relacionamento
+                    RelEntidadeEventoVO newRelac = new RelEntidadeEventoVO();
+                    newRelac.setEntidade(item);
+                    newRelac.setEvento(evento);
+
+                    //se nao existir, cadastra
+                    if(!cc.existeRelEntidadeEvento(newRelac)){
+                        cc.incluirRelEntidadeEvento(newRelac);
+                        totalInseridos++;
+                    }
+                }
+
+
+                //obtem items atuais (atualizado) em BD e remove caso nao esteja no SELECIONADOS
+                lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
+
+                for(RelEntidadeEventoVO item : lstRelEntidadeEventoVO){
+
+                    boolean localizado = false;
+
+                    for(EntidadeVO entItem : selecionados){
+                        if(entItem.getId() == item.getEntidade().getId()){
+                            localizado = true;
+                        }
+                    }
+
+                    if(!localizado){
+                        //nao esta selecionado, remove do BD
+                        cc.excluirRelEntidadeEvento(item);
+                        totalRemovidos++;
+                    }
+
+                }
+
+
+            return true;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                errorMsg =  e.getMessage();
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if(result==null){
+                return;
+            }
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
+            if(result){
+                Toast.makeText(getActivity(), "Configurações salvas com sucesso!\nItens inseridos: " + totalInseridos + "\nItens removidos: " + totalRemovidos , Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
+            }
+
+
+
+
+        }
+
+
+    }
 
 
 }
