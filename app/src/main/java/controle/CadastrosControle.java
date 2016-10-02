@@ -13,6 +13,7 @@ import dao.EntidadeDAO;
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
 import dao.RelEntidadeEventoDAO;
+import dao.RelItemInspecaoEventoDAO;
 import dao.RepRankingDAO;
 import dao.UsuarioDAO;
 import vo.AreaVO;
@@ -21,6 +22,7 @@ import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.RelEntidadeEventoVO;
+import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
 public class CadastrosControle {
@@ -30,9 +32,10 @@ public class CadastrosControle {
     private UsuarioDAO daoUsuario;
     private ItemInspecaoDAO daoItemInspecao;
     private AvaliacaoDAO daoAvaliacao;
-    private RepRankingDAO daoRelRanking;
+    private RepRankingDAO daoRepRanking;
     private AreaDAO daoArea;
     private RelEntidadeEventoDAO daoRelEntidadeEvento;
+    private RelItemInspecaoEventoDAO daoRelItemInspecaoEvento;
 
     public CadastrosControle() {
         daoEvento = new EventoDAO();
@@ -40,15 +43,16 @@ public class CadastrosControle {
         daoUsuario = new UsuarioDAO();
         daoItemInspecao = new ItemInspecaoDAO();
         daoAvaliacao = new AvaliacaoDAO();
-        daoRelRanking = new RepRankingDAO();
+        daoRepRanking = new RepRankingDAO();
         daoArea= new AreaDAO();
         daoRelEntidadeEvento = new RelEntidadeEventoDAO();
+        daoRelItemInspecaoEvento = new RelItemInspecaoEventoDAO();
     }
 
 //
 //    //relatorio rkg
 //    public List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception {
-//        return daoRelRanking.relatorioRanking(e);
+//        return daoRepRanking.relatorioRanking(e);
 //    }
 
 
@@ -216,6 +220,27 @@ public class CadastrosControle {
         return daoRelEntidadeEvento.existeItem(o);
     }
 
+
+    //RelItemInspecaoEvento
+    public boolean incluirRelItemInspecaoEvento(RelItemInspecaoEventoVO a) throws Exception {
+        return daoRelItemInspecaoEvento.incluir(a);
+    }
+
+    public boolean excluirRelItemInspecaoEvento(RelItemInspecaoEventoVO o) throws Exception {
+        return daoRelItemInspecaoEvento.excluir(o);
+    }
+
+    public List<RelItemInspecaoEventoVO> listarRelItemInspecaoEventoPorEvento(EventoVO evento) throws Exception {
+        return daoRelItemInspecaoEvento.listarPorEvento(evento);
+    }
+
+    public RelItemInspecaoEventoVO obterRelItemInspecaoEventoPorCodigo(int cod) throws Exception {
+        return daoRelItemInspecaoEvento.obterPorCodigo(cod);
+    }
+
+    public boolean existeRelItemInspecaoEvento(RelItemInspecaoEventoVO o) throws Exception {
+        return daoRelItemInspecaoEvento.existeItem(o);
+    }
 
 
 
