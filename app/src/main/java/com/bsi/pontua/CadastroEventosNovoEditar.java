@@ -66,7 +66,6 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
         final EditText txtNovoEvento = (EditText) findViewById(R.id.edtNomeEvento);
-        final TextView tvwEventoTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
 
@@ -76,7 +75,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwEventoTitle.setText("Incluir evento");
+        setTitle("Incluir evento");
 
 
         //editar ou novo?
@@ -94,7 +93,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwEventoTitle.setText("Editar evento");
+                setTitle("Editar evento");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 

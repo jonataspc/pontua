@@ -67,6 +67,8 @@ public class CadastroUsuarios extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_usuarios);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("Usuários");
+
         // Lookup the swipe container view
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

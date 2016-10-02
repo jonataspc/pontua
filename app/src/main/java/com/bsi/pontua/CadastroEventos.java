@@ -52,6 +52,7 @@ public class CadastroEventos extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_eventos);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("Eventos");
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);

@@ -20,21 +20,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Usuários"
-            android:id="@+id/tvwTitulo"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Selecione um usuário:"
             android:id="@+id/tvwSelecaoUsuario"
-            android:layout_below="@+id/tvwTitulo"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="0dp" />
 
         <Spinner
             android:id="@+id/spnUsuarios"

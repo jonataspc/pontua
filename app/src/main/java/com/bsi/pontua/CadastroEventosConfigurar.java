@@ -35,9 +35,7 @@ public class CadastroEventosConfigurar extends AppCompatActivity {
             return;
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Configurar evento: " + oEvento.getNome()  );
-    //    setSupportActionBar(toolbar);
+        setTitle("Configurar evento: " + oEvento.getNome() );
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Entidades"));

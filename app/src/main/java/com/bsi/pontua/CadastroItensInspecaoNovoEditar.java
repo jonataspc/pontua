@@ -83,7 +83,6 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
         final EditText txtNome = (EditText) findViewById(R.id.txtNome);
-        final TextView tvwTitle = (TextView) findViewById(R.id.tvwTitle);
 
         final EditText txtPontMin = (EditText) findViewById(R.id.edtPontMinima);
         final EditText txtPontMax = (EditText) findViewById(R.id.edtPontMaxima);
@@ -105,7 +104,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwTitle.setText("Incluir ítem de inspeção");
+        setTitle("Incluir ítem de inspeção");
 
 
 //        //carrega eventos em spinner
@@ -142,7 +141,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwTitle.setText("Editar ítem de inspeção");
+                setTitle("Editar ítem de inspeção");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 

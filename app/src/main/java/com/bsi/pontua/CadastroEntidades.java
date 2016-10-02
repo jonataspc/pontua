@@ -55,6 +55,8 @@ public class CadastroEntidades extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_entidades);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("Entidades");
+
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);

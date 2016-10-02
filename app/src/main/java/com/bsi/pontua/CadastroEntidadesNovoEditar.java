@@ -63,7 +63,6 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
         final EditText txtNome = (EditText) findViewById(R.id.edtNomeEntidade);
-        final TextView tvwTitle = (TextView) findViewById(R.id.tvwTitle);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
 
@@ -73,7 +72,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
             }
         });
 
-        tvwTitle.setText("Incluir entidade");
+        setTitle("Incluir entidade");
 
 /*
         //carrega eventos em spinner
@@ -107,7 +106,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             try {
 
-                tvwTitle.setText("Editar entidade");
+                setTitle("Editar entidade");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 

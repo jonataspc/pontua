@@ -44,6 +44,8 @@ public class CadastroItensInspecao extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_itens_inspecao);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setTitle("Ítens de Pontuação");
+
         final Button btnNovo = (Button) findViewById(R.id.btnNovo);
         final Button btnEditar = (Button) findViewById(R.id.btnEditar);
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);

@@ -28,7 +28,6 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
         final Button btnCadastrar = (Button) findViewById(R.id.btnSalvar);
         final EditText txtNovoUsuario = (EditText) findViewById(R.id.edtNovoUsuario);
-        final TextView tvwUsuarioTitle = (TextView) findViewById(R.id.tvwUsuarioTitle);
         final EditText txtNovoSenha = (EditText) findViewById(R.id.edtNovoSenha);
         final RadioButton rbtAdm =  (RadioButton) findViewById(R.id.rbtAdm);
         final RadioButton rbtAval =  (RadioButton) findViewById(R.id.rbtAval);
@@ -43,6 +42,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
         });
 
         btnCadastrar.setText("Incluir usuário");
+        setTitle("Incluir usuário");
 
 
         //editar ou novo?
@@ -61,6 +61,7 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             try {
 
                 btnCadastrar.setText("Salvar alterações");
+                setTitle("Editar usuário");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
