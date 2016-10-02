@@ -70,8 +70,8 @@ public class CadastrosControle {
         return daoEvento.obterPorCodigo(a);
     }
 
-    public boolean editarEvento(EventoVO o) throws Exception {
-        RegrasNegocioEvento.validarEvento(o, false);
+    public boolean editarEvento(EventoVO o, boolean alterouNomeOriginal) throws Exception {
+        RegrasNegocioEvento.validarEvento(o, alterouNomeOriginal);
         return daoEvento.editar(o);
     }
 

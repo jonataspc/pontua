@@ -23,6 +23,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
 
     ProgressDialog progress;
+    private String nomeOriginalEdicao;
 
 
     @Override
@@ -150,6 +151,7 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             if(result != null){
 
+                nomeOriginalEdicao = result.getNome();
                 txtNovoEvento.setText(result.getNome());
 
             }
@@ -245,7 +247,14 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
                 if(IsEditar){
                     //editar
-                    if(cc.editarEvento(evento) ){
+
+                    boolean alterouNomeOriginal=false;
+
+                    if(!evento.getNome().toLowerCase().trim().equals(nomeOriginalEdicao.toLowerCase().trim()) ){
+                        alterouNomeOriginal = true;
+                    }
+
+                    if(cc.editarEvento(evento, alterouNomeOriginal) ){
                         return true;
                     }
                 }
