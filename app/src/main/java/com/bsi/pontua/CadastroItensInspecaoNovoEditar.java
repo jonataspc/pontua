@@ -104,7 +104,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             }
         });
 
-        setTitle("Incluir ítem de inspeção");
+        setTitle("Incluir ítem de pontuação");
 
 
 //        //carrega eventos em spinner
@@ -141,7 +141,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             try {
 
-                setTitle("Editar ítem de inspeção");
+                setTitle("Editar ítem de pontuação");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 
@@ -287,7 +287,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
  //Alert Dialog Code Start
 
                         AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                        alert.setTitle("Nova área de inspeção"); //Set Alert dialog title here
+                        alert.setTitle("Nova área de pontuação"); //Set Alert dialog title here
                         alert.setMessage("");
 
                         final EditText input = new EditText(context);
