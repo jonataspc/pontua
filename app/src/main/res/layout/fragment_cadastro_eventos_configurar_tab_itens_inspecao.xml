@@ -4,28 +4,134 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="   "
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Escolha os ítens que farão parte deste evento"
+        android:id="@+id/tvwTituloi"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center" />
 
-</RelativeLayout>
-<!--
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.bsi.pontua.CadastroEventosConfigurarTabItensInspecao">
+    <LinearLayout
 
-    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;
-    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="0dp"
+        android:layout_below="@+id/tvwTituloi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/linLay22i"
+        android:background="#e2e4e6">
+
+
+        <LinearLayout
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:layout_weight="0.66"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:id="@+id/linLay2222i"
+            >
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecionar todos"
+                android:id="@+id/chkCheckAlli"
+                />
+
+           <!-- <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:hint="Pesquisar"
+                android:maxLines="1"
+                android:singleLine="true" />
+                -->
+
+            <Spinner
+                android:id="@+id/spnAreas"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="10dp"
+
+                />
+
+        </LinearLayout>
+
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:id="@+id/btnSalvarConfigi"
+            android:layout_weight="0.33" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linLay1i"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="xaxaxa 2" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="0dp"
+        android:background="#f4f4f4"
+        android:layout_marginTop="0dp"
+        android:layout_below="@+id/linLay22i" >
 
-</FrameLayout>
--->
+        <ListView
+            android:id="@+id/listView1i"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
