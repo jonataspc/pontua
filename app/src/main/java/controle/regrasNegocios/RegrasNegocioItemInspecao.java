@@ -15,9 +15,9 @@ public class RegrasNegocioItemInspecao {
     public static void validarItemInspecao(ItemInspecaoVO i, Boolean isInclusao) throws Exception {
 
 //        5.5. Regras de negócio
-//        5.5.1. [RN01] Nomes de itens de pontuação devem conter no máximo 15 caracteres;
-        if (i.getNome().length() > 15) {
-            throw new Exception("Nome deve conter no máximo 15 caracteres");
+//        5.5.1. [RN01] Nomes de itens de pontuação devem conter no máximo 30 caracteres;
+        if (i.getNome().length() > 30) {
+            throw new Exception("Nome deve conter no máximo 30 caracteres");
         }
 
 
