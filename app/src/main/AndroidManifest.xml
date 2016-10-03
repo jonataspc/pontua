@@ -67,7 +67,8 @@
         </activity>
         <activity
             android:name=".Avaliacao"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
