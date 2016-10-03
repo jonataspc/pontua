@@ -3,6 +3,7 @@ package utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bsi.pontua.Login;
@@ -31,6 +32,8 @@ public class Conexao {
 	 * Obtem conexao com banco de dados
 	 */
 	public static Connection obterConexao() throws SQLException {
+
+		Log.d("obterConexao", "obterConexao");
 
         Context applicationContext = Login.getContextOfApplication();
         SharedPreferences settings = applicationContext.getSharedPreferences("settings", 0);
