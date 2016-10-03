@@ -96,14 +96,14 @@ public class CadastroEventosConfigurarTabItensInspecao extends Fragment implemen
         //carrega areas
         AsyncTask cAt =  new carregarAreasTask().execute("");
 
-        try {
+        /*try {
             //aguarda conclusao
             cAt.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
 
