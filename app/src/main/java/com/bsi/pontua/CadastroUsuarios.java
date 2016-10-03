@@ -130,7 +130,7 @@ public class CadastroUsuarios extends AppCompatActivity {
 
                 String usuExc = dropdown.getSelectedItem().toString().substring(7,  dropdown.getSelectedItem().toString().length()  );
 
-                if(Utils.nomeUsuario.trim().toUpperCase().equals(usuExc.trim().toUpperCase())){
+                if(Utils.usuarioCorrente.getNome().trim().toUpperCase().equals(usuExc.trim().toUpperCase())){
                     Toast.makeText(getApplicationContext(), "Não é possível excluir seu próprio usuário!", Toast.LENGTH_SHORT).show();
                     return;
                 }
