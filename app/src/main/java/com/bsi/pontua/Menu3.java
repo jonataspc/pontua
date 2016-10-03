@@ -1,18 +1,26 @@
 package com.bsi.pontua;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import utils.Utils;
@@ -50,6 +58,27 @@ public class Menu3 extends AppCompatActivity {
 
             case R.id.action_exit:
 finish();
+
+            case R.id.action_about:
+                    //sobre
+
+                final Context context = this;
+
+                int versionCode = BuildConfig.VERSION_CODE;
+                String versionName = BuildConfig.VERSION_NAME;
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Sobre"); //Set Alert dialog title here
+                alert.setMessage("Permitido o uso sem finalidade comercial\n\nVersão: " + versionName);
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+
+                    }
+                });
+                AlertDialog alertDialog = alert.create();
+                alertDialog.show();
 
                 return true;
 
