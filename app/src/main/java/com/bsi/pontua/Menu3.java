@@ -225,7 +225,18 @@ finish();
         ((ImageButton) findViewById(R.id.imgCadItensPontuacao)).setOnClickListener(m04);
         ((Button) findViewById(R.id.btnCadItensPontuacao)).setOnClickListener(m04);
 
+        //lancar pontuacao
+        View.OnClickListener m05 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, Avaliacao.class);
+                //myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+        };
 
+        ((ImageButton) findViewById(R.id.imgRealizarAvaliacao)).setOnClickListener(m05);
+        ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(m05);
 
     }
 }
