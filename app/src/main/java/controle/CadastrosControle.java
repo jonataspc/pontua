@@ -92,9 +92,6 @@ public class CadastrosControle {
         return daoEntidade.listar(nomePesquisa);
     }
 
-//    public List<EntidadeVO> listarEntidadePorEvento(EventoVO ev) throws Exception {
-//        return daoEntidade.listarPorEvento(ev);
-//    }
 
     public boolean excluirEntidade(EntidadeVO o) throws Exception {
         return daoEntidade.excluir(o);
@@ -219,6 +216,16 @@ public class CadastrosControle {
     public boolean existeRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
         return daoRelEntidadeEvento.existeItem(o);
     }
+
+    public List<AreaVO> listarAreasPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
+        return daoRelEntidadeEvento.listarAreasPendentesPorRelEntidadeEvento(o);
+    }
+
+    public List<ItemInspecaoVO> listarItensPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a) throws Exception {
+        return daoRelEntidadeEvento.listarItensPendentesPorRelEntidadeEvento(o, a);
+    }
+
+
 
 
     //RelItemInspecaoEvento

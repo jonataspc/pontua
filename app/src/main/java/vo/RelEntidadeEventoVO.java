@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by Jonatas on 25/09/2016.
@@ -39,7 +40,7 @@ public class RelEntidadeEventoVO implements Serializable {
 
     @Override
     public String toString() {
-        return this.evento.getNome() + " - " + this.entidade.getNome() ;
+        return this.entidade.getNome() ;
     }
 
 }

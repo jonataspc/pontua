@@ -16,19 +16,22 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
+import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.RelEntidadeEventoVO;
 import vo.UsuarioVO;
 
 public class Avaliacao extends AppCompatActivity {
 
-/*
     ProgressDialog progress;
 
     @Override
@@ -63,13 +66,12 @@ public class Avaliacao extends AppCompatActivity {
         }
     }
 
-    private String TXT_MSG_SELECIONE = "Selecione...";
+    private String TXT_MSG_SELECIONE = "[Selecione]";
     private String TXT_AREA_QUALQUER = "[Qualquer]";
 
     private EventoVO _eventoAtual = null;
     private EntidadeVO _entidadeAtual = null;
     private ItemInspecaoVO _itemInspecaoAtual = null;
-    private UsuarioVO _usuarioAtual = null;
 
     Bundle b=null;
 
@@ -77,7 +79,9 @@ public class Avaliacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avaliacao);
-getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle("Avaliação");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
         txtPontuacao.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10, 2)});
@@ -88,16 +92,16 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //recupera usuario
         b = getIntent().getExtras();
 
-        if(b==null){
-            finish();
-        }
+//        if(b==null){
+//            finish();
+//        }
 
         final Button btnLancar = (Button) findViewById(R.id.btnLancar);
         btnLancar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                lancarPontuacao();
+                // lancarPontuacao(); TODO
             }
 
         });
@@ -105,10 +109,6 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //carrega eventos em spinner
         AsyncTask cEt = new carregarEventosTask().execute("");
-
-        //obtem o usuario
-        AsyncTask oUsTask =  new obterUsuarioPorIdTask().execute(new Integer[]{b.getInt("id") });
-
     }
 
     void resetaUi() {
@@ -125,10 +125,6 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //disable btn
         final Button btnLancar = (Button) findViewById(R.id.btnLancar);
         btnLancar.setEnabled(false);
-
-
-
-
     }
 
     class carregarEventosTask extends AsyncTask<String, Integer, List> {
@@ -167,8 +163,8 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             newItem.setId(-1);
             result.add(0, newItem);
 
-           */
-/*
+
+            /*
            List<EventoVO> lista = result;
 
            String[] items = new String[lista.size()+1];
@@ -181,8 +177,8 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             for (EventoVO item : lista) {
                 items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
                 cont++;
-            }*//*
-
+            }
+*/
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEventos.setAdapter(adapter);
@@ -250,13 +246,13 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         @Override
-        protected List<EntidadeVO> doInBackground(String... param) {
+        protected List<RelEntidadeEventoVO> doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                List<EntidadeVO> lista = cc.listarEntidadePorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                List<RelEntidadeEventoVO> lista = cc.listarRelEntidadeEventoPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
 
                 return lista;
 
@@ -274,14 +270,25 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
 
 
+            //ordena por entidade...
+            Collections.sort (result, new Comparator<RelEntidadeEventoVO>() {
+                public int compare (RelEntidadeEventoVO p1, RelEntidadeEventoVO p2) {
+                    return p1.getEntidade().getNome().compareTo(p2.getEntidade().getNome());
+                }
+            });
+
+
             EntidadeVO newItem = new EntidadeVO();
             newItem.setNome(TXT_MSG_SELECIONE);
             newItem.setId(-1);
-            result.add(0, newItem);
 
-            */
-/*
-            List<EntidadeVO> lista = result;
+            RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+            o.setEntidade(newItem);
+            o.setEvento(_eventoAtual);
+
+            result.add(0, o);
+
+            /*List<RelEntidadeEventoVO> lista = result;
 
             String[] items = new String[lista.size()+1];
 
@@ -290,13 +297,11 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             items[cont] = TXT_MSG_SELECIONE;
             cont++;
 
-            for (EntidadeVO item : lista) {
-                items[cont] = item.getNome();
+            for (RelEntidadeEventoVO item : lista) {
+                items[cont] = item.getEntidade().getNome().toUpperCase().trim();
                 cont++;
             }
-
-            *//*
-
+*/
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEntidades.setAdapter(adapter);
@@ -308,7 +313,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega areas
 
-                    if (((EntidadeVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
+                    if (((RelEntidadeEventoVO) parentView.getSelectedItem()).getEntidade().getNome().equals(TXT_MSG_SELECIONE)) {
                         resetaUi();
 
                         _entidadeAtual = null;
@@ -325,15 +330,12 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
                     } else {
 
-                        _entidadeAtual = (EntidadeVO) parentView.getSelectedItem();
+                        _entidadeAtual = ((RelEntidadeEventoVO) parentView.getSelectedItem()).getEntidade();
                         _itemInspecaoAtual = null;
 
 
                         //carrega areas em spinner
-                        Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-
-                        String[] paramns = new String[]{String.valueOf(((EventoVO) spnEventos.getSelectedItem()).getId())};
-                        new carregarAreasTask().execute(paramns);
+                        new carregarAreasTask().execute("");
 
                     }
 
@@ -361,13 +363,17 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         @Override
-        protected List<String> doInBackground(String... param) {
+        protected List<AreaVO> doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
-                List<String> lista = cc.listarAreas(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                o.setEntidade(_entidadeAtual);
+                o.setEvento(_eventoAtual);
+
+                List<AreaVO> lista = cc.listarAreasPendentesPorRelEntidadeEvento(o);
 
                 return lista;
 
@@ -384,10 +390,14 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             //popula o spinner de areas
             Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
 
+            AreaVO a1 = new AreaVO();
+            a1.setNome(TXT_AREA_QUALQUER);
 
-            result.add(0, TXT_AREA_QUALQUER);
+            AreaVO a2 = new AreaVO();
+            a2.setNome(TXT_MSG_SELECIONE);
 
-            result.add(0, TXT_MSG_SELECIONE);
+            result.add(0, a1);
+            result.add(0, a2);
 
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
@@ -400,7 +410,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega itens
 
-                    if (((String) parentView.getSelectedItem()).equals(TXT_MSG_SELECIONE)) {
+                    if (((AreaVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
                         resetaUi();
 
                         //zera itens
@@ -436,14 +446,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             strArea = null;
         }
 
-
-        String[] paramns = new String[]{
-                String.valueOf(_eventoAtual.getId()),
-                String.valueOf(_entidadeAtual.getId()),
-                strArea
-        };
-
-        new carregarItensTask().execute(paramns);
+        new carregarItensTask().execute(strArea);
 
     }
 
@@ -462,11 +465,18 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             try {
 
-                List<ItemInspecaoVO> lista = cc.listarItemInspecaoPendentesPorEventoEntidadeArea(
-                        cc.obterEventoPorId(Integer.parseInt(param[0])),
-                        cc.obterEntidadePorId(Integer.parseInt(param[1])),
-                        param[2]
-                );
+                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                o.setEntidade(_entidadeAtual);
+                o.setEvento(_eventoAtual);
+
+                AreaVO area = null;
+
+                //só manda area caso nao seja QUALQUER
+                if(param[0] != null){
+                    area = cc.obterAreaPorNome(param[0]);
+                }
+
+                List<ItemInspecaoVO> lista = cc.listarItensPendentesPorRelEntidadeEvento(o, area);
 
                 return lista;
 
@@ -484,10 +494,8 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             Spinner spnItens = (Spinner) findViewById(R.id.spnItens);
 
 
-            */
-/*
             List<ItemInspecaoVO> lista = result;
-
+/*
             String[] items = new String[lista.size()];
 
             int cont = 0;
@@ -496,9 +504,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 items[cont] = item.getNome() ;
                 cont++;
             }
-            *//*
-
-
+*/
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnItens.setAdapter(adapter);
@@ -515,9 +521,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
                     final Button btnLancar = (Button) findViewById(R.id.btnLancar);
 
-
                     _itemInspecaoAtual = item;
-
 
                     //habilita campos
 
@@ -529,13 +533,11 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     txtPontuacao.setText("");
                     txtPontuacao.setEnabled(true);
 
-                    //disable btn
+                    //enable btn
                     btnLancar.setEnabled(true);
 
-
-                    //carrega detalhes do item...
-                    */
 /*
+                    //carrega detalhes do item...
                         Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
                         Spinner spnAreas= (Spinner) findViewById(R.id.spnAreas);
 
@@ -543,10 +545,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                                 spnAreas.getSelectedItem().toString()};
 
                         new carregarItensTask().execute(paramns);
-
-                        *//*
-
-
+  */
                 }
 
                 @Override
@@ -562,11 +561,12 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
+/*
     void lancarPontuacao() {
 
         //valida se spinners estao selecionados
         if (_eventoAtual==null || _entidadeAtual==null || _itemInspecaoAtual==null) {
-            Toast.makeText(getApplicationContext(), "Selecione um evento, entidade e item a pontuar!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Selecione um evento, entidade e ítem a pontuar!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -607,42 +607,6 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         new efetuarLancamentoTask().execute(paramns);
 
-    }
-
-
-
-    class obterUsuarioPorIdTask extends AsyncTask<Integer, Integer, List> {
-
-        @Override
-        protected List<UsuarioVO> doInBackground(Integer... param) {
-
-            CadastrosControle cc = new CadastrosControle();
-
-            try {
-
-                List<UsuarioVO> lista = new ArrayList<UsuarioVO>(0);
-                lista.add(cc.obterUsuarioPorId(param[0]));
-
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List result) {
-
-            if(result==null || result.size()==0){
-                _usuarioAtual=null;
-            }else{
-                _usuarioAtual = (UsuarioVO) result.get(0);
-            }
-
-
-        }
     }
 
     class efetuarLancamentoTask extends AsyncTask<AvaliacaoVO, Integer, Boolean> {
@@ -694,7 +658,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
     }
-
 */
+
 
 }

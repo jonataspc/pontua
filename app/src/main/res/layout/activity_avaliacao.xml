@@ -19,21 +19,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Realizar Avaliação"
-            android:id="@+id/tvwTitle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Evento:"
             android:id="@+id/tvwEvento"
             android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="1dp" />
 
         <Spinner
             android:id="@+id/spnEventos"
@@ -114,44 +105,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Pontuação Mínima:  "
-                android:id="@+id/tvwpontMinima"
+                android:id="@+id/lblInstrucoes"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="5dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
-                android:id="@+id/tvwVlrPontMinima"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linLayPontMaxima"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/linLayPontMinima">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Pontuação Máxima: "
-                android:id="@+id/tvwpontMaxima"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
-                android:id="@+id/tvwVlrPontMaxima"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp" />
         </LinearLayout>
 
 
@@ -164,7 +122,7 @@
             android:textSize="20sp"
             android:maxLines="1"
             android:maxLength="20"
-            android:layout_below="@+id/linLayPontMaxima"
+            android:layout_below="@+id/linLayPontMinima"
             android:layout_alignParentStart="true"
             android:layout_marginTop="5dp"
             android:background="#e3e3e3">
@@ -187,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:layout_alignParentRight="true"
-                android:id="@+id/edtPontuacao"
+                android:id="@+id/txtPontuacao"
                 android:layout_gravity="center"
                 android:inputType="numberDecimal"
                 android:layout_marginRight="5dp"
@@ -195,10 +153,10 @@
         </RelativeLayout>
 
         <Button
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pontuar"
-            android:id="@+id/btnPontuar"
+            android:id="@+id/btnLancar"
             android:layout_below="@+id/relLayPontLancar"
             android:layout_alignEnd="@+id/relLayPontLancar"
             android:layout_marginTop="10dp"/>
