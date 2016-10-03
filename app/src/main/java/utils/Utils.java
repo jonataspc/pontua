@@ -5,13 +5,11 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import vo.UsuarioVO;
+
 public class Utils {
 
-
-    public static Integer idUsuario;
-    public static String nomeUsuario = null;
-    public static String perfilUsuario = null;
-
+    public static UsuarioVO usuarioCorrente=null;
 
     /**
      * Retorna double arredondado em 2 casas decimais

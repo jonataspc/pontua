@@ -318,10 +318,7 @@ public class Login extends AppCompatActivity {
 //                    b.putInt("id_entidade", result.getEntidade().getId());
 //                }
 //
-
-                Utils.idUsuario = result.getId();
-                Utils.nomeUsuario = result.getNome();
-                Utils.perfilUsuario = result.getNivelAcesso();
+                Utils.usuarioCorrente = result;
 
                 myIntent.putExtras(b); //Put your id to your next Intent
                 startActivity(myIntent);

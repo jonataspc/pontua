@@ -199,14 +199,10 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
 
             salvarTask oSalvarTask = new salvarTask();
 
-
-            UsuarioVO usuario = new UsuarioVO();
-            usuario.setId(Utils.idUsuario);
-
             EventoVO o = new EventoVO();
             o.setNome(txtNovoEvento.getText().toString().trim());
             o.setDataHoraCriacao(new Date());
-            o.setUsuario(usuario);
+            o.setUsuario(Utils.usuarioCorrente);
 
             if(b.getString("registro") != null) {
                 o.setId( Integer.parseInt(b.getString("registro")));

@@ -116,12 +116,12 @@ finish();
 
 
 
-        ((TextView) findViewById(R.id.txtUsuario)).setText(Utils.nomeUsuario.toUpperCase());
+        ((TextView) findViewById(R.id.txtUsuario)).setText(Utils.usuarioCorrente.getNome().toUpperCase());
 
 
         String perfil=null;
 
-        switch (Utils.perfilUsuario){
+        switch (Utils.usuarioCorrente.getNivelAcesso()){
             case "ADM":
                 perfil = "Administrador";
                 break;
