@@ -67,7 +67,7 @@ public class Avaliacao extends AppCompatActivity {
     }
 
     private String TXT_MSG_SELECIONE = "[Selecione]";
-    private String TXT_AREA_QUALQUER = "[Qualquer]";
+    private String TXT_AREA_QUALQUER = "[Todas]";
 
     private EventoVO _eventoAtual = null;
     private EntidadeVO _entidadeAtual = null;

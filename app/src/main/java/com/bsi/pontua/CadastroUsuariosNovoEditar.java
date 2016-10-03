@@ -41,7 +41,6 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
             }
         });
 
-        btnCadastrar.setText("Incluir usuário");
         setTitle("Incluir usuário");
 
 
@@ -60,7 +59,6 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
             try {
 
-                btnCadastrar.setText("Salvar alterações");
                 setTitle("Editar usuário");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
