@@ -29,7 +29,7 @@ public class RegrasNegocioItemInspecao {
 
 //        5.5.2. [RN02] Não é permitido duplicar nomes de Itens de pontuação;
             if (daoItemInspecao.existeItemInspecao(i.getNome())) {
-                throw new Exception("Nome de ítem já existente");
+                throw new Exception("Nome de item já existente");
             }
         }
 

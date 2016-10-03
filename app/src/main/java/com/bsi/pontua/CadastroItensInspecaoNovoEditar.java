@@ -104,7 +104,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             }
         });
 
-        setTitle("Incluir ítem de pontuação");
+        setTitle("Incluir item de pontuação");
 
 
 //        //carrega eventos em spinner
@@ -141,7 +141,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             try {
 
-                setTitle("Editar ítem de pontuação");
+                setTitle("Editar item de pontuação");
                 String[] paramns = new String[]{registro};
                 new carregarRegistroTask().execute(paramns );
 

@@ -225,7 +225,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 /** Creating another textview **//*
 
         TextView ncol3 = new TextView(this);
-        ncol3.setText("Ítem");
+        ncol3.setText("Item");
         ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol3.setPadding(5, 5, 15, 0);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);

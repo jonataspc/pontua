@@ -566,7 +566,7 @@ public class Avaliacao extends AppCompatActivity {
 
         //valida se spinners estao selecionados
         if (_eventoAtual==null || _entidadeAtual==null || _itemInspecaoAtual==null) {
-            Toast.makeText(getApplicationContext(), "Selecione um evento, entidade e ítem a pontuar!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Selecione um evento, entidade e item a pontuar!", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -24,7 +24,7 @@
             android:layout_marginLeft="0dp"
             android:maxLines="1"
             android:singleLine="true"
-            android:hint="Nome do ítem"
+            android:hint="Nome do Item"
             android:maxLength="30"
             android:layout_marginTop="5dp"
             android:layout_alignParentStart="true" />
