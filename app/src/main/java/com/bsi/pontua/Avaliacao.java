@@ -1,6 +1,7 @@
 package com.bsi.pontua;
 
 import android.app.ProgressDialog;
+import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,6 +76,8 @@ public class Avaliacao extends AppCompatActivity {
     private EventoVO _eventoAtual = null;
     private EntidadeVO _entidadeAtual = null;
     private ItemInspecaoVO _itemInspecaoAtual = null;
+
+    private AreaVO areaSelecionadaNoLancamento = null;
 
     Bundle b=null;
 
@@ -246,7 +249,7 @@ public class Avaliacao extends AppCompatActivity {
 
             try {
 
-                List<RelEntidadeEventoVO> lista = cc.listarRelEntidadeEventoPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                List<RelEntidadeEventoVO> lista = cc.listarRelEntidadesPendentesPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
 
                 return lista;
 
@@ -277,16 +280,18 @@ public class Avaliacao extends AppCompatActivity {
                 }
             });
 
+            if(result.size()!=0){
+                EntidadeVO newItem = new EntidadeVO();
+                newItem.setNome(TXT_MSG_SELECIONE);
+                newItem.setId(-1);
 
-            EntidadeVO newItem = new EntidadeVO();
-            newItem.setNome(TXT_MSG_SELECIONE);
-            newItem.setId(-1);
+                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                o.setEntidade(newItem);
+                o.setEvento(_eventoAtual);
 
-            RelEntidadeEventoVO o = new RelEntidadeEventoVO();
-            o.setEntidade(newItem);
-            o.setEvento(_eventoAtual);
+                result.add(0, o);
+            }
 
-            result.add(0, o);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEntidades.setAdapter(adapter);
@@ -383,15 +388,29 @@ public class Avaliacao extends AppCompatActivity {
                 }
             });
 
-            AreaVO a1 = new AreaVO();
-            a1.setNome(TXT_AREA_QUALQUER);
+            //somente adiciona caso existam itens validos..
 
-            AreaVO a2 = new AreaVO();
-            a2.setNome(TXT_MSG_SELECIONE);
+            if(result.size()!=0){
+                AreaVO a1 = new AreaVO();
+                a1.setNome(TXT_AREA_QUALQUER);
 
-            result.add(0, a1);
-            result.add(0, a2);
+                AreaVO a2 = new AreaVO();
+                a2.setNome(TXT_MSG_SELECIONE);
 
+                result.add(0, a1);
+                result.add(0, a2);
+            } else {
+                //limpa itens
+                //zera itens
+                ((Spinner) findViewById(R.id.spnItens)).setAdapter(new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+                resetaUi();
+
+                //recarrega entidades
+                //TODO
+                //carrega entidades (ainda pendentes) em spinner
+                String[] paramns = new String[]{String.valueOf(_eventoAtual.getId())};
+                new carregarEntidadesTask().execute(paramns);
+            }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnAreas.setAdapter(adapter);
@@ -422,6 +441,27 @@ public class Avaliacao extends AppCompatActivity {
                     resetaUi();
                 }
             });
+
+
+            //pos avaliacao, recarregou areas pendentes
+            if(areaSelecionadaNoLancamento != null){
+
+                //encontra mesmo item...
+                for(AreaVO i : (List<AreaVO>) result){
+
+                    if(i.getNome().equals(areaSelecionadaNoLancamento.getNome())){
+                        int pos = ((ArrayAdapter) spnAreas.getAdapter()).getPosition(i);
+
+                        if(pos>=0) {
+                            spnAreas.setSelection(pos);
+                        }
+
+                    }
+                }
+
+                //reseta
+                areaSelecionadaNoLancamento = null;
+            }
 
 
             if (progress != null && progress.isShowing()) {
@@ -557,24 +597,9 @@ public class Avaliacao extends AppCompatActivity {
             return;
         }
 
-        //valida pontuacao maxima/minima
-        if( Double.parseDouble(txtPontuacao.getText().toString()) < Double.parseDouble(_itemInspecaoAtual.getPontuacaoMinima().toString())){
-            Toast.makeText(getApplicationContext(), "Pontuação lançada deve ser superior/igual à mínima!", Toast.LENGTH_LONG).show();
-            txtPontuacao.requestFocus();
-            return;
-        }
-
-        if( Double.parseDouble(txtPontuacao.getText().toString()) > Double.parseDouble(_itemInspecaoAtual.getPontuacaoMaxima().toString())){
-            Toast.makeText(getApplicationContext(), "Pontuação lançada deve ser inferior/igual à máxima!", Toast.LENGTH_LONG).show();
-            txtPontuacao.requestFocus();
-            return;
-        }
-
-
 
 
         //efetua lancamento
-
         RelEntidadeEventoVO oRelEntidadeEvento = new RelEntidadeEventoVO();
         oRelEntidadeEvento.setEvento(_eventoAtual);
         oRelEntidadeEvento.setEntidade(_entidadeAtual);
@@ -618,9 +643,6 @@ public class Avaliacao extends AppCompatActivity {
 
             try {
 
-                //TODO:
-                // Definir RELAC por ID!
-
                 Boolean retorno;
                 retorno = cc.inserirAvaliacao(this.oAvaliacaoVO);
                 return retorno ;
@@ -628,25 +650,41 @@ public class Avaliacao extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 errorMsg = e.getMessage();
+                return null;
             }
-
-            return null;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
 
-            if (progress != null && progress.isShowing()) {
-                progress.dismiss();
-            }
+//            if (progress != null && progress.isShowing()) {
+//                progress.dismiss();
+//            }
 
-            if(result){
-                resetaUi();
-                atualizarItens();
+            if(result==null || result==false){
+
+                if (progress != null && progress.isShowing()) {
+                    progress.dismiss();
+                }
+
+                Toast.makeText(getApplicationContext(), errorMsg , Toast.LENGTH_LONG).show();
+                final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
+                txtPontuacao.requestFocus();
+            }else{
 
                 Toast.makeText(getApplicationContext(), "Avaliação realizada com sucesso", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a avaliação: " + errorMsg , Toast.LENGTH_LONG).show();
+                resetaUi();
+
+
+                //atualiza areas e itens pendentes
+
+                areaSelecionadaNoLancamento = (AreaVO) ((Spinner) findViewById(R.id.spnAreas)).getSelectedItem();
+
+
+                new carregarAreasTask().execute("");
+                atualizarItens();
+
+
             }
 
 
