@@ -158,6 +158,14 @@ public class Avaliacao extends AppCompatActivity {
             //popula o spinner
             Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
 
+
+            //ordena
+            Collections.sort (result, new Comparator<EventoVO>() {
+                public int compare (EventoVO p1, EventoVO p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+
             EventoVO newItem = new EventoVO();
             newItem.setNome(TXT_MSG_SELECIONE);
             newItem.setId(-1);
@@ -396,6 +404,14 @@ public class Avaliacao extends AppCompatActivity {
             //popula o spinner de areas
             Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
 
+
+            //ordena
+            Collections.sort (result, new Comparator<AreaVO>() {
+                public int compare (AreaVO p1, AreaVO p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+
             AreaVO a1 = new AreaVO();
             a1.setNome(TXT_AREA_QUALQUER);
 
@@ -498,6 +514,13 @@ public class Avaliacao extends AppCompatActivity {
 
             //popula o spinner de areas
             Spinner spnItens = (Spinner) findViewById(R.id.spnItens);
+
+            //ordena
+            Collections.sort (result, new Comparator<ItemInspecaoVO>() {
+                public int compare (ItemInspecaoVO p1, ItemInspecaoVO p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
 
 
             List<ItemInspecaoVO> lista = result;
