@@ -357,6 +357,39 @@ public class AvaliacaoDAO {
             Connection conn;
             conn = Conexao.obterConexao();
 
+            if(c.getRelEntidadeEvento().getId()==0){
+                //define id
+                PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_entidade_evento WHERE id_entidade=? AND id_evento=?");
+                st.setInt(1, c.getRelEntidadeEvento().getEntidade().getId());
+                st.setInt(2, c.getRelEntidadeEvento().getEvento().getId());
+
+                ResultSet resultado = st.executeQuery();
+
+                while (resultado.next()) {
+                    c.getRelEntidadeEvento().setId(resultado.getInt("id"));
+                }
+
+                resultado.close();
+                st.close();
+            }
+
+            if(c.getRelItemInspecaoEvento().getId()==0){
+                //define id
+                PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_item_inspecao_evento WHERE id_item_inspecao=? AND id_evento=?");
+                st.setInt(1, c.getRelItemInspecaoEvento().getItemInspecao().getId());
+                st.setInt(2, c.getRelItemInspecaoEvento().getEvento().getId());
+
+                ResultSet resultado = st.executeQuery();
+
+                while (resultado.next()) {
+                    c.getRelItemInspecaoEvento().setId(resultado.getInt("id"));
+                }
+
+                resultado.close();
+                st.close();
+            }
+
+
             PreparedStatement st = conn.prepareStatement("INSERT INTO avaliacao (id_rel_entidade_evento, id_rel_item_inspecao_evento, id_usuario, pontuacao, metodo, data_hora) VALUES (?, ?, ?, ?, ?, NOW()) ;", Statement.RETURN_GENERATED_KEYS);
 
             st.setInt(1, c.getRelEntidadeEvento().getId());
