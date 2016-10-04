@@ -252,7 +252,7 @@ public class CadastrosControle {
 
 
     //Avaliacao
-    public boolean inserirAvaliacao(AvaliacaoVO i) {
+    public boolean inserirAvaliacao(AvaliacaoVO i) throws Exception {
         return daoAvaliacao.incluir(i);
     }
 
