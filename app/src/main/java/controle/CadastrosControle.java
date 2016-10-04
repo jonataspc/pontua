@@ -3,6 +3,7 @@ package controle;
 import java.util.List;
 
 import controle.regrasNegocios.RegrasNegocioArea;
+import controle.regrasNegocios.RegrasNegocioAvaliacao;
 import controle.regrasNegocios.RegrasNegocioEntidade;
 import controle.regrasNegocios.RegrasNegocioEvento;
 import controle.regrasNegocios.RegrasNegocioItemInspecao;
@@ -209,6 +210,12 @@ public class CadastrosControle {
         return daoRelEntidadeEvento.listarPorEvento(evento);
     }
 
+    public List<RelEntidadeEventoVO> listarRelEntidadesPendentesPorEvento(EventoVO evento) throws Exception {
+        return daoRelEntidadeEvento.listarEntidadesPendentesPorEvento(evento);
+    }
+
+
+
     public RelEntidadeEventoVO obterRelEntidadeEventoPorCodigo(int cod) throws Exception {
         return daoRelEntidadeEvento.obterPorCodigo(cod);
     }
@@ -253,6 +260,7 @@ public class CadastrosControle {
 
     //Avaliacao
     public boolean inserirAvaliacao(AvaliacaoVO i) throws Exception {
+        RegrasNegocioAvaliacao.validarAvaliacao(i, true);
         return daoAvaliacao.incluir(i);
     }
 

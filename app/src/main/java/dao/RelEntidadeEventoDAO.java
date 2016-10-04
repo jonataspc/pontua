@@ -121,6 +121,56 @@ public class RelEntidadeEventoDAO {
 
     }
 
+
+    public List<RelEntidadeEventoVO> listarEntidadesPendentesPorEvento(EventoVO evento) throws SQLException {
+        try {
+
+            Connection conn = Conexao.obterConexao();
+
+            PreparedStatement st;
+
+            String strSQL = "SELECT ree.id, ree.id_entidade FROM rel_entidade_evento ree " +
+                    " " +
+                    "JOIN rel_item_inspecao_evento rii USING(id_evento) " +
+                    "JOIN item_inspecao ii ON ii.id = rii.id_item_inspecao " +
+                    "JOIN `area` a ON a.id = ii.id_area " +
+                    "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
+                    " " +
+                    "WHERE ree.id_evento=? " +
+                    "AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ " +
+                    "GROUP BY ree.id_entidade ORDER BY a.nome";
+
+
+            st = conn.prepareStatement(strSQL);
+            st.setInt(1, evento.getId());
+
+
+            ResultSet resultado = st.executeQuery();
+
+            EntidadeDAO entidadeDAO = new EntidadeDAO();
+            EventoDAO eventoDAO = new EventoDAO();
+
+            List<RelEntidadeEventoVO> lista = new ArrayList<RelEntidadeEventoVO>(0);
+            while (resultado.next()) {
+
+                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                o.setId(resultado.getInt("id"));
+                o.setEntidade( entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")) );
+                o.setEvento(evento);
+                lista.add(o);
+            }
+
+            conn.close();
+            return lista;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
+
     public List<AreaVO> listarAreasPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o) throws SQLException {
         try {
             //retorna areas pendentes para uma entidade/evento
