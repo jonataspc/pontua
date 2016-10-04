@@ -233,7 +233,7 @@ public class CadastroItensInspecao extends AppCompatActivity {
 //* Creating another textview *
 
         TextView ncol2 = new TextView(this);
-        ncol2.setText("Área");
+        ncol2.setText("Nome");
         ncol2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol2.setPadding(50, 5, 5, 0);
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -242,7 +242,7 @@ public class CadastroItensInspecao extends AppCompatActivity {
 //* Creating another textview *
 
         TextView ncol3 = new TextView(this);
-        ncol3.setText("Nome");
+        ncol3.setText("Área");
         ncol3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol3.setPadding(50, 5, 5, 0);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -337,14 +337,14 @@ public class CadastroItensInspecao extends AppCompatActivity {
 //            tr.addView(col1);
 
             col2 = new TextView(this);
-            col2.setText(e.getArea().getNome());
+            col2.setText(e.getNome());
             col2.setTextColor(Color.BLACK);
             col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col2.setPadding(50, 5, 5, 5);
             tr.addView(col2);
 
             col3 = new TextView(this);
-            col3.setText(e.getNome());
+            col3.setText(e.getArea().getNome());
             col3.setTextColor(Color.BLACK);
             col3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col3.setPadding(50, 5, 5, 5);
