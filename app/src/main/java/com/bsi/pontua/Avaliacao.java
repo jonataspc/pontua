@@ -1,16 +1,21 @@
 package com.bsi.pontua;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +96,37 @@ public class Avaliacao extends AppCompatActivity {
 
         final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
         txtPontuacao.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10, 2)});
+
+
+        //scrolla act todo para cima qdo aparecer o keyboard
+        final View activityRootView = getWindow().getDecorView().getRootView();
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int heightView = activityRootView.getHeight();
+                        int widthView = activityRootView.getWidth();
+                        if (1.0 * widthView / heightView > 3) {
+                            //Make changes for Keyboard not visible
+                        } else {
+                            //Make changes for keyboard visible
+
+                            final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
+                            scrollview.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+                                }
+                            }, 1);
+
+                        }
+                    }
+                });
+
+
+
+
+
 
 
         resetaUi();
@@ -384,6 +420,10 @@ public class Avaliacao extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List result) {
+
+            if(result==null){
+                return;
+            }
 
             //popula o spinner de areas
             Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
