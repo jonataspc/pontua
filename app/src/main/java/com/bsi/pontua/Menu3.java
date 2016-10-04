@@ -57,7 +57,8 @@ public class Menu3 extends AppCompatActivity {
 
 
             case R.id.action_exit:
-finish();
+                finish();
+                return true;
 
             case R.id.action_about:
                     //sobre
