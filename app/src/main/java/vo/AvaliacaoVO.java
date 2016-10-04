@@ -6,31 +6,30 @@ import java.util.Date;
 
 public class AvaliacaoVO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1001L;
 
 
     private int id;
-    private EntidadeVO entidade;
-    private ItemInspecaoVO itemInspecao;
+    private RelEntidadeEventoVO relEntidadeEvento;
+    private RelItemInspecaoEventoVO relItemInspecaoEvento;
     private UsuarioVO usuario;
     private BigDecimal pontuacao;
-    private int forma_automatica;
+    private EnumMetodoAvaliacao metodo;
     private Date dataHora;
 
-    public Date getDataHora() {
-        return dataHora;
-    }
 
-    public void setDataHora(Date dataHora) {
-        this.dataHora = dataHora;
-    }
 
-    public int getForma_automatica() {
-        return forma_automatica;
-    }
-
-    public void setForma_automatica(int forma_automatica) {
-        this.forma_automatica = forma_automatica;
+    @Override
+    public String toString() {
+        return "AvaliacaoVO{" +
+                "dataHora=" + dataHora +
+                ", id=" + id +
+                ", relEntidadeEvento=" + relEntidadeEvento.getEntidade().getNome() + "/" + relEntidadeEvento.getEvento().getNome() +
+                ", relItemInspecaoEvento=" + relItemInspecaoEvento.getItemInspecao().getNome() + "/" + relItemInspecaoEvento.getEvento().getNome() +
+                ", usuario=" + usuario +
+                ", pontuacao=" + pontuacao +
+                ", metodo=" + metodo.toString() +
+                '}';
     }
 
     public int getId() {
@@ -41,20 +40,20 @@ public class AvaliacaoVO implements Serializable {
         this.id = id;
     }
 
-    public EntidadeVO getEntidade() {
-        return entidade;
+    public RelEntidadeEventoVO getRelEntidadeEvento() {
+        return relEntidadeEvento;
     }
 
-    public void setEntidade(EntidadeVO entidade) {
-        this.entidade = entidade;
+    public void setRelEntidadeEvento(RelEntidadeEventoVO relEntidadeEvento) {
+        this.relEntidadeEvento = relEntidadeEvento;
     }
 
-    public ItemInspecaoVO getItemInspecao() {
-        return itemInspecao;
+    public RelItemInspecaoEventoVO getRelItemInspecaoEvento() {
+        return relItemInspecaoEvento;
     }
 
-    public void setItemInspecao(ItemInspecaoVO itemInspecao) {
-        this.itemInspecao = itemInspecao;
+    public void setRelItemInspecaoEvento(RelItemInspecaoEventoVO relItemInspecaoEvento) {
+        this.relItemInspecaoEvento = relItemInspecaoEvento;
     }
 
     public UsuarioVO getUsuario() {
@@ -69,23 +68,28 @@ public class AvaliacaoVO implements Serializable {
         return pontuacao;
     }
 
-    @Override
-    public String toString() {
-        return "AvaliacaoVO{" +
-                "dataHora=" + dataHora +
-                ", id=" + id +
-                ", entidade=" + entidade +
-                ", itemInspecao=" + itemInspecao +
-                ", usuario=" + usuario +
-                ", pontuacao=" + pontuacao +
-                ", forma_automatica=" + forma_automatica +
-                '}';
-    }
-
     public void setPontuacao(BigDecimal pontuacao) {
         this.pontuacao = pontuacao;
     }
 
+    public Date getDataHora() {
+        return dataHora;
+    }
 
+    public void setDataHora(Date dataHora) {
+        this.dataHora = dataHora;
+    }
 
+    public EnumMetodoAvaliacao getMetodo() {
+        return metodo;
+    }
+
+    public void setMetodo(EnumMetodoAvaliacao metodo) {
+        this.metodo = metodo;
+    }
+
+    public enum EnumMetodoAvaliacao {
+        Manual,
+        NFC
+    }
 }
