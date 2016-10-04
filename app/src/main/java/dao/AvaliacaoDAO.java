@@ -357,7 +357,7 @@ public class AvaliacaoDAO {
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("INSERT INTO avaliacao (id_rel_entidade_evento, id_rel_item_inspecao_evento, id_usuario, pontuacao, metodo, data_hora) VALUES (?, ?, ?, ?, ?, ?, NOW()) ;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO avaliacao (id_rel_entidade_evento, id_rel_item_inspecao_evento, id_usuario, pontuacao, metodo, data_hora) VALUES (?, ?, ?, ?, ?, NOW()) ;", Statement.RETURN_GENERATED_KEYS);
 
             st.setInt(1, c.getRelEntidadeEvento().getId());
             st.setInt(2, c.getRelItemInspecaoEvento().getId());

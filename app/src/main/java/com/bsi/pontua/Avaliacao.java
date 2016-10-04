@@ -18,16 +18,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
+import utils.Utils;
 import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.RelEntidadeEventoVO;
+import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
 public class Avaliacao extends AppCompatActivity {
@@ -101,7 +104,7 @@ public class Avaliacao extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // lancarPontuacao(); TODO
+                lancarPontuacao();
             }
 
         });
@@ -537,7 +540,6 @@ public class Avaliacao extends AppCompatActivity {
         }
     }
 
-/*
     void lancarPontuacao() {
 
         //valida se spinners estao selecionados
@@ -572,20 +574,36 @@ public class Avaliacao extends AppCompatActivity {
 
 
         //efetua lancamento
-        AvaliacaoVO[] paramns = new AvaliacaoVO[1];
 
-        paramns[0] = new AvaliacaoVO();
-        paramns[0].setEntidade(_entidadeAtual);
-        paramns[0].setItemInspecao(_itemInspecaoAtual);
-        paramns[0].setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
-        paramns[0].setForma_automatica(0);
-        paramns[0].setUsuario(_usuarioAtual);
+        RelEntidadeEventoVO oRelEntidadeEvento = new RelEntidadeEventoVO();
+        oRelEntidadeEvento.setEvento(_eventoAtual);
+        oRelEntidadeEvento.setEntidade(_entidadeAtual);
 
-        new efetuarLancamentoTask().execute(paramns);
+
+        RelItemInspecaoEventoVO oRelItemInspecaoEvento = new RelItemInspecaoEventoVO();
+        oRelItemInspecaoEvento.setEvento(_eventoAtual);
+        oRelItemInspecaoEvento.setItemInspecao(_itemInspecaoAtual);
+
+
+        AvaliacaoVO o = new AvaliacaoVO();
+        o.setMetodo(AvaliacaoVO.EnumMetodoAvaliacao.Manual);
+        o.setDataHora(new Date());
+        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
+        o.setRelEntidadeEvento(oRelEntidadeEvento);
+        o.setRelItemInspecaoEvento(oRelItemInspecaoEvento);
+        o.setUsuario(Utils.usuarioCorrente);
+
+        //start
+        efetuarLancamentoTask task = new efetuarLancamentoTask();
+        task.oAvaliacaoVO = o;
+        task.execute("");
 
     }
 
-    class efetuarLancamentoTask extends AsyncTask<AvaliacaoVO, Integer, Boolean> {
+    class efetuarLancamentoTask extends AsyncTask<String, Integer, Boolean> {
+
+        public AvaliacaoVO oAvaliacaoVO;
+        private String errorMsg=null;
 
         @Override
         protected void onPreExecute() {
@@ -594,18 +612,22 @@ public class Avaliacao extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(AvaliacaoVO... param) {
+        protected Boolean doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
 
+                //TODO:
+                // Definir RELAC por ID!
+
                 Boolean retorno;
-                retorno = cc.inserirAvaliacao(param[0]);
+                retorno = cc.inserirAvaliacao(this.oAvaliacaoVO);
                 return retorno ;
 
             } catch (Exception e) {
                 e.printStackTrace();
+                errorMsg = e.getMessage();
             }
 
             return null;
@@ -622,19 +644,14 @@ public class Avaliacao extends AppCompatActivity {
                 resetaUi();
                 atualizarItens();
 
-
                 Toast.makeText(getApplicationContext(), "Avaliação realizada com sucesso", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(getApplicationContext(), "Erro ao realizar a avaliação" , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Erro ao realizar a avaliação: " + errorMsg , Toast.LENGTH_LONG).show();
             }
-
-
-
 
 
         }
     }
-*/
 
 
 }
