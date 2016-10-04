@@ -269,6 +269,12 @@ public class Avaliacao extends AppCompatActivity {
             //popula o spinner
             Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
 
+            if(result==null){
+                if (progress != null && progress.isShowing()) {
+                    progress.dismiss();
+                }
+                return;
+            }
 
             //ordena por entidade...
             Collections.sort (result, new Comparator<RelEntidadeEventoVO>() {
