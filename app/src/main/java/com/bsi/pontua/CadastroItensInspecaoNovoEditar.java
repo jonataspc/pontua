@@ -173,7 +173,7 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 //        @Override
 //        protected List<EventoVO> doInBackground(String... param) {
 //
-//            CadastrosControle cc = new CadastrosControle();
+//            try(CadastrosControle cc = new CadastrosControle()){
 //
 //            try {
 //
@@ -225,18 +225,20 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         @Override
         protected List<AreaVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<AreaVO> lista = cc.listarAreas();
+                    return lista;
 
-                List<AreaVO> lista = cc.listarAreas();
-                return lista;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
+
         }
 
         @Override
@@ -385,26 +387,26 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         @Override
         protected ItemInspecaoVO doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
-            //ConjuntoEntidadeUsuario retorno = new ConjuntoEntidadeUsuario();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    ItemInspecaoVO o = new ItemInspecaoVO();
+                    o = cc.obterItemInspecaoPorId(Integer.parseInt(param[0]));
 
-                ItemInspecaoVO o = new ItemInspecaoVO();
-                o = cc.obterItemInspecaoPorId(Integer.parseInt(param[0]));
+                    //UsuarioVO u = new UsuarioVO();
+                    //u = cc.obterUsuarioPorEntidade(o);
 
-                //UsuarioVO u = new UsuarioVO();
-                //u = cc.obterUsuarioPorEntidade(o);
+                    //retorno.setUsuario(u);
+                    //retorno.setEntidade(o);
+                    return o;//retorno;
 
-                //retorno.setUsuario(u);
-                //retorno.setEntidade(o);
-                return o;//retorno;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
-            }catch (Exception e){
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
 
         }
 
@@ -563,41 +565,43 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
 
             boolean retorno=false;
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
-
-                ItemInspecaoVO o = new ItemInspecaoVO();
-                o.setNome(param[1]);
-             //   o.setEvento(cc.obterEventoPorId(Integer.parseInt(param[2])));
-                o.setArea(  cc.obterAreaPorNome(param[3])   );
-                o.setPontuacaoMinima(new BigDecimal(param[4]));
-                o.setPontuacaoMaxima( new BigDecimal(param[5]));
+                    ItemInspecaoVO o = new ItemInspecaoVO();
+                    o.setNome(param[1]);
+                    //   o.setEvento(cc.obterEventoPorId(Integer.parseInt(param[2])));
+                    o.setArea(  cc.obterAreaPorNome(param[3])   );
+                    o.setPontuacaoMinima(new BigDecimal(param[4]));
+                    o.setPontuacaoMaxima( new BigDecimal(param[5]));
 
 
-                if(param[0] != null){
-                    //editar
-                    o.setId( Integer.parseInt(param[0]));
-                    if(cc.editarItemInspecao(o) ){
-                        retorno=true;
+                    if(param[0] != null){
+                        //editar
+                        o.setId( Integer.parseInt(param[0]));
+                        if(cc.editarItemInspecao(o) ){
+                            retorno=true;
+                        }
                     }
-                }
-                else
-                {
-                    //novo registro
-                    if(cc.inserirItemInspecao(o)){
-                        retorno=true;
+                    else
+                    {
+                        //novo registro
+                        if(cc.inserirItemInspecao(o)){
+                            retorno=true;
+                        }
                     }
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
                 }
 
-
-
-            }catch (Exception e){
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
+                return retorno;
             }
 
-            return retorno;
+
 
 
         }
@@ -649,23 +653,25 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    AreaVO o = new AreaVO();
+                    o.setNome(param[0]);
 
-                AreaVO o = new AreaVO();
-                o.setNome(param[0]);
+                    nomeArea = param[0];
 
-                nomeArea = param[0];
+                    return cc.incluirArea(o);
 
-                return cc.incluirArea(o);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                }
 
-            }catch (Exception e){
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
+                return false;
+
             }
 
-            return false;
 
 
         }

@@ -412,7 +412,7 @@ public class RelatorioRankingRel extends AppCompatActivity {
 //        @Override
 //        protected List<RelRankingVO> doInBackground(String... param) {
 //
-//            CadastrosControle cc = new CadastrosControle();
+//            try(CadastrosControle cc = new CadastrosControle()){
 //
 //            try {
 //

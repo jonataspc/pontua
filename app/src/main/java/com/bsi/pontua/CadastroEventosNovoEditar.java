@@ -120,21 +120,21 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
         @Override
         protected EventoVO doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    EventoVO o = new EventoVO();
 
-                EventoVO o = new EventoVO();
+                    o = cc.obterEventoPorId(Integer.parseInt(param[0]));
 
-                o = cc.obterEventoPorId(Integer.parseInt(param[0]));
+                    return o;
 
-                return o;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
-            }catch (Exception e){
-                e.printStackTrace();
+                return null;
             }
-
-            return null;
 
         }
 
@@ -236,39 +236,41 @@ public class CadastroEventosNovoEditar extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    if(IsEditar){
+                        //editar
 
-                if(IsEditar){
-                    //editar
+                        boolean alterouNomeOriginal=false;
 
-                    boolean alterouNomeOriginal=false;
+                        if(!evento.getNome().toLowerCase().trim().equals(nomeOriginalEdicao.toLowerCase().trim()) ){
+                            alterouNomeOriginal = true;
+                        }
 
-                    if(!evento.getNome().toLowerCase().trim().equals(nomeOriginalEdicao.toLowerCase().trim()) ){
-                        alterouNomeOriginal = true;
+                        if(cc.editarEvento(evento, alterouNomeOriginal) ){
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        //novo registro
+                        if(cc.inserirEvento(evento)){
+                            return true;
+                        }
                     }
 
-                    if(cc.editarEvento(evento, alterouNomeOriginal) ){
-                        return true;
-                    }
+                    return false;
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                    return false;
                 }
-                else
-                {
-                    //novo registro
-                    if(cc.inserirEvento(evento)){
-                        return true;
-                    }
-                }
-
-                return false;
-
-
-            }catch (Exception e){
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
-                return false;
             }
+
+
 
 
 

@@ -17,12 +17,17 @@ import vo.ItemInspecaoVO;
 
 public class ItemInspecaoDAO {
 
+    private Connection conn;
 
+    public ItemInspecaoDAO(Connection conn){
+        this.conn = conn;
+    }
 
     public boolean existeItemInspecao(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -39,7 +44,7 @@ public class ItemInspecaoDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +56,7 @@ public class ItemInspecaoDAO {
     public ItemInspecaoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM item_inspecao WHERE id=?");
             st.setInt(1, codigo);
@@ -60,7 +65,7 @@ public class ItemInspecaoDAO {
 
             ItemInspecaoVO o = new ItemInspecaoVO();
 
-            AreaDAO areaDAO = new AreaDAO();
+            AreaDAO areaDAO = new AreaDAO(conn);
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
@@ -70,7 +75,7 @@ public class ItemInspecaoDAO {
                 o.setPontuacaoMaxima(new BigDecimal(resultado.getDouble("pontuacao_maxima")));
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +87,7 @@ public class ItemInspecaoDAO {
     public List<ItemInspecaoVO> listar(String nomePesquisa) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -95,7 +100,7 @@ public class ItemInspecaoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            AreaDAO areaDAO = new AreaDAO();
+            AreaDAO areaDAO = new AreaDAO(conn);
 
             List<ItemInspecaoVO> lista = new ArrayList<ItemInspecaoVO>(0);
             while (resultado.next()) {
@@ -111,7 +116,7 @@ public class ItemInspecaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -125,8 +130,7 @@ public class ItemInspecaoDAO {
     public boolean incluir(ItemInspecaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO item_inspecao (id_area, nome, pontuacao_minima, pontuacao_maxima) VALUES (?, ?, ?, ?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -142,7 +146,7 @@ public class ItemInspecaoDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -155,8 +159,7 @@ public class ItemInspecaoDAO {
     public boolean editar(ItemInspecaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE item_inspecao SET id_area=?, nome=?, pontuacao_minima=?, pontuacao_maxima =? WHERE id=?");
 
@@ -175,7 +178,7 @@ public class ItemInspecaoDAO {
             st.setInt(5, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -187,15 +190,14 @@ public class ItemInspecaoDAO {
     public boolean excluir(ItemInspecaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM item_inspecao WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -214,7 +216,7 @@ public class ItemInspecaoDAO {
     /*public List<ItemInspecaoVO> listarPendentesPorEventoEntidade(EventoVO evt, EntidadeVO ent, String area) {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -248,7 +250,7 @@ public class ItemInspecaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -262,7 +264,7 @@ public class ItemInspecaoDAO {
     /*public List<ItemInspecaoVO> listarPorEvento(EventoVO evt, String area) {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -296,7 +298,7 @@ public class ItemInspecaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -310,7 +312,7 @@ public class ItemInspecaoDAO {
    /* public List<String> listarAreasPorEvento( EventoVO evt) {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -324,7 +326,7 @@ public class ItemInspecaoDAO {
                 lista.add(resultado.getString("area"));
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();

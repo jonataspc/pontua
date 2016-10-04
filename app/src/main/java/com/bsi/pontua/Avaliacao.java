@@ -144,18 +144,21 @@ public class Avaliacao extends AppCompatActivity {
         @Override
         protected List<EventoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
 
-                List<EventoVO> lista = cc.listarEvento("");
-                return lista;
+                try {
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    List<EventoVO> lista = cc.listarEvento("");
+                    return lista;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
 
-            return null;
         }
 
         @Override
@@ -245,19 +248,21 @@ public class Avaliacao extends AppCompatActivity {
         @Override
         protected List<RelEntidadeEventoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle())
+            {
 
-            try {
+                try {
 
-                List<RelEntidadeEventoVO> lista = cc.listarRelEntidadesPendentesPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                    List<RelEntidadeEventoVO> lista = cc.listarRelEntidadesPendentesPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
 
-                return lista;
+                    return lista;
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
-
-            return null;
         }
 
         @Override
@@ -355,23 +360,26 @@ public class Avaliacao extends AppCompatActivity {
         @Override
         protected List<AreaVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
-                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
-                o.setEntidade(_entidadeAtual);
-                o.setEvento(_eventoAtual);
+                    RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                    o.setEntidade(_entidadeAtual);
+                    o.setEvento(_eventoAtual);
 
-                List<AreaVO> lista = cc.listarAreasPendentesPorRelEntidadeEvento(o);
+                    List<AreaVO> lista = cc.listarAreasPendentesPorRelEntidadeEvento(o);
 
-                return lista;
+                    return lista;
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
 
-            return null;
+
         }
 
         @Override
@@ -494,30 +502,32 @@ public class Avaliacao extends AppCompatActivity {
         @Override
         protected List<ItemInspecaoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    RelEntidadeEventoVO o = new RelEntidadeEventoVO();
+                    o.setEntidade(_entidadeAtual);
+                    o.setEvento(_eventoAtual);
 
-                RelEntidadeEventoVO o = new RelEntidadeEventoVO();
-                o.setEntidade(_entidadeAtual);
-                o.setEvento(_eventoAtual);
+                    AreaVO area = null;
 
-                AreaVO area = null;
+                    //só manda area caso nao seja QUALQUER
+                    if(param[0] != null){
+                        area = cc.obterAreaPorNome(param[0]);
+                    }
 
-                //só manda area caso nao seja QUALQUER
-                if(param[0] != null){
-                    area = cc.obterAreaPorNome(param[0]);
+                    List<ItemInspecaoVO> lista = cc.listarItensPendentesPorRelEntidadeEvento(o, area);
+
+                    return lista;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-                List<ItemInspecaoVO> lista = cc.listarItensPendentesPorRelEntidadeEvento(o, area);
-
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
+
         }
 
         @Override
@@ -639,19 +649,21 @@ public class Avaliacao extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
-                Boolean retorno;
-                retorno = cc.inserirAvaliacao(this.oAvaliacaoVO);
-                return retorno ;
+                    Boolean retorno;
+                    retorno = cc.inserirAvaliacao(this.oAvaliacaoVO);
+                    return retorno ;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorMsg = e.getMessage();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = e.getMessage();
+                    return null;
+                }
             }
+
         }
 
         @Override

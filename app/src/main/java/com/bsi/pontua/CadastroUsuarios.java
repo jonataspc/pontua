@@ -188,15 +188,16 @@ public class CadastroUsuarios extends AppCompatActivity {
         @Override
         protected List<UsuarioVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
-                List<UsuarioVO> lista = cc.listarUsuario("");
-                return lista;
+                    List<UsuarioVO> lista = cc.listarUsuario("");
+                    return lista;
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             return null;
@@ -265,21 +266,23 @@ public class CadastroUsuarios extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    UsuarioVO o = new UsuarioVO();
+                    o.setId(Integer.parseInt(param[0]));
+                    cc.excluirUsuario(o);
 
-                UsuarioVO o = new UsuarioVO();
-                o.setId(Integer.parseInt(param[0]));
-                cc.excluirUsuario(o);
+                    return true;
 
-                return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                return false;
             }
 
-            return false;
+
         }
 
 

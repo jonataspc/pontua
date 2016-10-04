@@ -411,18 +411,19 @@ public class CadastroItensInspecao extends AppCompatActivity {
         @Override
         protected List<ItemInspecaoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<ItemInspecaoVO> lista = cc.listarItemInspecao("");
+                    return lista;
 
-                List<ItemInspecaoVO> lista = cc.listarItemInspecao("");
-                return lista;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
         }
 
         @Override
@@ -452,21 +453,23 @@ public class CadastroItensInspecao extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    ItemInspecaoVO o = new ItemInspecaoVO();
+                    o.setId(Integer.parseInt(param[0]));
+                    cc.excluirItemInspecao(o);
 
-                ItemInspecaoVO o = new ItemInspecaoVO();
-                o.setId(Integer.parseInt(param[0]));
-                cc.excluirItemInspecao(o);
+                    return true;
 
-                return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                return false;
             }
 
-            return false;
+
         }
 
         @Override

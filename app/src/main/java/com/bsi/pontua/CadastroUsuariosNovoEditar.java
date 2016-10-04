@@ -91,21 +91,23 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
         @Override
         protected UsuarioVO doInBackground(String... param) {
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    UsuarioVO o = new UsuarioVO();
 
-                UsuarioVO o = new UsuarioVO();
+                    o = cc.obterUsuarioPorId(Integer.parseInt(param[0]));
 
-                o = cc.obterUsuarioPorId(Integer.parseInt(param[0]));
+                    return o;
 
-                return o;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
-            }catch (Exception e){
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
+
 
         }
 
@@ -265,64 +267,66 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... param) {
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    UsuarioVO o = new UsuarioVO();
+                    o.setEntidade(null);
+                    o.setNome(param[0]);
+                    o.setSenha(param[1]);
 
-                UsuarioVO o = new UsuarioVO();
-                o.setEntidade(null);
-                o.setNome(param[0]);
-                o.setSenha(param[1]);
+                    UsuarioVO.EnumNivelAcesso perfil=null;
 
-                UsuarioVO.EnumNivelAcesso perfil=null;
-
-                switch (param[2].toUpperCase().trim()){
-                    case "ADM":
-                        perfil = UsuarioVO.EnumNivelAcesso.Administrador;
-                        break;
-                    case "AVAL":
-                        perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
-                        break;
-                    case "ENT":
-                        perfil = UsuarioVO.EnumNivelAcesso.Entidade;
-                        break;
-                }
-
-
-                o.setNivelAcesso(perfil);
-
-                if(param[3] != null){
-                    //editar
-                    o.setId( Integer.parseInt(param[3]));
-
-                    //entidade?
-                    UsuarioVO usAtual = cc.obterUsuarioPorId(Integer.parseInt(param[3]));
-                    if(usAtual.getEntidade() != null){
-                        o.setEntidade(usAtual.getEntidade());
+                    switch (param[2].toUpperCase().trim()){
+                        case "ADM":
+                            perfil = UsuarioVO.EnumNivelAcesso.Administrador;
+                            break;
+                        case "AVAL":
+                            perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
+                            break;
+                        case "ENT":
+                            perfil = UsuarioVO.EnumNivelAcesso.Entidade;
+                            break;
                     }
 
-                    if(cc.editarUsuario(o) ){
-                        return true;
+
+                    o.setNivelAcesso(perfil);
+
+                    if(param[3] != null){
+                        //editar
+                        o.setId( Integer.parseInt(param[3]));
+
+                        //entidade?
+                        UsuarioVO usAtual = cc.obterUsuarioPorId(Integer.parseInt(param[3]));
+                        if(usAtual.getEntidade() != null){
+                            o.setEntidade(usAtual.getEntidade());
+                        }
+
+                        if(cc.editarUsuario(o) ){
+                            return true;
+                        }
                     }
-                }
-                else
-                {
-                    //novo registro
-                    if(cc.inserirUsuario(o) ){
-                        return true;
+                    else
+                    {
+                        //novo registro
+                        if(cc.inserirUsuario(o) ){
+                            return true;
+                        }
                     }
+
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                    return false;
                 }
 
-
-
-
-            }catch (Exception e){
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
                 return false;
             }
 
-            return false;
+
 
         }
 

@@ -413,18 +413,17 @@ public class CadastroEventos extends AppCompatActivity {
         @Override
         protected List<EventoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<EventoVO> lista = cc.listarEvento("");
+                    return lista;
 
-                List<EventoVO> lista = cc.listarEvento("");
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
-
 
         }
 
@@ -469,20 +468,22 @@ public class CadastroEventos extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    EventoVO o = new EventoVO();
+                    o.setId(Integer.parseInt(param[0]));
+                    cc.excluirEvento(o);
 
-                EventoVO o = new EventoVO();
-                o.setId(Integer.parseInt(param[0]));
-                cc.excluirEvento(o);
+                    return true;
 
-                return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
+
+
 
 
         }

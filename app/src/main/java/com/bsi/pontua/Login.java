@@ -277,20 +277,22 @@ public class Login extends AppCompatActivity {
             }
 
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    UsuarioVO o = new UsuarioVO();
+                    o.setNome(param[0]);
+                    o.setSenha(param[1]);
 
-                UsuarioVO o = new UsuarioVO();
-                o.setNome(param[0]);
-                o.setSenha(param[1]);
+                    return cc.validarLogin(o);
 
-                return cc.validarLogin(o);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
+
+
 
 
         }

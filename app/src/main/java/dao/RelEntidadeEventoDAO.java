@@ -20,11 +20,17 @@ import vo.RelEntidadeEventoVO;
  */
 public class RelEntidadeEventoDAO {
 
+    private Connection conn;
+
+    public RelEntidadeEventoDAO(Connection conn){
+        this.conn = conn;
+    }
 
     public boolean existeItem(RelEntidadeEventoVO o) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -42,7 +48,7 @@ public class RelEntidadeEventoDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +60,7 @@ public class RelEntidadeEventoDAO {
     public RelEntidadeEventoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM rel_entidade_evento WHERE id=?");
             st.setInt(1, codigo);
@@ -63,8 +69,8 @@ public class RelEntidadeEventoDAO {
 
             RelEntidadeEventoVO o = new RelEntidadeEventoVO();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            EventoDAO eventoDAO = new EventoDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
@@ -72,7 +78,7 @@ public class RelEntidadeEventoDAO {
                 o.setEvento( eventoDAO.obterPorCodigo(resultado.getInt("id_evento")) );
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +90,7 @@ public class RelEntidadeEventoDAO {
     public List<RelEntidadeEventoVO> listarPorEvento(EventoVO evento) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -97,8 +103,8 @@ public class RelEntidadeEventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            EventoDAO eventoDAO = new EventoDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             List<RelEntidadeEventoVO> lista = new ArrayList<RelEntidadeEventoVO>(0);
             while (resultado.next()) {
@@ -110,7 +116,7 @@ public class RelEntidadeEventoDAO {
                 lista.add(o);
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -125,7 +131,7 @@ public class RelEntidadeEventoDAO {
     public List<RelEntidadeEventoVO> listarEntidadesPendentesPorEvento(EventoVO evento) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -147,8 +153,8 @@ public class RelEntidadeEventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            EventoDAO eventoDAO = new EventoDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             List<RelEntidadeEventoVO> lista = new ArrayList<RelEntidadeEventoVO>(0);
             while (resultado.next()) {
@@ -160,7 +166,7 @@ public class RelEntidadeEventoDAO {
                 lista.add(o);
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -175,7 +181,7 @@ public class RelEntidadeEventoDAO {
         try {
             //retorna areas pendentes para uma entidade/evento
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -206,7 +212,7 @@ public class RelEntidadeEventoDAO {
                 lista.add(a);
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -221,7 +227,7 @@ public class RelEntidadeEventoDAO {
         try {
             //retorna itens pendentes para uma entidade/evento
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -251,7 +257,7 @@ public class RelEntidadeEventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            ItemInspecaoDAO iiDao = new ItemInspecaoDAO();
+            ItemInspecaoDAO iiDao = new ItemInspecaoDAO(conn);
 
             List<ItemInspecaoVO> lista = new ArrayList<>(0);
             while (resultado.next()) {
@@ -260,7 +266,7 @@ public class RelEntidadeEventoDAO {
                 lista.add(i);
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -276,8 +282,7 @@ public class RelEntidadeEventoDAO {
     public boolean incluir(RelEntidadeEventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO rel_entidade_evento (id_entidade, id_evento) VALUES (?, ?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -291,7 +296,7 @@ public class RelEntidadeEventoDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -304,8 +309,8 @@ public class RelEntidadeEventoDAO {
 //    public boolean editar(ItemInspecaoVO c) throws SQLException {
 //        try {
 //
-//            Connection conn;
-//            conn = Conexao.obterConexao();
+
+//  Conexao.validarConn(conn);
 //
 //            PreparedStatement st = conn.prepareStatement("UPDATE item_inspecao SET id_area=?, nome=?, pontuacao_minima=?, pontuacao_maxima =? WHERE id=?");
 //
@@ -324,7 +329,7 @@ public class RelEntidadeEventoDAO {
 //            st.setInt(5, c.getId());
 //
 //            st.executeUpdate();
-//            conn.close();
+//
 //            return true;
 //
 //        } catch (SQLException e) {
@@ -336,15 +341,14 @@ public class RelEntidadeEventoDAO {
     public boolean excluir(RelEntidadeEventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM rel_entidade_evento WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

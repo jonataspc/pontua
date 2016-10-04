@@ -451,17 +451,19 @@ public class CadastroEntidades extends AppCompatActivity {
         @Override
         protected List<EntidadeVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<EntidadeVO> lista = cc.listarEntidade("");
+                    return lista;
 
-                List<EntidadeVO> lista = cc.listarEntidade("");
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
+
+
 
 
         }
@@ -505,20 +507,22 @@ public class CadastroEntidades extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    EntidadeVO o = new EntidadeVO();
+                    o.setId(Integer.parseInt(param[0]));
+                    cc.excluirEntidade(o);
 
-                EntidadeVO o = new EntidadeVO();
-                o.setId(Integer.parseInt(param[0]));
-                cc.excluirEntidade(o);
+                    return true;
 
-                return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
+
+
 
 
         }

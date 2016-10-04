@@ -15,6 +15,11 @@ import vo.UsuarioVO;
 
 public class EventoDAO {
 
+    private Connection conn;
+
+    public EventoDAO(Connection conn){
+        this.conn = conn;
+    }
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -22,7 +27,8 @@ public class EventoDAO {
     public boolean existeEvento(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -39,7 +45,7 @@ public class EventoDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +57,8 @@ public class EventoDAO {
     public EventoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM evento WHERE id=?");
             st.setInt(1, codigo);
@@ -75,7 +82,7 @@ public class EventoDAO {
 
                 if(usuarioID != 0){
 
-                    UsuarioDAO oUsuarioVO = new UsuarioDAO();
+                    UsuarioDAO oUsuarioVO = new UsuarioDAO(conn);
 
                     UsuarioVO usuario = oUsuarioVO.obterPorCodigo(usuarioID);
 
@@ -88,7 +95,7 @@ public class EventoDAO {
 
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,7 +107,7 @@ public class EventoDAO {
     public List<EventoVO> listar(String nomePesquisa) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -113,7 +120,7 @@ public class EventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            UsuarioDAO oUsuarioVO = new UsuarioDAO();
+            UsuarioDAO oUsuarioVO = new UsuarioDAO(conn);
 
 
             List<EventoVO> lista = new ArrayList<EventoVO>(0);
@@ -147,7 +154,7 @@ public class EventoDAO {
 
 
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -161,8 +168,7 @@ public class EventoDAO {
     public boolean incluir(EventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO evento (Nome, datahora_criacao, usuario) VALUES (?,?,?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -178,7 +184,7 @@ public class EventoDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -192,8 +198,7 @@ public class EventoDAO {
     public boolean editar(EventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE evento SET nome=?, datahora_criacao=?, usuario=? WHERE id=?");
 
@@ -203,7 +208,7 @@ public class EventoDAO {
             st.setInt(4, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -216,15 +221,14 @@ public class EventoDAO {
     public boolean excluir(EventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM evento WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

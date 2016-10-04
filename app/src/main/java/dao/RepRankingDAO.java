@@ -17,11 +17,17 @@ import vo.EventoVO;
 
 public class RepRankingDAO {
 
+    private Connection conn;
+
+    public RepRankingDAO(Connection conn){
+        this.conn = conn;
+    }
+
 //
 //    public List<RelRankingVO> relatorioRanking( EventoVO evt) {
 //        try {
 //
-//            Connection conn = Conexao.obterConexao();
+//            Conexao.validarConn(conn);
 //
 //            PreparedStatement st;
 //
@@ -49,7 +55,7 @@ public class RepRankingDAO {
 //
 //            }
 //
-//            conn.close();
+//
 //            return lista;
 //        } catch (SQLException e) {
 //            e.printStackTrace();

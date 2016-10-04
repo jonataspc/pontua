@@ -17,11 +17,19 @@ import vo.AreaVO;
  */
 public class AreaDAO {
 
+    private Connection conn;
+
+    public AreaDAO(Connection conn){
+        this.conn = conn;
+    }
+
+
 
     public boolean existeArea(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -38,7 +46,7 @@ public class AreaDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +58,7 @@ public class AreaDAO {
     public AreaVO obterPorId(int codigo) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -65,7 +73,7 @@ public class AreaDAO {
                 o.setNome(resultado.getString("nome"));
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +87,7 @@ public class AreaDAO {
     public AreaVO obterPorNome(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -94,7 +102,7 @@ public class AreaDAO {
                 o.setNome(resultado.getString("nome"));
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,14 +116,14 @@ public class AreaDAO {
 
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
             st = conn.prepareStatement("DELETE `area` FROM `area` LEFT JOIN item_inspecao ON item_inspecao.id_area = area.id WHERE item_inspecao.id IS NULL;");
             st.executeUpdate();
 
-            conn.close();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +135,7 @@ public class AreaDAO {
     public List<AreaVO> listar() throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -144,7 +152,7 @@ public class AreaDAO {
                 lista.add(o);
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,8 +167,7 @@ public class AreaDAO {
     public boolean incluir(AreaVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO area (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
             st.setString(1, c.getNome().toUpperCase());
@@ -171,7 +178,7 @@ public class AreaDAO {
                 c.setId(rs.getInt(1));
             }
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -185,8 +192,7 @@ public class AreaDAO {
     public boolean editar(AreaVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE area SET nome=? WHERE id=?");
 
@@ -194,7 +200,7 @@ public class AreaDAO {
             st.setInt(2, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -207,15 +213,14 @@ public class AreaDAO {
     public boolean excluir(AreaVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM area WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

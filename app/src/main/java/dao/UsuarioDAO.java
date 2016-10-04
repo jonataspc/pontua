@@ -15,11 +15,16 @@ import vo.UsuarioVO;
 
 public class UsuarioDAO {
 
+    private Connection conn;
+
+    public UsuarioDAO(Connection conn){
+        this.conn = conn;
+    }
 
     public UsuarioVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM usuario WHERE id=?");
             st.setInt(1, codigo);
@@ -28,7 +33,7 @@ public class UsuarioDAO {
 
             UsuarioVO o = new UsuarioVO();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
 
             while (resultado.next()) {
 
@@ -58,7 +63,7 @@ public class UsuarioDAO {
                 }
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +75,7 @@ public class UsuarioDAO {
     public UsuarioVO obterPorEntidade(EntidadeVO e) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM usuario WHERE id_entidade=?");
             st.setInt(1, e.getId());
@@ -79,7 +84,7 @@ public class UsuarioDAO {
 
             UsuarioVO o = new UsuarioVO();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
 
             while (resultado.next()) {
 
@@ -104,7 +109,7 @@ public class UsuarioDAO {
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -115,7 +120,7 @@ public class UsuarioDAO {
     public List<UsuarioVO> listar(String nomePesquisa) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -128,7 +133,7 @@ public class UsuarioDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
+            EntidadeDAO entidadeDAO = new EntidadeDAO(conn);
 
             List<UsuarioVO> lista = new ArrayList<UsuarioVO>(0);
             while (resultado.next()) {
@@ -164,7 +169,7 @@ public class UsuarioDAO {
 
 
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,7 +182,8 @@ public class UsuarioDAO {
     public boolean existeUsuario(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -194,7 +200,7 @@ public class UsuarioDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,7 +215,7 @@ public class UsuarioDAO {
 
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -225,7 +231,7 @@ public class UsuarioDAO {
                 cod = resultado.getInt("id");
             }
 
-            conn.close();
+
 
             if(cod != -1){
                 return obterPorCodigo(cod);
@@ -246,8 +252,7 @@ public class UsuarioDAO {
     public boolean incluir(UsuarioVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO usuario (id_entidade, nome, senha, nivel_acesso) VALUES (?, ?, SHA(?), ?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -285,7 +290,7 @@ public class UsuarioDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -299,8 +304,7 @@ public class UsuarioDAO {
     public boolean editar(UsuarioVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE usuario SET id_entidade=?, nome=?, senha=SHA(?), nivel_acesso=? WHERE id=?");
 
@@ -335,7 +339,7 @@ public class UsuarioDAO {
             st.setInt(5, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -348,15 +352,14 @@ public class UsuarioDAO {
     public boolean excluir(UsuarioVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM usuario WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

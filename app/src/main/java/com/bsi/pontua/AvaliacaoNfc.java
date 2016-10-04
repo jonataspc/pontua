@@ -209,7 +209,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<EventoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 
@@ -301,7 +301,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<String> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 
@@ -376,7 +376,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<ItemInspecaoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 
@@ -453,7 +453,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<UsuarioVO> doInBackground(Integer... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 

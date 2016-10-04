@@ -14,10 +14,17 @@ import vo.EventoVO;
 
 public class EntidadeDAO {
 
+    private Connection conn;
+
+    public EntidadeDAO(Connection conn){
+        this.conn = conn;
+    }
+
     public boolean existeEntidade(String nome) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
+
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -34,7 +41,7 @@ public class EntidadeDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +55,7 @@ public class EntidadeDAO {
     public EntidadeVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM entidade WHERE id=?");
             st.setInt(1, codigo);
@@ -57,7 +64,7 @@ public class EntidadeDAO {
 
             EntidadeVO o = new EntidadeVO();
 
-            EventoDAO eventoDAO = new EventoDAO();
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             boolean acho = false;
 
@@ -68,7 +75,7 @@ public class EntidadeDAO {
                 acho=true;
             }
 
-            conn.close();
+
 
 
             if(acho=false){
@@ -86,7 +93,7 @@ public class EntidadeDAO {
 //    public List<EntidadeVO> listarPorEvento(EventoVO evto) {
 //        try {
 //
-//            Connection conn = Conexao.obterConexao();
+// Conexao.validarConn(conn);
 //            PreparedStatement st;
 //
 //
@@ -112,7 +119,7 @@ public class EntidadeDAO {
 //
 //
 //
-//            conn.close();
+//
 //            return lista;
 //        } catch (SQLException e) {
 //            e.printStackTrace();
@@ -126,7 +133,7 @@ public class EntidadeDAO {
     public List<EntidadeVO> listar(String nomePesquisa) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -151,7 +158,7 @@ public class EntidadeDAO {
 
 
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,8 +171,7 @@ public class EntidadeDAO {
     public boolean incluir(EntidadeVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO entidade (nome) VALUES (?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -177,7 +183,7 @@ public class EntidadeDAO {
                 c.setId(rs.getInt(1));
             }
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -190,8 +196,7 @@ public class EntidadeDAO {
     public boolean editar(EntidadeVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE entidade SET nome=? WHERE id=?");
 
@@ -199,7 +204,7 @@ public class EntidadeDAO {
             st.setInt(2, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -211,15 +216,14 @@ public class EntidadeDAO {
     public boolean excluir(EntidadeVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM entidade WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

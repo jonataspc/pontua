@@ -17,11 +17,16 @@ import vo.RelItemInspecaoEventoVO;
  */
 public class RelItemInspecaoEventoDAO {
 
+    private Connection conn;
+
+    public RelItemInspecaoEventoDAO(Connection conn){
+        this.conn = conn;
+    }
 
     public boolean existeItem(RelItemInspecaoEventoVO o) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
             Boolean localizado = false;
             PreparedStatement st;
 
@@ -39,7 +44,7 @@ public class RelItemInspecaoEventoDAO {
                 }
             }
 
-            conn.close();
+
             return localizado;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +56,7 @@ public class RelItemInspecaoEventoDAO {
     public RelItemInspecaoEventoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM rel_item_inspecao_evento WHERE id=?");
             st.setInt(1, codigo);
@@ -60,8 +65,8 @@ public class RelItemInspecaoEventoDAO {
 
             RelItemInspecaoEventoVO o = new RelItemInspecaoEventoVO();
 
-            ItemInspecaoDAO ItemInspecaoDAO = new ItemInspecaoDAO();
-            EventoDAO eventoDAO = new EventoDAO();
+            ItemInspecaoDAO ItemInspecaoDAO = new ItemInspecaoDAO(conn);
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
@@ -69,7 +74,7 @@ public class RelItemInspecaoEventoDAO {
                 o.setEvento( eventoDAO.obterPorCodigo(resultado.getInt("id_evento")) );
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,7 +86,7 @@ public class RelItemInspecaoEventoDAO {
     public List<RelItemInspecaoEventoVO> listarPorEvento(EventoVO evento) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -94,8 +99,8 @@ public class RelItemInspecaoEventoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            ItemInspecaoDAO ItemInspecaoDAO = new ItemInspecaoDAO();
-            EventoDAO eventoDAO = new EventoDAO();
+            ItemInspecaoDAO ItemInspecaoDAO = new ItemInspecaoDAO(conn);
+            EventoDAO eventoDAO = new EventoDAO(conn);
 
             List<RelItemInspecaoEventoVO> lista = new ArrayList<RelItemInspecaoEventoVO>(0);
             while (resultado.next()) {
@@ -107,7 +112,7 @@ public class RelItemInspecaoEventoDAO {
                 lista.add(o);
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -121,8 +126,7 @@ public class RelItemInspecaoEventoDAO {
     public boolean incluir(RelItemInspecaoEventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO rel_item_inspecao_evento (id_item_inspecao, id_evento) VALUES (?, ?) ;", Statement.RETURN_GENERATED_KEYS);
 
@@ -136,7 +140,7 @@ public class RelItemInspecaoEventoDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -149,15 +153,14 @@ public class RelItemInspecaoEventoDAO {
     public boolean excluir(RelItemInspecaoEventoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM rel_item_inspecao_evento WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

@@ -446,7 +446,7 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
 //        @Override
 //        protected Boolean doInBackground(Integer... param) {
 //
-//            CadastrosControle cc = new CadastrosControle();
+////            try(CadastrosControle cc = new CadastrosControle()){
 //
 //            try {
 //

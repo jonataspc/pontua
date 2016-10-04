@@ -31,9 +31,13 @@ public class Conexao {
 	/**
 	 * Obtem conexao com banco de dados
 	 */
+
+	public static int qtdConns = 0;
+
 	public static Connection obterConexao() throws SQLException {
 
-		Log.d("obterConexao", "obterConexao");
+		Log.d("obterConexao", String.valueOf(qtdConns));
+		qtdConns++;
 
         Context applicationContext = Login.getContextOfApplication();
         SharedPreferences settings = applicationContext.getSharedPreferences("settings", 0);
@@ -54,6 +58,19 @@ public class Conexao {
 		}
 
 		return DriverManager.getConnection(connStr, userName, password);
+
+	}
+
+	public static void validarConn(Connection conn){
+
+		try {
+			if(conn.isClosed()){
+                conn = Conexao.obterConexao();
+            }
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 

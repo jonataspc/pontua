@@ -20,11 +20,17 @@ import vo.UsuarioVO;
 
 public class AvaliacaoDAO {
 
+    private Connection conn;
+
+    public AvaliacaoDAO(Connection conn){
+        this.conn = conn;
+    }
+
 
     public AvaliacaoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id=?");
             st.setInt(1, codigo);
@@ -33,10 +39,10 @@ public class AvaliacaoDAO {
 
             AvaliacaoVO o = new AvaliacaoVO();
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
@@ -57,7 +63,7 @@ public class AvaliacaoDAO {
                 o.setMetodo(metodo);
             }
 
-            conn.close();
+
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +74,7 @@ public class AvaliacaoDAO {
     public List<AvaliacaoVO> listar( UsuarioVO usuario) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
             st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id_usuario=?");
@@ -76,10 +82,10 @@ public class AvaliacaoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
             while (resultado.next()) {
@@ -106,7 +112,7 @@ public class AvaliacaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,7 +125,7 @@ public class AvaliacaoDAO {
     public List<AvaliacaoVO> listar( ItemInspecaoVO itemInspecao) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
             st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id_item_inspecao=?");
@@ -127,10 +133,10 @@ public class AvaliacaoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
@@ -157,7 +163,7 @@ public class AvaliacaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +176,7 @@ public class AvaliacaoDAO {
     public List<AvaliacaoVO> listar( EntidadeVO entidade) throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
             st = conn.prepareStatement("SELECT * FROM avaliacao JOIN rel_entidade_evento ON rel_entidade_evento.id=avaliacao.id_rel_entidade_evento WHERE id_entidade=?");
@@ -178,10 +184,10 @@ public class AvaliacaoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
             while (resultado.next()) {
@@ -208,7 +214,7 @@ public class AvaliacaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -226,7 +232,7 @@ public class AvaliacaoDAO {
                 throw new IllegalArgumentException();
             }
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
 
@@ -244,10 +250,10 @@ public class AvaliacaoDAO {
 
             ResultSet resultado = st.executeQuery();
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -282,7 +288,7 @@ public class AvaliacaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -296,7 +302,7 @@ public class AvaliacaoDAO {
     public List<AvaliacaoVO> listar() throws SQLException {
         try {
 
-            Connection conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st;
             st = conn.prepareStatement("SELECT * FROM avaliacao;");
@@ -310,10 +316,10 @@ public class AvaliacaoDAO {
 */
             ResultSet resultado = st.executeQuery();
 
-            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
-            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
             while (resultado.next()) {
@@ -340,7 +346,7 @@ public class AvaliacaoDAO {
 
             }
 
-            conn.close();
+
             return lista;
 
         } catch (SQLException e) {
@@ -354,8 +360,7 @@ public class AvaliacaoDAO {
     public boolean incluir(AvaliacaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             if(c.getRelEntidadeEvento().getId()==0){
                 //define id
@@ -405,7 +410,7 @@ public class AvaliacaoDAO {
             }
 
 
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -418,8 +423,7 @@ public class AvaliacaoDAO {
     public boolean editar(AvaliacaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("UPDATE avaliacao SET id_rel_entidade_evento=?, id_rel_item_inspecao_evento=?, id_usuario=?, pontuacao=?, metodo=? WHERE id=?");
 
@@ -431,7 +435,7 @@ public class AvaliacaoDAO {
             st.setInt(6, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {
@@ -443,15 +447,14 @@ public class AvaliacaoDAO {
     public boolean excluir(AvaliacaoVO c) throws SQLException {
         try {
 
-            Connection conn;
-            conn = Conexao.obterConexao();
+            Conexao.validarConn(conn);
 
             PreparedStatement st = conn.prepareStatement("DELETE FROM avaliacao WHERE id=?");
 
             st.setInt(1, c.getId());
 
             st.executeUpdate();
-            conn.close();
+
             return true;
 
         } catch (SQLException e) {

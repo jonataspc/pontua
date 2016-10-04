@@ -1,5 +1,10 @@
 package controle;
 
+import android.util.Log;
+
+import java.io.Closeable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import controle.regrasNegocios.RegrasNegocioArea;
@@ -17,6 +22,7 @@ import dao.RelEntidadeEventoDAO;
 import dao.RelItemInspecaoEventoDAO;
 import dao.RepRankingDAO;
 import dao.UsuarioDAO;
+import utils.Conexao;
 import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
@@ -26,7 +32,7 @@ import vo.RelEntidadeEventoVO;
 import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
-public class CadastrosControle {
+public class CadastrosControle implements Closeable {
 
     private EventoDAO daoEvento;
     private EntidadeDAO daoEntidade;
@@ -38,16 +44,47 @@ public class CadastrosControle {
     private RelEntidadeEventoDAO daoRelEntidadeEvento;
     private RelItemInspecaoEventoDAO daoRelItemInspecaoEvento;
 
+    private Connection conn;
+
+    @Override public void close()  {
+        try {
+            if(conn!=null && !conn.isClosed()) {
+                conn.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    protected void finalize() throws Throwable {
+//        try {
+//           this.close();
+//
+//        } finally {
+//            super.finalize();
+//        }
+//    }
+
     public CadastrosControle() {
-        daoEvento = new EventoDAO();
-        daoEntidade = new EntidadeDAO();
-        daoUsuario = new UsuarioDAO();
-        daoItemInspecao = new ItemInspecaoDAO();
-        daoAvaliacao = new AvaliacaoDAO();
-        daoRepRanking = new RepRankingDAO();
-        daoArea= new AreaDAO();
-        daoRelEntidadeEvento = new RelEntidadeEventoDAO();
-        daoRelItemInspecaoEvento = new RelItemInspecaoEventoDAO();
+
+
+        //abre conexao comum  para todos
+        try {
+            conn = Conexao.obterConexao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        daoEvento = new EventoDAO(conn);
+        daoEntidade = new EntidadeDAO(conn);
+        daoUsuario = new UsuarioDAO(conn);
+        daoItemInspecao = new ItemInspecaoDAO(conn);
+        daoAvaliacao = new AvaliacaoDAO(conn);
+        daoRepRanking = new RepRankingDAO(conn);
+        daoArea= new AreaDAO(conn);
+        daoRelEntidadeEvento = new RelEntidadeEventoDAO(conn);
+        daoRelItemInspecaoEvento = new RelItemInspecaoEventoDAO(conn);
     }
 
 //
@@ -59,7 +96,7 @@ public class CadastrosControle {
 
     //evento
     public boolean inserirEvento(EventoVO i) throws Exception {
-        RegrasNegocioEvento.validarEvento(i, true);
+        RegrasNegocioEvento.validarEvento(i, true, conn);
         return daoEvento.incluir(i);
     }
 
@@ -76,14 +113,14 @@ public class CadastrosControle {
     }
 
     public boolean editarEvento(EventoVO o, boolean alterouNomeOriginal) throws Exception {
-        RegrasNegocioEvento.validarEvento(o, alterouNomeOriginal);
+        RegrasNegocioEvento.validarEvento(o, alterouNomeOriginal, conn);
         return daoEvento.editar(o);
     }
 
 
     //entidade
     public boolean inserirEntidade(EntidadeVO i) throws Exception {
-        RegrasNegocioEntidade.validarEntidade(i, true);
+        RegrasNegocioEntidade.validarEntidade(i, true, conn);
         return daoEntidade.incluir(i);
     }
 
@@ -103,17 +140,17 @@ public class CadastrosControle {
     }
 
     public boolean editarEntidade(EntidadeVO o) throws Exception {
-        RegrasNegocioEntidade.validarEntidade(o, false);
+        RegrasNegocioEntidade.validarEntidade(o, false, conn);
         return daoEntidade.editar(o);
     }
 
     //usuario
     public void validarInclusaoUsuario(UsuarioVO i) throws Exception {
-        RegrasNegocioUsuario.validarUsuario(i, true);
+        RegrasNegocioUsuario.validarUsuario(i, true, conn);
     }
 
     public boolean inserirUsuario(UsuarioVO i) throws Exception {
-        RegrasNegocioUsuario.validarUsuario(i, true);
+        RegrasNegocioUsuario.validarUsuario(i, true, conn);
         return daoUsuario.incluir(i);
     }
 
@@ -134,7 +171,7 @@ public class CadastrosControle {
     }
 
     public boolean editarUsuario(UsuarioVO o) throws Exception {
-        RegrasNegocioUsuario.validarUsuario(o, false);
+        RegrasNegocioUsuario.validarUsuario(o, false, conn);
         return daoUsuario.editar(o);
     }
 
@@ -145,7 +182,7 @@ public class CadastrosControle {
 
     //itemINspecao
     public boolean inserirItemInspecao(ItemInspecaoVO i) throws Exception {
-        RegrasNegocioItemInspecao.validarItemInspecao(i, true);
+        RegrasNegocioItemInspecao.validarItemInspecao(i, true, conn);
         return daoItemInspecao.incluir(i);
     }
 
@@ -175,7 +212,7 @@ public class CadastrosControle {
     }
 
     public boolean editarItemInspecao(ItemInspecaoVO o) throws Exception {
-        RegrasNegocioItemInspecao.validarItemInspecao(o, false);
+        RegrasNegocioItemInspecao.validarItemInspecao(o, false, conn);
         return daoItemInspecao.editar(o);
     }
 
@@ -192,7 +229,7 @@ public class CadastrosControle {
     }
 
     public boolean incluirArea(AreaVO a) throws Exception {
-        RegrasNegocioArea.validarArea(a, true);
+        RegrasNegocioArea.validarArea(a, true, conn);
         return daoArea.incluir(a);
     }
 

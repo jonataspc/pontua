@@ -1,5 +1,6 @@
 package controle.regrasNegocios;
 
+import java.sql.Connection;
 import java.util.regex.Pattern;
 
 import dao.EntidadeDAO;
@@ -12,7 +13,7 @@ import vo.UsuarioVO;
  */
 public class RegrasNegocioEntidade {
 
-    public static void validarEntidade(EntidadeVO i, Boolean isInclusao) throws Exception {
+    public static void validarEntidade(EntidadeVO i, Boolean isInclusao, Connection conn) throws Exception {
 
 
 //        4.5. Regras de negócio
@@ -25,7 +26,7 @@ public class RegrasNegocioEntidade {
         if (isInclusao) {
 
             EntidadeDAO daoEntidade;
-            daoEntidade = new EntidadeDAO();
+            daoEntidade = new EntidadeDAO(conn);
 
 //        4.5.2. [RN02] Não é permitido duplicar nomes de Entidades;
             if (daoEntidade.existeEntidade(i.getNome())) {

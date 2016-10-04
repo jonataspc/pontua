@@ -22,7 +22,7 @@ public class Testes {
 //
 //       String retorno="";
 //
-//        CadastrosControle cc = new CadastrosControle();
+//            try(CadastrosControle cc = new CadastrosControle()){
 //
 //
 //

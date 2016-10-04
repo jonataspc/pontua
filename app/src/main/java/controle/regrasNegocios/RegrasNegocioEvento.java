@@ -1,5 +1,7 @@
 package controle.regrasNegocios;
 
+import java.sql.Connection;
+
 import dao.EntidadeDAO;
 import dao.EventoDAO;
 import vo.EntidadeVO;
@@ -10,7 +12,7 @@ import vo.EventoVO;
  */
 public class RegrasNegocioEvento {
 
-    public static void validarEvento(EventoVO i, Boolean isInclusao) throws Exception {
+    public static void validarEvento(EventoVO i, Boolean isInclusao, Connection conn) throws Exception {
 
 
         //3.5. Regras de negócio
@@ -24,7 +26,7 @@ public class RegrasNegocioEvento {
         if (isInclusao) {
 
             EventoDAO daoEvento;
-            daoEvento= new EventoDAO();
+            daoEvento= new EventoDAO(conn);
 
 //        3.5.3. [RN03] Não é permitido duplicar nomes de eventos;
             if (daoEvento.existeEvento(i.getNome())) {

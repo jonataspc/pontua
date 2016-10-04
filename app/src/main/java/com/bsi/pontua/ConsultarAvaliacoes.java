@@ -153,7 +153,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 //        @Override
 //        protected List<EventoVO> doInBackground(String... param) {
 //
-//            CadastrosControle cc = new CadastrosControle();
+//            try(CadastrosControle cc = new CadastrosControle()){
 //
 //            try {
 //
@@ -233,7 +233,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 //        @Override
 //        protected List<EntidadeVO> doInBackground(String... param) {
 //
-//            CadastrosControle cc = new CadastrosControle();
+//            try(CadastrosControle cc = new CadastrosControle()){
 //
 //            try {
 //

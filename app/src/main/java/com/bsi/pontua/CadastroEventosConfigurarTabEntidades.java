@@ -432,22 +432,22 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
         @Override
         protected List<EntidadeVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<EntidadeVO> lista = cc.listarEntidade("");
 
-                List<EntidadeVO> lista = cc.listarEntidade("");
+                    //obtem lista de eventos
+                    lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
 
-                //obtem lista de eventos
-                lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
+                    return lista;
 
-                return lista;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
             }
-
 
         }
 
@@ -526,55 +526,57 @@ public class CadastroEventosConfigurarTabEntidades extends Fragment  implements 
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    //obtem items selecionados
+                    for(EntidadeVO item : selecionados){
 
-                //obtem items selecionados
-                for(EntidadeVO item : selecionados){
+                        //instancia novo objeto e define relacionamento
+                        RelEntidadeEventoVO newRelac = new RelEntidadeEventoVO();
+                        newRelac.setEntidade(item);
+                        newRelac.setEvento(evento);
 
-                    //instancia novo objeto e define relacionamento
-                    RelEntidadeEventoVO newRelac = new RelEntidadeEventoVO();
-                    newRelac.setEntidade(item);
-                    newRelac.setEvento(evento);
-
-                    //se nao existir, cadastra
-                    if(!cc.existeRelEntidadeEvento(newRelac)){
-                        cc.incluirRelEntidadeEvento(newRelac);
-                        totalInseridos++;
-                    }
-                }
-
-
-                //obtem items atuais (atualizado) em BD e remove caso nao esteja no SELECIONADOS
-                lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
-
-                for(RelEntidadeEventoVO item : lstRelEntidadeEventoVO){
-
-                    boolean localizado = false;
-
-                    for(EntidadeVO entItem : selecionados){
-                        if(entItem.getId() == item.getEntidade().getId()){
-                            localizado = true;
+                        //se nao existir, cadastra
+                        if(!cc.existeRelEntidadeEvento(newRelac)){
+                            cc.incluirRelEntidadeEvento(newRelac);
+                            totalInseridos++;
                         }
                     }
 
-                    if(!localizado){
-                        //nao esta selecionado, remove do BD
-                        cc.excluirRelEntidadeEvento(item);
-                        totalRemovidos++;
+
+                    //obtem items atuais (atualizado) em BD e remove caso nao esteja no SELECIONADOS
+                    lstRelEntidadeEventoVO = cc.listarRelEntidadeEventoPorEvento(evento);
+
+                    for(RelEntidadeEventoVO item : lstRelEntidadeEventoVO){
+
+                        boolean localizado = false;
+
+                        for(EntidadeVO entItem : selecionados){
+                            if(entItem.getId() == item.getEntidade().getId()){
+                                localizado = true;
+                            }
+                        }
+
+                        if(!localizado){
+                            //nao esta selecionado, remove do BD
+                            cc.excluirRelEntidadeEvento(item);
+                            totalRemovidos++;
+                        }
+
                     }
 
+
+                    return true;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                    return false;
                 }
-
-
-            return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
-                return false;
             }
+
+
 
         }
 

@@ -126,18 +126,20 @@ public class CadastroEventosConfigurarTabItensInspecao extends Fragment implemen
         @Override
         protected List<AreaVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    List<AreaVO> lista = cc.listarAreas();
+                    return lista;
 
-                List<AreaVO> lista = cc.listarAreas();
-                return lista;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
 
-            return null;
+
         }
 
         @Override
@@ -440,21 +442,23 @@ public class CadastroEventosConfigurarTabItensInspecao extends Fragment implemen
         @Override
         protected List<ItemInspecaoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
-                List<ItemInspecaoVO> lista = cc.listarItemInspecao("");
+                    List<ItemInspecaoVO> lista = cc.listarItemInspecao("");
 
-                //obtem lista de eventos
-                lstRelItemInspecaoEventoVO = cc.listarRelItemInspecaoEventoPorEvento(evento);
+                    //obtem lista de eventos
+                    lstRelItemInspecaoEventoVO = cc.listarRelItemInspecaoEventoPorEvento(evento);
 
-                return lista;
+                    return lista;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
+
 
 
         }
@@ -534,55 +538,57 @@ public class CadastroEventosConfigurarTabItensInspecao extends Fragment implemen
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    //obtem items selecionados
+                    for(ItemInspecaoVO item : selecionados){
 
-                //obtem items selecionados
-                for(ItemInspecaoVO item : selecionados){
+                        //instancia novo objeto e define relacionamento
+                        RelItemInspecaoEventoVO newRelac = new RelItemInspecaoEventoVO();
+                        newRelac.setItemInspecao(item);
+                        newRelac.setEvento(evento);
 
-                    //instancia novo objeto e define relacionamento
-                    RelItemInspecaoEventoVO newRelac = new RelItemInspecaoEventoVO();
-                    newRelac.setItemInspecao(item);
-                    newRelac.setEvento(evento);
-
-                    //se nao existir, cadastra
-                    if(!cc.existeRelItemInspecaoEvento(newRelac)){
-                        cc.incluirRelItemInspecaoEvento(newRelac);
-                        totalInseridos++;
-                    }
-                }
-
-
-                //obtem items atuais (atualizado) em BD e remove caso nao esteja no SELECIONADOS
-                lstRelItemInspecaoEventoVO = cc.listarRelItemInspecaoEventoPorEvento(evento);
-
-                for(RelItemInspecaoEventoVO item : lstRelItemInspecaoEventoVO){
-
-                    boolean localizado = false;
-
-                    for(ItemInspecaoVO entItem : selecionados){
-                        if(entItem.getId() == item.getItemInspecao().getId()){
-                            localizado = true;
+                        //se nao existir, cadastra
+                        if(!cc.existeRelItemInspecaoEvento(newRelac)){
+                            cc.incluirRelItemInspecaoEvento(newRelac);
+                            totalInseridos++;
                         }
                     }
 
-                    if(!localizado){
-                        //nao esta selecionado, remove do BD
-                        cc.excluirRelItemInspecaoEvento(item);
-                        totalRemovidos++;
+
+                    //obtem items atuais (atualizado) em BD e remove caso nao esteja no SELECIONADOS
+                    lstRelItemInspecaoEventoVO = cc.listarRelItemInspecaoEventoPorEvento(evento);
+
+                    for(RelItemInspecaoEventoVO item : lstRelItemInspecaoEventoVO){
+
+                        boolean localizado = false;
+
+                        for(ItemInspecaoVO entItem : selecionados){
+                            if(entItem.getId() == item.getItemInspecao().getId()){
+                                localizado = true;
+                            }
+                        }
+
+                        if(!localizado){
+                            //nao esta selecionado, remove do BD
+                            cc.excluirRelItemInspecaoEvento(item);
+                            totalRemovidos++;
+                        }
+
                     }
 
+
+                    return true;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                    return false;
                 }
-
-
-                return true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
-                return false;
             }
+
+
 
         }
 

@@ -1,5 +1,6 @@
 package controle.regrasNegocios;
 
+import java.sql.Connection;
 import java.util.regex.Pattern;
 
 import dao.UsuarioDAO;
@@ -10,7 +11,9 @@ import vo.UsuarioVO;
  */
 public class RegrasNegocioUsuario {
 
-    public static void validarUsuario(UsuarioVO i, Boolean isInclusao) throws Exception {
+
+
+    public static void validarUsuario(UsuarioVO i, Boolean isInclusao, Connection conn) throws Exception {
         //regras de negocios
         //2.5.1. [RN01] O campo “Nome” deve conter entre 5 e 15 caracteres;
         //2.5.3. [RN03] Nomes de usuários não podem conter acentuação nem pontuação;
@@ -21,7 +24,7 @@ public class RegrasNegocioUsuario {
         if(isInclusao){
 
             UsuarioDAO daoUsuario;
-            daoUsuario = new UsuarioDAO();
+            daoUsuario = new UsuarioDAO(conn);
 
             //2.5.2. [RN02] Não é permitido duplicar nomes de usuários;
             if(daoUsuario.existeUsuario(i.getNome())){

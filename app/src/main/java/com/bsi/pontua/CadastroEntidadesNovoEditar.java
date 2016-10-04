@@ -127,7 +127,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected List<EventoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 
@@ -198,24 +198,26 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
         @Override
         protected ConjuntoEntidadeUsuario doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
-            ConjuntoEntidadeUsuario retorno = new ConjuntoEntidadeUsuario();
+            try(CadastrosControle cc = new CadastrosControle()){
+                ConjuntoEntidadeUsuario retorno = new ConjuntoEntidadeUsuario();
 
-            try {
+                try {
 
-                EntidadeVO o = new EntidadeVO();
-                o = cc.obterEntidadePorId(Integer.parseInt(param[0]));
+                    EntidadeVO o = new EntidadeVO();
+                    o = cc.obterEntidadePorId(Integer.parseInt(param[0]));
 
-                UsuarioVO u = new UsuarioVO();
-                u = cc.obterUsuarioPorEntidade(o);
+                    UsuarioVO u = new UsuarioVO();
+                    u = cc.obterUsuarioPorEntidade(o);
 
-                retorno.setUsuario(u);
-                retorno.setEntidade(o);
-                return retorno;
+                    retorno.setUsuario(u);
+                    retorno.setEntidade(o);
+                    return retorno;
 
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return null;
+                }
+
             }
 
 
@@ -383,9 +385,9 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 
             boolean retorno=false;
 
-            CadastrosControle cc = new CadastrosControle();
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
 //                EventoVO oEvt = new EventoVO();
 //                oEvt = cc.obterEventoPorId(Integer.parseInt(param[2]));
@@ -395,95 +397,99 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
 //                }
 
 
-                EntidadeVO o = new EntidadeVO();
-                o.setNome(param[1]);
+                    EntidadeVO o = new EntidadeVO();
+                    o.setNome(param[1]);
 
 
 
 
 
 
-                //valida dados de usuario...
-                boolean chkUsuario = Boolean.parseBoolean(param[2].trim());
-                if(chkUsuario){
+                    //valida dados de usuario...
+                    boolean chkUsuario = Boolean.parseBoolean(param[2].trim());
+                    if(chkUsuario){
 
-                    // remove usuario da entidade, caso seja edicao
-                    if(param[0] != null) {
-                        UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
+                        // remove usuario da entidade, caso seja edicao
+                        if(param[0] != null) {
+                            UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
 
-                        if(usuEntid!=null){
-                            cc.excluirUsuario(usuEntid);
+                            if(usuEntid!=null){
+                                cc.excluirUsuario(usuEntid);
+                            }
+                        }
+
+                        UsuarioVO newUs = new UsuarioVO();
+                        newUs.setEntidade(o);
+                        newUs.setNome(param[3].trim());
+                        newUs.setSenha(param[4].trim());
+                        newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
+
+                        cc.validarInclusaoUsuario(newUs);
+                    }
+
+
+
+
+
+                    if(param[0] != null){
+                        //editar
+                        o.setId( Integer.parseInt(param[0]));
+                        if(cc.editarEntidade(o) ){
+                            retorno=true;
+                        }
+                    }
+                    else
+                    {
+                        //novo registro
+                        if(cc.inserirEntidade(o)){
+                            retorno=true;
                         }
                     }
 
-                    UsuarioVO newUs = new UsuarioVO();
-                    newUs.setEntidade(o);
-                    newUs.setNome(param[3].trim());
-                    newUs.setSenha(param[4].trim());
-                    newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
-
-                    cc.validarInclusaoUsuario(newUs);
-                }
 
 
 
 
 
-                if(param[0] != null){
-                    //editar
-                    o.setId( Integer.parseInt(param[0]));
-                    if(cc.editarEntidade(o) ){
-                        retorno=true;
-                    }
-                }
-                else
-                {
-                    //novo registro
-                    if(cc.inserirEntidade(o)){
-                        retorno=true;
-                    }
-                }
+                    if(chkUsuario){
 
+                        // remove usuario da entidade, caso seja edicao
+                        if(param[0] != null) {
+                            UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
 
-
-
-
-
-                if(chkUsuario){
-
-                    // remove usuario da entidade, caso seja edicao
-                    if(param[0] != null) {
-                        UsuarioVO usuEntid = cc.obterUsuarioPorEntidade( cc.obterEntidadePorId(Integer.parseInt(param[0])));
-
-                        if(usuEntid!=null){
-                            cc.excluirUsuario(usuEntid);
+                            if(usuEntid!=null){
+                                cc.excluirUsuario(usuEntid);
+                            }
                         }
+
+                        //cadastra novo usuario
+                        UsuarioVO newUs = new UsuarioVO();
+                        newUs.setEntidade(o);
+                        newUs.setNome(param[3].trim());
+                        newUs.setSenha(param[4].trim());
+                        newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
+
+                        if(!cc.inserirUsuario(newUs) ){
+                            return false;
+                            //throw new Exception("Erro no cadastro do novo usuario");
+                        }
+
                     }
 
-                    //cadastra novo usuario
-                    UsuarioVO newUs = new UsuarioVO();
-                    newUs.setEntidade(o);
-                    newUs.setNome(param[3].trim());
-                    newUs.setSenha(param[4].trim());
-                    newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
 
-                    if(!cc.inserirUsuario(newUs) ){
-                        return false;
-                        //throw new Exception("Erro no cadastro do novo usuario");
-                    }
 
+
+                    return retorno;
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    errorMsg =  e.getMessage();
+                    return false;
                 }
 
-
-
-
-                return retorno;
-
-            }catch (Exception e){
-                e.printStackTrace();
-                errorMsg =  e.getMessage();
-                return false;
             }
+
+
 
 
 

@@ -465,7 +465,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         @Override
         protected List<AvaliacaoVO> doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 
@@ -511,7 +511,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         @Override
         protected Boolean doInBackground(String... param) {
 
-            CadastrosControle cc = new CadastrosControle();
+            //            try(CadastrosControle cc = new CadastrosControle()){
 
             try {
 

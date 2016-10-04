@@ -1,6 +1,7 @@
 package controle.regrasNegocios;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 
 import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
@@ -12,7 +13,7 @@ import vo.ItemInspecaoVO;
  */
 public class RegrasNegocioItemInspecao {
 
-    public static void validarItemInspecao(ItemInspecaoVO i, Boolean isInclusao) throws Exception {
+    public static void validarItemInspecao(ItemInspecaoVO i, Boolean isInclusao, Connection conn) throws Exception {
 
 //        5.5. Regras de negócio
 //        5.5.1. [RN01] Nomes de itens de pontuação devem conter no máximo 30 caracteres;
@@ -25,7 +26,7 @@ public class RegrasNegocioItemInspecao {
         if (isInclusao) {
 
             ItemInspecaoDAO daoItemInspecao;
-            daoItemInspecao= new ItemInspecaoDAO();
+            daoItemInspecao= new ItemInspecaoDAO(conn);
 
 //        5.5.2. [RN02] Não é permitido duplicar nomes de Itens de pontuação;
             if (daoItemInspecao.existeItemInspecao(i.getNome())) {
