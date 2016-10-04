@@ -171,23 +171,6 @@ public class Avaliacao extends AppCompatActivity {
             newItem.setId(-1);
             result.add(0, newItem);
 
-
-            /*
-           List<EventoVO> lista = result;
-
-           String[] items = new String[lista.size()+1];
-
-            int cont = 0;
-
-            items[cont] = TXT_MSG_SELECIONE;
-            cont++;
-
-            for (EventoVO item : lista) {
-                items[cont] = "[" + String.format("%05d", item.getId()) + "] " + item.getNome();
-                cont++;
-            }
-*/
-
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEventos.setAdapter(adapter);
             spnEventos.requestFocus();
@@ -301,21 +284,6 @@ public class Avaliacao extends AppCompatActivity {
             o.setEvento(_eventoAtual);
 
             result.add(0, o);
-
-            /*List<RelEntidadeEventoVO> lista = result;
-
-            String[] items = new String[lista.size()+1];
-
-            int cont = 0;
-
-            items[cont] = TXT_MSG_SELECIONE;
-            cont++;
-
-            for (RelEntidadeEventoVO item : lista) {
-                items[cont] = item.getEntidade().getNome().toUpperCase().trim();
-                cont++;
-            }
-*/
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnEntidades.setAdapter(adapter);
@@ -524,16 +492,6 @@ public class Avaliacao extends AppCompatActivity {
 
 
             List<ItemInspecaoVO> lista = result;
-/*
-            String[] items = new String[lista.size()];
-
-            int cont = 0;
-
-            for (ItemInspecaoVO item : lista) {
-                items[cont] = item.getNome() ;
-                cont++;
-            }
-*/
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnItens.setAdapter(adapter);
@@ -564,17 +522,6 @@ public class Avaliacao extends AppCompatActivity {
 
                     //enable btn
                     btnLancar.setEnabled(true);
-
-/*
-                    //carrega detalhes do item...
-                        Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-                        Spinner spnAreas= (Spinner) findViewById(R.id.spnAreas);
-
-                        String[] paramns = new String[]{ ((EventoVO)  spnEventos.getSelectedItem()).getNome(),
-                                spnAreas.getSelectedItem().toString()};
-
-                        new carregarItensTask().execute(paramns);
-  */
                 }
 
                 @Override
