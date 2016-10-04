@@ -15,62 +15,71 @@ import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
 public class AvaliacaoDAO {
 
 
-    public AvaliacaoVO obterPorCodigo(int codigo) {
+    public AvaliacaoVO obterPorCodigo(int codigo) throws SQLException {
 
         try {
             Connection conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM Avaliacao WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id=?");
             st.setInt(1, codigo);
 
             ResultSet resultado = st.executeQuery();
 
             AvaliacaoVO o = new AvaliacaoVO();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
 
             while (resultado.next()) {
                 o.setId(resultado.getInt("id"));
                 o.setDataHora(resultado.getDate("data_hora"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
             }
 
             conn.close();
             return o;
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
-    public List<AvaliacaoVO> listar( UsuarioVO usuario) {
+    public List<AvaliacaoVO> listar( UsuarioVO usuario) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
 
             PreparedStatement st;
-            st = conn.prepareStatement("SELECT * FROM Avaliacao WHERE id_usuario=?");
+            st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id_usuario=?");
             st.setInt(1, usuario.getId());
 
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
             UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
             while (resultado.next()) {
@@ -78,11 +87,20 @@ public class AvaliacaoDAO {
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
                 o.setDataHora(resultado.getDate("data_hora"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
 
                 lista.add(o);
 
@@ -92,27 +110,28 @@ public class AvaliacaoDAO {
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-    public List<AvaliacaoVO> listar( ItemInspecaoVO itemInspecao) {
+    public List<AvaliacaoVO> listar( ItemInspecaoVO itemInspecao) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
 
             PreparedStatement st;
-            st = conn.prepareStatement("SELECT * FROM Avaliacao WHERE id_item_inspecao=?");
+            st = conn.prepareStatement("SELECT * FROM avaliacao WHERE id_item_inspecao=?");
             st.setInt(1, itemInspecao.getId());
 
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
             UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
             while (resultado.next()) {
@@ -120,11 +139,19 @@ public class AvaliacaoDAO {
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
                 o.setDataHora(resultado.getDate("data_hora"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
 
                 lista.add(o);
 
@@ -134,26 +161,26 @@ public class AvaliacaoDAO {
             return lista;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-    public List<AvaliacaoVO> listar( EntidadeVO entidade) {
+    public List<AvaliacaoVO> listar( EntidadeVO entidade) throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
 
             PreparedStatement st;
-            st = conn.prepareStatement("SELECT * FROM Avaliacao WHERE id_entidade=?");
+            st = conn.prepareStatement("SELECT * FROM avaliacao JOIN rel_entidade_evento ON rel_entidade_evento.id=avaliacao.id_rel_entidade_evento WHERE id_entidade=?");
             st.setInt(1, entidade.getId());
 
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
@@ -162,11 +189,20 @@ public class AvaliacaoDAO {
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
                 o.setDataHora(resultado.getDate("data_hora"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
 
                 lista.add(o);
 
@@ -174,39 +210,43 @@ public class AvaliacaoDAO {
 
             conn.close();
             return lista;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-
-
-    public List<AvaliacaoVO> listar( EventoVO evt, EntidadeVO ent) {
+    public List<AvaliacaoVO> listar( EventoVO evt, EntidadeVO ent) throws SQLException {
         try {
+
+            if(evt==null){
+                throw new IllegalArgumentException();
+            }
 
             Connection conn = Conexao.obterConexao();
 
             PreparedStatement st;
 
             if(ent==null){
-                // todas as entidades
-                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN item_inspecao ON item_inspecao.id=avaliacao.id_item_inspecao WHERE id_evento=?                   ORDER BY id_evento, area, item_inspecao.nome, id_entidade;");
+                // todas as entidades do eventos
+                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN rel_entidade_evento ON rel_entidade_evento.id=avaliacao.id_rel_entidade_evento WHERE id_evento=?;");
                 st.setInt(1, evt.getId());
             }else{
-                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN item_inspecao ON item_inspecao.id=avaliacao.id_item_inspecao WHERE id_evento=? AND id_entidade=? ORDER BY id_evento, area, item_inspecao.nome, id_entidade;");
+                st = conn.prepareStatement("SELECT * FROM avaliacao JOIN rel_entidade_evento ON rel_entidade_evento.id=avaliacao.id_rel_entidade_evento WHERE id_evento=? AND id_entidade=?;");
                 st.setInt(1, evt.getId());
                 st.setInt(2, ent.getId());
             }
 
 
+
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -223,11 +263,20 @@ public class AvaliacaoDAO {
                     o.setDataHora(null);
                 }
 
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
 
                 lista.add(o);
 
@@ -235,21 +284,22 @@ public class AvaliacaoDAO {
 
             conn.close();
             return lista;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-    public List<AvaliacaoVO> listar() {
+    public List<AvaliacaoVO> listar() throws SQLException {
         try {
 
             Connection conn = Conexao.obterConexao();
 
             PreparedStatement st;
-            st = conn.prepareStatement("SELECT * FROM Avaliacao;");
+            st = conn.prepareStatement("SELECT * FROM avaliacao;");
 
             /*if (nomePesquisa.trim() == "") {
                 st = conn.prepareStatement("SELECT * FROM Avaliacao ORDER BY nome;");
@@ -260,9 +310,9 @@ public class AvaliacaoDAO {
 */
             ResultSet resultado = st.executeQuery();
 
-            EventoDAO eventoDAO = new EventoDAO();
-            EntidadeDAO entidadeDAO = new EntidadeDAO();
-            ItemInspecaoDAO itemInspecaoDAO = new ItemInspecaoDAO();
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO();
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO();
+
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
@@ -271,11 +321,20 @@ public class AvaliacaoDAO {
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(resultado.getInt("id"));
                 o.setDataHora(resultado.getDate("data_hora"));
-                o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
-                o.setItemInspecao(itemInspecaoDAO.obterPorCodigo(resultado.getInt("id_item_inspecao")));
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
                 o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
                 o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
-                o.setForma_automatica(resultado.getInt("forma_automatica"));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
 
                 lista.add(o);
 
@@ -283,29 +342,28 @@ public class AvaliacaoDAO {
 
             conn.close();
             return lista;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
 
 
     }
 
-
-
-    public boolean incluir(AvaliacaoVO c) {
+    public boolean incluir(AvaliacaoVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("INSERT INTO Avaliacao (id_entidade, id_item_inspecao, id_usuario, pontuacao, forma_automatica) VALUES (?, ?, ?, ?, ?) ;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement st = conn.prepareStatement("INSERT INTO avaliacao (id_rel_entidade_evento, id_rel_item_inspecao_evento, id_usuario, pontuacao, metodo, data_hora) VALUES (?, ?, ?, ?, ?, ?, NOW()) ;", Statement.RETURN_GENERATED_KEYS);
 
-            st.setInt(1, c.getEntidade().getId());
-            st.setInt(2, c.getItemInspecao().getId());
+            st.setInt(1, c.getRelEntidadeEvento().getId());
+            st.setInt(2, c.getRelItemInspecaoEvento().getId());
             st.setInt(3, c.getUsuario().getId());
             st.setDouble(4, c.getPontuacao().doubleValue());
-            st.setInt(5, c.getForma_automatica());
+            st.setInt(5, (c.getMetodo() == AvaliacaoVO.EnumMetodoAvaliacao.Manual) ?  0 : 1 );
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();
@@ -319,25 +377,24 @@ public class AvaliacaoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
 
     }
 
-
-    public boolean editar(AvaliacaoVO c) {
+    public boolean editar(AvaliacaoVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("UPDATE Avaliacao SET id_entidade=?, id_item_inspecao=?, id_usuario=?, pontuacao=?, forma_automatica=? WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("UPDATE avaliacao SET id_rel_entidade_evento=?, id_rel_item_inspecao_evento=?, id_usuario=?, pontuacao=?, metodo=? WHERE id=?");
 
-            st.setInt(1, c.getEntidade().getId());
-            st.setInt(2, c.getItemInspecao().getId());
+            st.setInt(1, c.getRelEntidadeEvento().getId());
+            st.setInt(2, c.getRelItemInspecaoEvento().getId());
             st.setInt(3, c.getUsuario().getId());
             st.setDouble(4, c.getPontuacao().doubleValue());
-            st.setInt(5, c.getForma_automatica());
+            st.setInt(5, (c.getMetodo() == AvaliacaoVO.EnumMetodoAvaliacao.Manual) ?  0 : 1 );
             st.setInt(6, c.getId());
 
             st.executeUpdate();
@@ -346,18 +403,17 @@ public class AvaliacaoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
-
-    public boolean excluir(AvaliacaoVO c) {
+    public boolean excluir(AvaliacaoVO c) throws SQLException {
         try {
 
             Connection conn;
             conn = Conexao.obterConexao();
 
-            PreparedStatement st = conn.prepareStatement("DELETE FROM Avaliacao WHERE id=?");
+            PreparedStatement st = conn.prepareStatement("DELETE FROM avaliacao WHERE id=?");
 
             st.setInt(1, c.getId());
 
@@ -367,9 +423,8 @@ public class AvaliacaoDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
-
 
 }
