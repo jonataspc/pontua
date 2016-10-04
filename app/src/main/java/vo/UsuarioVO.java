@@ -11,7 +11,7 @@ public class UsuarioVO implements Serializable {
     private EntidadeVO entidade;
     private String nome;
     private String senha;
-    private String nivelAcesso;
+    private EnumNivelAcesso nivelAcesso;
 
     public int getId() {
         return id;
@@ -45,11 +45,18 @@ public class UsuarioVO implements Serializable {
         this.senha = senha;
     }
 
-    public String getNivelAcesso() {
+    public EnumNivelAcesso getNivelAcesso() {
         return nivelAcesso;
     }
 
-    public void setNivelAcesso(String nivelAcesso) {
+    public void setNivelAcesso(EnumNivelAcesso nivelAcesso) {
         this.nivelAcesso = nivelAcesso;
     }
+
+    public enum EnumNivelAcesso {
+        Administrador,
+        Avaliador,
+        Entidade
+    }
+
 }

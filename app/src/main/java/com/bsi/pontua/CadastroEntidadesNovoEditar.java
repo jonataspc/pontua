@@ -420,7 +420,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                     newUs.setEntidade(o);
                     newUs.setNome(param[3].trim());
                     newUs.setSenha(param[4].trim());
-                    newUs.setNivelAcesso("ENT");
+                    newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
 
                     cc.validarInclusaoUsuario(newUs);
                 }
@@ -465,7 +465,7 @@ public class CadastroEntidadesNovoEditar extends AppCompatActivity {
                     newUs.setEntidade(o);
                     newUs.setNome(param[3].trim());
                     newUs.setSenha(param[4].trim());
-                    newUs.setNivelAcesso("ENT");
+                    newUs.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Entidade);
 
                     if(!cc.inserirUsuario(newUs) ){
                         return false;

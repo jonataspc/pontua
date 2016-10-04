@@ -123,11 +123,11 @@ public class Menu3 extends AppCompatActivity {
         String perfil=null;
 
         switch (Utils.usuarioCorrente.getNivelAcesso()){
-            case "ADM":
+            case Administrador:
                 perfil = "Administrador";
                 break;
 
-            case "AVAL":
+            case Avaliador:
                 perfil = "Avaliador";
 
                 //remove todos exceto
@@ -145,7 +145,7 @@ public class Menu3 extends AppCompatActivity {
 
                 break;
 
-            case "ENT":
+            case Entidade:
                 perfil = "Entidade";
 
                 //remove todos exceto

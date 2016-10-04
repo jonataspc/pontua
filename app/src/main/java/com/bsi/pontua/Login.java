@@ -270,7 +270,7 @@ public class Login extends AppCompatActivity {
                 us.setEntidade(null);
                 us.setSenha(null);
                 us.setNome("MASTER");
-                us.setNivelAcesso("ADM");
+                us.setNivelAcesso(UsuarioVO.EnumNivelAcesso.Administrador);
                 us.setId(0);
 
                 return us;

@@ -131,17 +131,17 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
                 txtNovoSenha.setText("");
 
                 switch (result.getNivelAcesso()){
-                    case "ADM":
+                    case Administrador:
                         rbtAdm.setChecked(true);
                         ((RadioButton) findViewById(R.id.rbtEnt)).setEnabled(false);
                         break;
 
-                    case "AVAL":
+                    case Avaliador:
                         rbtAval.setChecked(true);
                         ((RadioButton) findViewById(R.id.rbtEnt)).setEnabled(false);
                         break;
 
-                    case "ENT":
+                    case Entidade:
                         rbtEnt.setChecked(true);
                         // caso seja entidade, nao permite edicao de perfil
                         rbtAdm.setEnabled(false);
@@ -273,7 +273,23 @@ public class CadastroUsuariosNovoEditar extends AppCompatActivity {
                 o.setEntidade(null);
                 o.setNome(param[0]);
                 o.setSenha(param[1]);
-                o.setNivelAcesso(param[2]);
+
+                UsuarioVO.EnumNivelAcesso perfil=null;
+
+                switch (param[2].toUpperCase().trim()){
+                    case "ADM":
+                        perfil = UsuarioVO.EnumNivelAcesso.Administrador;
+                        break;
+                    case "AVAL":
+                        perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
+                        break;
+                    case "ENT":
+                        perfil = UsuarioVO.EnumNivelAcesso.Entidade;
+                        break;
+                }
+
+
+                o.setNivelAcesso(perfil);
 
                 if(param[3] != null){
                     //editar

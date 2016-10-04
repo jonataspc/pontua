@@ -31,10 +31,26 @@ public class UsuarioDAO {
             EntidadeDAO entidadeDAO = new EntidadeDAO();
 
             while (resultado.next()) {
+
+                UsuarioVO.EnumNivelAcesso perfil=null;
+
+                switch (resultado.getString("nivel_acesso").toUpperCase().trim()){
+                    case "ADM":
+                        perfil = UsuarioVO.EnumNivelAcesso.Administrador;
+                        break;
+                    case "AVAL":
+                        perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
+                        break;
+                    case "ENT":
+                        perfil = UsuarioVO.EnumNivelAcesso.Entidade;
+                        break;
+                }
+
+
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
                 o.setSenha(resultado.getString("senha"));
-                o.setNivelAcesso(resultado.getString("nivel_acesso"));
+                o.setNivelAcesso(perfil);
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
 
                 if(o.getEntidade().getId()==0){
@@ -66,10 +82,25 @@ public class UsuarioDAO {
             EntidadeDAO entidadeDAO = new EntidadeDAO();
 
             while (resultado.next()) {
+
+                UsuarioVO.EnumNivelAcesso perfil=null;
+
+                switch (resultado.getString("nivel_acesso").toUpperCase().trim()){
+                    case "ADM":
+                        perfil = UsuarioVO.EnumNivelAcesso.Administrador;
+                        break;
+                    case "AVAL":
+                        perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
+                        break;
+                    case "ENT":
+                        perfil = UsuarioVO.EnumNivelAcesso.Entidade;
+                        break;
+                }
+
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
                 o.setSenha(resultado.getString("senha"));
-                o.setNivelAcesso(resultado.getString("nivel_acesso"));
+                o.setNivelAcesso(perfil);
                 o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
             }
 
@@ -102,11 +133,25 @@ public class UsuarioDAO {
             List<UsuarioVO> lista = new ArrayList<UsuarioVO>(0);
             while (resultado.next()) {
 
+                UsuarioVO.EnumNivelAcesso perfil=null;
+
+                switch (resultado.getString("nivel_acesso").toUpperCase().trim()){
+                    case "ADM":
+                        perfil = UsuarioVO.EnumNivelAcesso.Administrador;
+                        break;
+                    case "AVAL":
+                        perfil = UsuarioVO.EnumNivelAcesso.Avaliador;
+                        break;
+                    case "ENT":
+                        perfil = UsuarioVO.EnumNivelAcesso.Entidade;
+                        break;
+                }
+
                 UsuarioVO o = new UsuarioVO();
                 o.setId(resultado.getInt("id"));
                 o.setNome(resultado.getString("nome"));
                 o.setSenha(resultado.getString("senha"));
-                o.setNivelAcesso(resultado.getString("nivel_acesso"));
+                o.setNivelAcesso(perfil);
 
                 if(resultado.getInt("id_entidade") != 0){
                     o.setEntidade(entidadeDAO.obterPorCodigo(resultado.getInt("id_entidade")));
@@ -215,9 +260,23 @@ public class UsuarioDAO {
             }
 
 
+            String perfil="";
+
+            switch (c.getNivelAcesso()){
+                case Administrador:
+                    perfil = "ADM";
+                    break;
+                case Avaliador:
+                    perfil = "AVAL";
+                    break;
+                case Entidade:
+                    perfil = "ENT";
+                    break;
+            }
+
             st.setString(2, c.getNome().toUpperCase());
             st.setString(3, c.getSenha());
-            st.setString(4, c.getNivelAcesso());
+            st.setString(4, perfil);
             st.executeUpdate();
 
             ResultSet rs = st.getGeneratedKeys();
@@ -254,9 +313,25 @@ public class UsuarioDAO {
             }
 
 
+
+
+            String perfil="";
+
+            switch (c.getNivelAcesso()){
+                case Administrador:
+                    perfil = "ADM";
+                    break;
+                case Avaliador:
+                    perfil = "AVAL";
+                    break;
+                case Entidade:
+                    perfil = "ENT";
+                    break;
+            }
+
             st.setString(2, c.getNome().toUpperCase());
             st.setString(3, c.getSenha());
-            st.setString(4, c.getNivelAcesso());
+            st.setString(4, perfil);
             st.setInt(5, c.getId());
 
             st.executeUpdate();
