@@ -26,6 +26,36 @@ public class AvaliacaoDAO {
         this.conn = conn;
     }
 
+    public boolean localizarAvaliacaoRealizada(AvaliacaoVO o) throws SQLException {
+        //retorna o ID de uma avaliacao, consultando pelos RELs
+
+        completarAvaliacaoVO(o);
+
+        boolean retorno = false;
+
+        try {
+            Conexao.validarConn(conn);
+
+            PreparedStatement st = conn.prepareStatement("SELECT avaliacao.id FROM avaliacao WHERE id_rel_entidade_evento=? AND id_rel_item_inspecao_evento=? ");
+            st.setInt(1, o.getRelEntidadeEvento().getId());
+            st.setInt(2, o.getRelItemInspecaoEvento().getId());
+
+            ResultSet resultado = st.executeQuery();
+
+
+            while (resultado.next()) {
+                //define o ID retornado no objeto enviado como parametro
+                o.setId(resultado.getInt("id"));
+                retorno = true;
+            }
+
+
+            return retorno;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public AvaliacaoVO obterPorCodigo(int codigo) throws SQLException {
 
@@ -357,42 +387,48 @@ public class AvaliacaoDAO {
 
     }
 
+    private void completarAvaliacaoVO(AvaliacaoVO c) throws SQLException {
+        Conexao.validarConn(conn);
+
+        //procura os IDs dos rels com base nos objetos
+
+        if(c.getRelEntidadeEvento().getId()==0){
+            //define id
+            PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_entidade_evento WHERE id_entidade=? AND id_evento=?");
+            st.setInt(1, c.getRelEntidadeEvento().getEntidade().getId());
+            st.setInt(2, c.getRelEntidadeEvento().getEvento().getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                c.getRelEntidadeEvento().setId(resultado.getInt("id"));
+            }
+
+            resultado.close();
+            st.close();
+        }
+
+        if(c.getRelItemInspecaoEvento().getId()==0){
+            //define id
+            PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_item_inspecao_evento WHERE id_item_inspecao=? AND id_evento=?");
+            st.setInt(1, c.getRelItemInspecaoEvento().getItemInspecao().getId());
+            st.setInt(2, c.getRelItemInspecaoEvento().getEvento().getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            while (resultado.next()) {
+                c.getRelItemInspecaoEvento().setId(resultado.getInt("id"));
+            }
+
+            resultado.close();
+            st.close();
+        }
+    }
+
     public boolean incluir(AvaliacaoVO c) throws SQLException {
         try {
 
-            Conexao.validarConn(conn);
-
-            if(c.getRelEntidadeEvento().getId()==0){
-                //define id
-                PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_entidade_evento WHERE id_entidade=? AND id_evento=?");
-                st.setInt(1, c.getRelEntidadeEvento().getEntidade().getId());
-                st.setInt(2, c.getRelEntidadeEvento().getEvento().getId());
-
-                ResultSet resultado = st.executeQuery();
-
-                while (resultado.next()) {
-                    c.getRelEntidadeEvento().setId(resultado.getInt("id"));
-                }
-
-                resultado.close();
-                st.close();
-            }
-
-            if(c.getRelItemInspecaoEvento().getId()==0){
-                //define id
-                PreparedStatement st = conn.prepareStatement("SELECT id FROM rel_item_inspecao_evento WHERE id_item_inspecao=? AND id_evento=?");
-                st.setInt(1, c.getRelItemInspecaoEvento().getItemInspecao().getId());
-                st.setInt(2, c.getRelItemInspecaoEvento().getEvento().getId());
-
-                ResultSet resultado = st.executeQuery();
-
-                while (resultado.next()) {
-                    c.getRelItemInspecaoEvento().setId(resultado.getInt("id"));
-                }
-
-                resultado.close();
-                st.close();
-            }
+            completarAvaliacaoVO(c);
 
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO avaliacao (id_rel_entidade_evento, id_rel_item_inspecao_evento, id_usuario, pontuacao, metodo, data_hora) VALUES (?, ?, ?, ?, ?, NOW()) ;", Statement.RETURN_GENERATED_KEYS);

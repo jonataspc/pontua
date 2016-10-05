@@ -341,4 +341,10 @@ public class CadastrosControle implements Closeable {
         return daoAvaliacao.editar(o);
     }
 
+
+    public boolean localizarAvaliacaoRealizada(AvaliacaoVO o) throws Exception {
+        return daoAvaliacao.localizarAvaliacaoRealizada(o);
+    }
+
+
 }

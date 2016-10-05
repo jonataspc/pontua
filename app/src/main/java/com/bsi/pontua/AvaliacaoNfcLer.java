@@ -41,40 +41,44 @@ import vo.AvaliacaoVO;
 
 public class AvaliacaoNfcLer extends AppCompatActivity {
 
-//    PendingIntent mNfcPendingIntent;
-//    IntentFilter[] mWriteTagFilters;
-//    IntentFilter[] mNdefExchangeFilters;
-//    ProgressDialog progress;
-//    Bundle b = null;
-//    AvaliacaoVO objAvaliacao;
-//    private boolean mWriteMode = false;
-//    private NfcAdapter mNfcAdapter;
-//    private String techListsArray[][];
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//
-//       /* // Sticky notes received from Android
-//        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-//            NdefMessage[] messages = getNdefMessages(getIntent());
-//            byte[] payload = messages[0].getRecords()[0].getPayload();
-//            setNoteBody(new String(payload));
-//            setIntent(new Intent()); // Consume this intent.
-//        }*/
-//
-//        //mNfcAdapter.enableForegroundNdefPush(StickyNotesActivity.this, getNoteAsNdef());
-//        mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, techListsArray);
-//
-//
-//    }
-//
-//    private void disableTagWriteMode() {
-//        mWriteMode = false;
-//        mNfcAdapter.disableForegroundDispatch(this);
-//    }
-//
+    PendingIntent mNfcPendingIntent;
+    IntentFilter[] mWriteTagFilters;
+    IntentFilter[] mNdefExchangeFilters;
+    ProgressDialog progress;
+    Bundle b = null;
+
+
+    AvaliacaoVO objAvaliacao;
+    boolean deveSobrescrever = false;
+
+    private boolean mWriteMode = false;
+    private NfcAdapter mNfcAdapter;
+    private String techListsArray[][];
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+       /* // Sticky notes received from Android
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            NdefMessage[] messages = getNdefMessages(getIntent());
+            byte[] payload = messages[0].getRecords()[0].getPayload();
+            setNoteBody(new String(payload));
+            setIntent(new Intent()); // Consume this intent.
+        }*/
+
+        //mNfcAdapter.enableForegroundNdefPush(StickyNotesActivity.this, getNoteAsNdef());
+        mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, techListsArray);
+
+
+    }
+
+    private void disableTagWriteMode() {
+        mWriteMode = false;
+        mNfcAdapter.disableForegroundDispatch(this);
+    }
+
 //    boolean writeTag(NdefMessage message, Tag tag) {
 //        int size = message.toByteArray().length;
 //
@@ -119,259 +123,259 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
 //
 //        return false;
 //    }
-//
-//    @Override
-//    public void onPause() {
-//
-//        mNfcAdapter.disableForegroundNdefPush(this);
-//        mNfcAdapter.disableForegroundDispatch(this);
-//
-//
-//        super.onPause();
-//        if (progress != null) {
-//            progress.dismiss();
-//            progress = null;
-//        }
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        //evita erro de leak
-//        super.onStop();
-//
-//        if (progress != null) {
-//            progress.dismiss();
-//            progress = null;
-//        }
-//    }
-//
-//    void inicializaProgressBar() {
-//
-//        if (progress == null) {
-//            progress = new ProgressDialog(this);
-//            progress.setTitle("");
-//            progress.setMessage("Aguarde...");
-//            progress.setIndeterminate(true);
-//            progress.setCancelable(false);
-//        }
-//    }
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_avaliacao_nfc_ler);
-//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//
-//        Intent intent = getIntent();
-//
-//
-//        //recupera obj avaliacao
-//        objAvaliacao = (AvaliacaoVO) intent.getSerializableExtra("objAvaliacaoVO");
-//
-//        //labels
-//        final TextView lblEvento = (TextView) findViewById(R.id.lblEvento);
-//        lblEvento.setText(objAvaliacao.getItemInspecao().getEvento().getNome());
-//
-//        final TextView lblItem = (TextView) findViewById(R.id.lblItem);
-//        lblItem.setText(objAvaliacao.getItemInspecao().getNome());
-//
-//        final TextView lblValor = (TextView) findViewById(R.id.lblValor);
-//        lblValor.setText(String.valueOf(objAvaliacao.getPontuacao().doubleValue()));
-//
-//
-//        startLeitura();
-//
-//    }
-//
-//
-//    void writeLog(String txt) {
-//
-//        String dthr;
-//        Date now = new Date();
-//
-//        dthr = "[" + Utils.formatarHora(now) + "]";
-//
-//        final TextView txtLog = (TextView) findViewById(R.id.lblLog);
-//        txtLog.setText(dthr + " " + txt + "\n" + txtLog.getText());
-//
-//    }
-//
-//    void startLeitura() {
-//
-//        writeLog("Aguardando leituras...");
-//
-//
-//        //start nfc
-//        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-//
-//        if (mNfcAdapter == null) {
-//            // Stop here, we definitely need NFC
-//            Toast.makeText(this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
-//            finish();
-//            return;
-//
-//        }
-//
-//        if (!mNfcAdapter.isEnabled()) {
-//            Toast.makeText(this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
-//            finish();
-//            return;
-//        }
-//
-//
-//        // Handle all of our received NFC intents in this activity.
-//        mNfcPendingIntent = PendingIntent.getActivity(this, 0,
-//                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-//
-//        // Intent filters for reading a note from a tag or exchanging over p2p.
-//        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-//        try {
-//            ndefDetected.addDataType("*/*");
-//        } catch (MalformedMimeTypeException e) {
-//        }
-//        mNdefExchangeFilters = new IntentFilter[]{ndefDetected};
-//
-//        // Intent filters for writing to a tag
-//        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-//        mWriteTagFilters = new IntentFilter[]{tagDetected};
-//
-//
-//        techListsArray = new String[][]{new String[]{NdefFormatable.class.getName()},
-//                new String[]{MifareClassic.class.getName()},
-//                new String[]{NfcA.class.getName()},
-//                new String[]{Ndef.class.getName()},
-//                new String[]{NfcB.class.getName()},
-//                new String[]{NfcF.class.getName()},
-//                new String[]{Ndef.class.getName()},
-//                new String[]{NfcV.class.getName()}};
-//
-//
-//    }
-//
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        // NDEF exchange mode
-//        if (!mWriteMode && (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()) ||
-//                            NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction()) )) {
-//            NdefMessage[] msgs = getNdefMessages(intent);
-//            //promptForContent(msgs[0]);
-//            String body = new String(msgs[0].getRecords()[0].getPayload());
-//
-//            //TODO: trata
-//            if(body.trim().length()==0) {
-//                body = "33"; //fake;
-//            }
-//
-//
-//            if(body.trim().length()==0){
-//                writeLog("Tag vazia");
-//            }else{
-//
-//                int idEnt=-1;
-//
-//                try {
-//                    idEnt=Integer.parseInt(body);
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//
-//                if(idEnt==-1){
-//                    writeLog("Tag não numérica (" + body + ")");
-//                }else{
-//                    lancarPontuacao(idEnt);
-//                }
-//
-//
-//
-//            }
-//
-//
-//        }
-///*
-//        // Tag writing mode
-//        if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-//            Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-//            writeTag(getNoteAsNdef(), detectedTag);
-//        }*/
-//
-//    }
-//
-///*    private void promptForContent(final NdefMessage msg) {
-//        new AlertDialog.Builder(this).setTitle("Replace current content?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface arg0, int arg1) {
-//                        String body = new String(msg.getRecords()[0].getPayload());
-//                        setNoteBody(body);
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface arg0, int arg1) {
-//
-//                    }
-//                }).show();
-//    }*/
-//
-///*    private void setNoteBody(String body) {
-//        writeLog(body);
-//    }*/
-//
-//
-//    NdefMessage[] getNdefMessages(Intent intent) {
-//        // Parse the intent
-//        NdefMessage[] msgs = null;
-//        String action = intent.getAction();
-//        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
-//                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
-//                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-//            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-//            if (rawMsgs != null) {
-//                msgs = new NdefMessage[rawMsgs.length];
-//                for (int i = 0; i < rawMsgs.length; i++) {
-//                    msgs[i] = (NdefMessage) rawMsgs[i];
-//                }
-//            } else {
-//                // Unknown tag type
-//                byte[] empty = new byte[]{};
-//                NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, empty, empty);
-//                NdefMessage msg = new NdefMessage(new NdefRecord[]{
-//                        record
-//                });
-//                msgs = new NdefMessage[]{
-//                        msg
-//                };
-//            }
-//        } else {
-//            Log.d("Pontua", "Unknown intent.");
-//            finish();
-//        }
-//        return msgs;
-//    }
-//
-//    private NdefMessage getNoteAsNdef() {
-//        byte[] textBytes = "blablal".toString().getBytes();
-//        NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, "text/plain".getBytes(),
-//                new byte[]{}, textBytes);
-//        return new NdefMessage(new NdefRecord[]{
-//                textRecord
-//        });
-//    }
-//
-//    private void toast(String text) {
-//        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-//    }
-//
-//    void lancarPontuacao(int idEntidade) {
-//
-//        //efetua lancamento
-//        Integer[] paramns = new Integer[]{idEntidade};
-//
-//        new efetuarLancamentoTask().execute(paramns);
-//    }
-//
+    @Override
+    public void onPause() {
+
+        mNfcAdapter.disableForegroundNdefPush(this);
+        mNfcAdapter.disableForegroundDispatch(this);
+
+
+        super.onPause();
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        //evita erro de leak
+        super.onStop();
+
+        if (progress != null) {
+            progress.dismiss();
+            progress = null;
+        }
+    }
+
+    void inicializaProgressBar() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(this);
+            progress.setTitle("");
+            progress.setMessage("Aguarde...");
+            progress.setIndeterminate(true);
+            progress.setCancelable(false);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_avaliacao_nfc_ler);
+
+        setTitle("Avaliação por NFC - Leituras");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        Intent intent = getIntent();
+
+
+        //recupera obj avaliacao
+        objAvaliacao = (AvaliacaoVO) intent.getSerializableExtra("objAvaliacaoVO");
+        deveSobrescrever = (boolean) intent.getSerializableExtra("sobrescrever");
+
+
+        //labels
+        final TextView lblEvento = (TextView) findViewById(R.id.lblEvento);
+        lblEvento.setText(objAvaliacao.getRelEntidadeEvento().getEvento().getNome());
+
+        final TextView lblItem = (TextView) findViewById(R.id.lblItem);
+        lblItem.setText(objAvaliacao.getRelItemInspecaoEvento().getItemInspecao().getArea().getNome() + " -  " + objAvaliacao.getRelItemInspecaoEvento().getItemInspecao().getNome() );
+
+        final TextView lblValor = (TextView) findViewById(R.id.lblValor);
+        lblValor.setText(String.valueOf(objAvaliacao.getPontuacao().doubleValue()));
+
+
+        startLeitura();
+
+    }
+
+
+    void writeLog(String txt) {
+
+        String dthr;
+        Date now = new Date();
+
+        dthr = "[" + Utils.formatarHora(now) + "]";
+
+        final TextView txtLog = (TextView) findViewById(R.id.lblLog);
+        txtLog.setText(dthr + " " + txt + "\n" + txtLog.getText());
+
+    }
+
+    void startLeitura() {
+
+        writeLog("Aguardando leituras...");
+
+
+        //start nfc
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (mNfcAdapter == null) {
+            // Stop here, we definitely need NFC
+            Toast.makeText(this, "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+
+        }
+
+        if (!mNfcAdapter.isEnabled()) {
+            Toast.makeText(this, "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+
+        // Handle all of our received NFC intents in this activity.
+        mNfcPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        // Intent filters for reading a note from a tag or exchanging over p2p.
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        try {
+            ndefDetected.addDataType("*/*");
+        } catch (MalformedMimeTypeException e) {
+        }
+        mNdefExchangeFilters = new IntentFilter[]{ndefDetected};
+
+        // Intent filters for writing to a tag
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        mWriteTagFilters = new IntentFilter[]{tagDetected};
+
+
+        techListsArray = new String[][]{new String[]{NdefFormatable.class.getName()},
+                new String[]{MifareClassic.class.getName()},
+                new String[]{NfcA.class.getName()},
+                new String[]{Ndef.class.getName()},
+                new String[]{NfcB.class.getName()},
+                new String[]{NfcF.class.getName()},
+                new String[]{Ndef.class.getName()},
+                new String[]{NfcV.class.getName()}};
+
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // NDEF exchange mode
+        if (!mWriteMode && (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()) ||
+                            NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction()) )) {
+            NdefMessage[] msgs = getNdefMessages(intent);
+            //promptForContent(msgs[0]);
+            String body = new String(msgs[0].getRecords()[0].getPayload());
+
+            //TODO: trata
+            if(body.trim().length()==0) {
+                body = "33"; //fake;
+            }
+
+
+            if(body.trim().length()==0){
+                writeLog("Tag vazia");
+            }else{
+
+                int idEnt=-1;
+
+                try {
+                    idEnt=Integer.parseInt(body);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(idEnt==-1){
+                    writeLog("Tag não numérica (" + body + ")");
+                }else{
+                    lancarPontuacao(idEnt);
+                }
+
+
+
+            }
+
+
+        }
+/*
+        // Tag writing mode
+        if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+            Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            writeTag(getNoteAsNdef(), detectedTag);
+        }*/
+
+    }
+
+/*    private void promptForContent(final NdefMessage msg) {
+        new AlertDialog.Builder(this).setTitle("Replace current content?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        String body = new String(msg.getRecords()[0].getPayload());
+                        setNoteBody(body);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                }).show();
+    }*/
+
+/*    private void setNoteBody(String body) {
+        writeLog(body);
+    }*/
+
+
+    NdefMessage[] getNdefMessages(Intent intent) {
+        // Parse the intent
+        NdefMessage[] msgs = null;
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (rawMsgs != null) {
+                msgs = new NdefMessage[rawMsgs.length];
+                for (int i = 0; i < rawMsgs.length; i++) {
+                    msgs[i] = (NdefMessage) rawMsgs[i];
+                }
+            } else {
+                // Unknown tag type
+                byte[] empty = new byte[]{};
+                NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, empty, empty);
+                NdefMessage msg = new NdefMessage(new NdefRecord[]{
+                        record
+                });
+                msgs = new NdefMessage[]{
+                        msg
+                };
+            }
+        } else {
+            Log.d("Pontua", "Unknown intent.");
+            finish();
+        }
+        return msgs;
+    }
+
+    private NdefMessage getNoteAsNdef() {
+        byte[] textBytes = "blablal".toString().getBytes();
+        NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, "text/plain".getBytes(),
+                new byte[]{}, textBytes);
+        return new NdefMessage(new NdefRecord[]{
+                textRecord
+        });
+    }
+
+    void lancarPontuacao(int idEntidade) {
+
+        //efetua lancamento
+        Integer[] paramns = new Integer[]{idEntidade};
+
+        new efetuarLancamentoTask().execute(paramns);
+    }
+
 //    private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
 //
 //        @Override
@@ -434,80 +438,114 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
 //            }
 //        }
 //    }
-//
-//    class efetuarLancamentoTask extends AsyncTask<Integer, Integer, Boolean> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            inicializaProgressBar();
-//            progress.show();
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Integer... param) {
-//
-////            try(CadastrosControle cc = new CadastrosControle()){
-//
-//            try {
-//
-//                Boolean retorno;
-//
-//                objAvaliacao.setEntidade(cc.obterEntidadePorId(param[0]));
-//
-//                retorno = cc.inserirAvaliacao(objAvaliacao);
-//                return retorno;
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Boolean result) {
-//
-//            if (progress != null && progress.isShowing()) {
-//                progress.dismiss();
-//            }
-//
-//
-//            String strMsg;
-//
-//            if (result) {
-//                strMsg = "Lanç. efetuado (" + objAvaliacao.getEntidade().getNome() + ") ";
-//
-//
-//                //som
-//                try {
-//                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-//                    r.play();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                //vibra
-//                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-//                // Vibrate for 500 milliseconds
-//                v.vibrate(500);
-//
-//
-//
-//            } else {
-//                strMsg = "Erro (" + objAvaliacao.getEntidade().getNome() + ") ";
-//            }
-//
-//            writeLog(strMsg);
-//
-//
-//
-//
-//            Toast.makeText(getApplicationContext(), strMsg, Toast.LENGTH_SHORT).show();
-//
-//
-//        }
-//    }
-//
+
+    class efetuarLancamentoTask extends AsyncTask<Integer, Integer, Boolean> {
+
+        private String errorMsg=null;
+
+        @Override
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Integer... param) {
+
+            try(CadastrosControle cc = new CadastrosControle()){
+
+                try {
+
+                    Boolean retorno=false;
+
+                    //preenche entidade
+                    objAvaliacao.getRelEntidadeEvento().setEntidade(cc.obterEntidadePorId(param[0]));
+
+                    //verifica se existe avaliacao...
+                    boolean oExiste = cc.localizarAvaliacaoRealizada(objAvaliacao);
+
+                    if(oExiste){
+                        //verifica o que faz???
+                        if(deveSobrescrever){
+                            //remove e continua...
+                            cc.excluirAvaliacao(objAvaliacao);
+                        } else {
+                            //msg de alerta
+                            errorMsg = "Avaliação já realizada";
+                            return false;
+                        }
+                    }
+
+                    try{
+                        retorno = cc.inserirAvaliacao(objAvaliacao);
+                    }catch (Exception ee){
+                        //se ocorreu erro, pode ser de FK.
+                        //neste caso, verifica se preenchei o ID do getRelEntidadeEvento
+                        //caso seja ZERO, a entidade nao faz parte deste evento
+
+                        if(objAvaliacao.getRelEntidadeEvento().getId()==0){
+                            errorMsg = "Entidade não faz parte deste evento";
+                            return null;
+                        } else {
+                            throw ee; // propaga
+                        }
+
+                    }
+
+
+                    return retorno;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = e.getMessage();
+                    return null;
+                }
+
+
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
+
+            String strMsg;
+
+            if (result!=null && result==true) {
+                strMsg = "Lanç. efetuado (" + objAvaliacao.getRelEntidadeEvento().getEntidade().getNome().toUpperCase().trim() + ") ";
+
+
+                //som
+                try {
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                    r.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //vibra
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate for X milliseconds
+                v.vibrate(100);
+
+
+
+            } else {
+                strMsg = "Erro (" + objAvaliacao.getRelEntidadeEvento().getEntidade().getNome() + ") - " + errorMsg;
+            }
+
+            writeLog(strMsg);
+            Toast.makeText(getApplicationContext(), strMsg, Toast.LENGTH_SHORT).show();
+
+
+        }
+    }
+
 
 }

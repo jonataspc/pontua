@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -204,6 +205,10 @@ public class AvaliacaoNfc extends AppCompatActivity {
 
         Intent myIntent = new Intent(AvaliacaoNfc.this, AvaliacaoNfcLer.class);
         myIntent.putExtra("objAvaliacaoVO", o );
+
+        final CheckBox cks = (CheckBox) findViewById(R.id.ckSobrescrever);
+        myIntent.putExtra("sobrescrever", cks.isChecked());
+
         startActivity(myIntent);
     }
 

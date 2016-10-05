@@ -126,6 +126,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:layout_alignParentRight="true"
                 android:id="@+id/txtPontuacao"
                 android:layout_gravity="center"
@@ -133,12 +135,22 @@
                 android:gravity="center" />
         </RelativeLayout>
 
+
+        <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sobrescrever lançamentos de itens já avaliados."
+        android:id="@+id/ckSobrescrever"
+        android:layout_marginTop="10dp"
+            android:layout_below="@+id/relLayVlrPontuar"
+          />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Iniciar Leituras"
             android:id="@+id/btnLancar"
-            android:layout_below="@+id/relLayVlrPontuar"
+            android:layout_below="@+id/ckSobrescrever"
             android:layout_alignEnd="@+id/relLayVlrPontuar"
             android:layout_marginTop="10dp"/>
     </RelativeLayout>
