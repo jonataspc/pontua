@@ -148,6 +148,28 @@ public class Avaliacao extends AppCompatActivity {
 
         });
 
+        final Button btnMinimo = (Button) findViewById(R.id.btnMinimo);
+        btnMinimo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                txtPontuacao.setText(String.valueOf(_itemInspecaoAtual.getPontuacaoMinima().doubleValue()));
+                lancarPontuacao();
+            }
+
+        });
+
+        final Button btnMaximo = (Button) findViewById(R.id.btnMaximo);
+        btnMaximo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                txtPontuacao.setText(String.valueOf(_itemInspecaoAtual.getPontuacaoMaxima().doubleValue()));
+                lancarPontuacao();
+            }
+
+        });
+
 
         //carrega eventos em spinner
         AsyncTask cEt = new carregarEventosTask().execute("");
@@ -165,8 +187,9 @@ public class Avaliacao extends AppCompatActivity {
         txtPontuacao.setEnabled(false);
 
         //disable btn
-        final Button btnLancar = (Button) findViewById(R.id.btnLancar);
-        btnLancar.setEnabled(false);
+        ((Button) findViewById(R.id.btnLancar)).setEnabled(false);
+        ((Button) findViewById(R.id.btnMinimo)).setEnabled(false);
+        ((Button) findViewById(R.id.btnMaximo)).setEnabled(false);
     }
 
     class carregarEventosTask extends AsyncTask<String, Integer, List> {
@@ -599,7 +622,6 @@ public class Avaliacao extends AppCompatActivity {
                     ItemInspecaoVO item = (ItemInspecaoVO) parentView.getSelectedItem();
                     final TextView lblInstrucoes = (TextView) findViewById(R.id.lblInstrucoes);
                     final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
-                    final Button btnLancar = (Button) findViewById(R.id.btnLancar);
 
                     _itemInspecaoAtual = item;
 
@@ -614,7 +636,9 @@ public class Avaliacao extends AppCompatActivity {
                     txtPontuacao.setEnabled(true);
 
                     //enable btn
-                    btnLancar.setEnabled(true);
+                    ((Button) findViewById(R.id.btnLancar)).setEnabled(true);
+                    ((Button) findViewById(R.id.btnMinimo)).setEnabled(true);
+                    ((Button) findViewById(R.id.btnMaximo)).setEnabled(true);
                 }
 
                 @Override

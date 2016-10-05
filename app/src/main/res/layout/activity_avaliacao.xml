@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:scrollbars="none"
@@ -11,10 +12,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         tools:context="com.bsi.pontua.Avaliacao">
 
         <TextView
@@ -159,7 +160,35 @@
             android:text="Pontuar"
             android:id="@+id/btnLancar"
             android:layout_below="@+id/relLayPontLancar"
-            android:layout_alignEnd="@+id/relLayPontLancar"
             android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:layout_below="@+id/btnLancar"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_marginTop="3dp"
+            android:id="@+id/linLay2">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lançar Mínimo"
+                android:textColor="#ff0000"
+                android:id="@+id/btnMinimo"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lançar Máximo"
+                android:id="@+id/btnMaximo"
+                android:layout_weight="0.5"
+                android:textColor="#378127" />
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 </ScrollView>
