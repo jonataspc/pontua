@@ -239,5 +239,18 @@ public class Menu3 extends AppCompatActivity {
         ((ImageButton) findViewById(R.id.imgRealizarAvaliacao)).setOnClickListener(m05);
         ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(m05);
 
+        //NFC
+        View.OnClickListener m06 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, AvaliacaoNfc.class);
+                //myIntent.putExtras(b);
+                startActivity(myIntent);
+            }
+        };
+
+        ((ImageButton) findViewById(R.id.imgAvaliacaoNFC)).setOnClickListener(m06);
+        ((Button) findViewById(R.id.btnAvaliacaoNFC)).setOnClickListener(m06);
+
     }
 }

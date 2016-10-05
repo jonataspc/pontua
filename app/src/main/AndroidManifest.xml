@@ -99,14 +99,14 @@
         </activity>
         <activity
             android:name=".AvaliacaoNfc"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
         <activity
             android:name=".AvaliacaoNfcLer"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AvaliacaoNfc" />

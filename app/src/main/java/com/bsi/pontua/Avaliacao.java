@@ -607,8 +607,6 @@ public class Avaliacao extends AppCompatActivity {
             });
 
 
-            List<ItemInspecaoVO> lista = result;
-
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnItens.setAdapter(adapter);
             spnItens.requestFocus();

@@ -265,8 +265,16 @@ public class CadastrosControle implements Closeable {
         return daoRelEntidadeEvento.listarAreasPendentesPorRelEntidadeEvento(o);
     }
 
+    public List<AreaVO> listarAreasPendentesPorEvento(EventoVO o) throws Exception {
+        return daoRelEntidadeEvento.listarAreasPendentesPorEvento(o);
+    }
+
     public List<ItemInspecaoVO> listarItensPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a) throws Exception {
         return daoRelEntidadeEvento.listarItensPendentesPorRelEntidadeEvento(o, a);
+    }
+
+    public List<ItemInspecaoVO> listarItensPendentesPorEvento(EventoVO o, AreaVO a) throws Exception {
+        return daoRelEntidadeEvento.listarItensPendentesPorEvento(o, a);
     }
 
 

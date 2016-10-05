@@ -19,26 +19,33 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
+import utils.Utils;
+import vo.AreaVO;
 import vo.AvaliacaoVO;
+import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.RelEntidadeEventoVO;
+import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
 public class AvaliacaoNfc extends AppCompatActivity {
 
-/*
 
     ProgressDialog progress;
     Bundle b=null;
     private String TXT_MSG_SELECIONE = "Selecione...";
-    private String TXT_AREA_QUALQUER = "[Qualquer]";
+    private String TXT_AREA_QUALQUER = "[Todas]";
+
     private EventoVO _eventoAtual = null;
     private ItemInspecaoVO _itemInspecaoAtual = null;
-    private UsuarioVO _usuarioAtual = null;
 
     @Override
     public void onPause() {
@@ -76,6 +83,8 @@ public class AvaliacaoNfc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avaliacao_nfc);
+
+        setTitle("Avaliação por NFC");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final EditText txtPontuacao = (EditText) findViewById(R.id.txtPontuacao);
@@ -87,9 +96,9 @@ public class AvaliacaoNfc extends AppCompatActivity {
         //recupera usuario
         b = getIntent().getExtras();
 
-        if(b==null){
+      /*  if(b==null){
             finish();
-        }
+        }*/
 
         final Button btnLancar = (Button) findViewById(R.id.btnLancar);
         btnLancar.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +114,6 @@ public class AvaliacaoNfc extends AppCompatActivity {
         //carrega eventos em spinner
         AsyncTask cEt = new carregarEventosTask().execute("");
 
-        //obtem o usuario
-        AsyncTask oUsTask =  new obterUsuarioPorIdTask().execute(new Integer[]{b.getInt("id") });
 
     }
 
@@ -139,13 +146,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
             strArea = null;
         }
 
-
-        String[] paramns = new String[]{
-                String.valueOf(_eventoAtual.getId()),
-                strArea
-        };
-
-        new carregarItensTask().execute(paramns);
+        new carregarItensTask().execute(strArea);
 
     }
 
@@ -168,13 +169,13 @@ public class AvaliacaoNfc extends AppCompatActivity {
 
         //valida pontuacao maxima/minima
         if( Double.parseDouble(txtPontuacao.getText().toString()) < Double.parseDouble(_itemInspecaoAtual.getPontuacaoMinima().toString())){
-            Toast.makeText(getApplicationContext(), "Pontuação lançada deve ser superior/igual à mínima!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Pontuação informada deve ser superior/igual à mínima!", Toast.LENGTH_SHORT).show();
             txtPontuacao.requestFocus();
             return;
         }
 
         if( Double.parseDouble(txtPontuacao.getText().toString()) > Double.parseDouble(_itemInspecaoAtual.getPontuacaoMaxima().toString())){
-            Toast.makeText(getApplicationContext(), "Pontuação lançada deve ser inferior/igual à máxima!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Pontuação informada deve ser inferior/igual à máxima!", Toast.LENGTH_SHORT).show();
             txtPontuacao.requestFocus();
             return;
         }
@@ -182,19 +183,27 @@ public class AvaliacaoNfc extends AppCompatActivity {
 
 
 
-        //efetua lancamento
-        AvaliacaoVO param;
-        param = new AvaliacaoVO();
-        param.setEntidade(null);
-        param.setItemInspecao(_itemInspecaoAtual);
-        param.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
-        param.setForma_automatica(1);
-        param.setUsuario(_usuarioAtual);
+        //controi objetos para lancamento posterior
+        RelEntidadeEventoVO oRelEntidadeEvento = new RelEntidadeEventoVO();
+        oRelEntidadeEvento.setEvento(_eventoAtual);
+        oRelEntidadeEvento.setEntidade(null); // sera obtido atraves da leitura NFC
+
+        RelItemInspecaoEventoVO oRelItemInspecaoEvento = new RelItemInspecaoEventoVO();
+        oRelItemInspecaoEvento.setEvento(_eventoAtual);
+        oRelItemInspecaoEvento.setItemInspecao(_itemInspecaoAtual);
+
+
+        AvaliacaoVO o = new AvaliacaoVO();
+        o.setMetodo(AvaliacaoVO.EnumMetodoAvaliacao.NFC);
+        o.setDataHora(new Date());
+        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
+        o.setRelEntidadeEvento(oRelEntidadeEvento);
+        o.setRelItemInspecaoEvento(oRelItemInspecaoEvento);
+        o.setUsuario(Utils.usuarioCorrente);
 
 
         Intent myIntent = new Intent(AvaliacaoNfc.this, AvaliacaoNfcLer.class);
-        //myIntent.putExtras(b);
-        myIntent.putExtra("objAvaliacaoVO", param );
+        myIntent.putExtra("objAvaliacaoVO", o );
         startActivity(myIntent);
     }
 
@@ -209,18 +218,23 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<EventoVO> doInBackground(String... param) {
 
-            //            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+            try(CadastrosControle cc = new CadastrosControle()){
 
-                List<EventoVO> lista = cc.listarEvento("");
-                return lista;
+                try {
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    List<EventoVO> lista = cc.listarEvento("");
+                    return lista;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+
             }
 
-            return null;
+
         }
 
         @Override
@@ -267,12 +281,8 @@ public class AvaliacaoNfc extends AppCompatActivity {
                         _itemInspecaoAtual = null;
 
 
-
                         //carrega areas em spinner
-                        Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
-
-                        String[] paramns = new String[]{String.valueOf(((EventoVO) spnEventos.getSelectedItem()).getId())};
-                        new carregarAreasTask().execute(paramns);
+                        new carregarAreasTask().execute("");
                     }
 
                 }
@@ -299,21 +309,23 @@ public class AvaliacaoNfc extends AppCompatActivity {
         }
 
         @Override
-        protected List<String> doInBackground(String... param) {
+        protected List<AreaVO> doInBackground(String... param) {
 
-            //            try(CadastrosControle cc = new CadastrosControle()){
+            try(CadastrosControle cc = new CadastrosControle()){
 
-            try {
+                try {
 
-                List<String> lista = cc.listarAreas(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                    List<AreaVO> lista = cc.listarAreasPendentesPorEvento(_eventoAtual);
 
-                return lista;
+                    return lista;
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
 
-            return null;
         }
 
         @Override
@@ -322,10 +334,34 @@ public class AvaliacaoNfc extends AppCompatActivity {
             //popula o spinner de areas
             Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
 
+            //ordena
+            Collections.sort (result, new Comparator<AreaVO>() {
+                public int compare (AreaVO p1, AreaVO p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
 
-            result.add(0, TXT_AREA_QUALQUER);
+            //somente adiciona caso existam itens validos..
 
-            result.add(0, TXT_MSG_SELECIONE);
+            if(result.size()!=0){
+                AreaVO a1 = new AreaVO();
+                a1.setNome(TXT_AREA_QUALQUER);
+
+                AreaVO a2 = new AreaVO();
+                a2.setNome(TXT_MSG_SELECIONE);
+
+                result.add(0, a1);
+                result.add(0, a2);
+            } else {
+
+                //limpa itens
+                //zera itens
+                ((Spinner) findViewById(R.id.spnItens)).setAdapter(new ArrayAdapter<String>(AvaliacaoNfc.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+                resetaUi();
+
+
+            }
+
 
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AvaliacaoNfc.this, android.R.layout.simple_spinner_dropdown_item, result);
@@ -338,7 +374,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega itens
 
-                    if (((String) parentView.getSelectedItem()).equals(TXT_MSG_SELECIONE)) {
+                    if (((AreaVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
                         resetaUi();
 
                         //zera itens
@@ -376,22 +412,27 @@ public class AvaliacaoNfc extends AppCompatActivity {
         @Override
         protected List<ItemInspecaoVO> doInBackground(String... param) {
 
-            //            try(CadastrosControle cc = new CadastrosControle()){
+            try(CadastrosControle cc = new CadastrosControle()){
+                try {
 
-            try {
+                    AreaVO area = null;
 
-                List<ItemInspecaoVO> lista = cc.listarItemInspecaoPorEvento(
-                        cc.obterEventoPorId(Integer.parseInt(param[0])),
-                        param[1]
-                );
+                    //só manda area caso nao seja QUALQUER
+                    if(param[0] != null){
+                        area = cc.obterAreaPorNome(param[0]);
+                    }
 
-                return lista;
+                    List<ItemInspecaoVO> lista = cc.listarItensPendentesPorEvento(_eventoAtual, area);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    return lista;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return null;
             }
 
-            return null;
         }
 
         @Override
@@ -399,6 +440,14 @@ public class AvaliacaoNfc extends AppCompatActivity {
 
             //popula o spinner de areas
             Spinner spnItens = (Spinner) findViewById(R.id.spnItens);
+
+            //ordena
+            Collections.sort (result, new Comparator<ItemInspecaoVO>() {
+                public int compare (ItemInspecaoVO p1, ItemInspecaoVO p2) {
+                    return p1.getNome().compareTo(p2.getNome());
+                }
+            });
+
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AvaliacaoNfc.this, android.R.layout.simple_spinner_dropdown_item, result);
             spnItens.setAdapter(adapter);
@@ -448,41 +497,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         }
     }
 
-    class obterUsuarioPorIdTask extends AsyncTask<Integer, Integer, List> {
-
-        @Override
-        protected List<UsuarioVO> doInBackground(Integer... param) {
-
-            //            try(CadastrosControle cc = new CadastrosControle()){
-
-            try {
-
-                List<UsuarioVO> lista = new ArrayList<UsuarioVO>(0);
-                lista.add(cc.obterUsuarioPorId(param[0]));
-
-                return lista;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List result) {
-
-            if(result==null || result.size()==0){
-                _usuarioAtual=null;
-            }else{
-                _usuarioAtual = (UsuarioVO) result.get(0);
-            }
 
 
-        }
-    }
-
-
-*/
 
 }
