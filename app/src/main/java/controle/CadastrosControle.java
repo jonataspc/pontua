@@ -247,6 +247,10 @@ public class CadastrosControle implements Closeable {
         return daoRelEntidadeEvento.listarPorEvento(evento);
     }
 
+    public int obterQtdEntidadesPorEvento(EventoVO evento) throws Exception {
+        return daoRelEntidadeEvento.qtdEntidadesPorEvento(evento);
+    }
+
     public List<RelEntidadeEventoVO> listarRelEntidadesPendentesPorEvento(EventoVO evento) throws Exception {
         return daoRelEntidadeEvento.listarEntidadesPendentesPorEvento(evento);
     }
@@ -291,6 +295,10 @@ public class CadastrosControle implements Closeable {
 
     public List<RelItemInspecaoEventoVO> listarRelItemInspecaoEventoPorEvento(EventoVO evento) throws Exception {
         return daoRelItemInspecaoEvento.listarPorEvento(evento);
+    }
+
+    public int obterQtdItensPorEvento(EventoVO evento) throws Exception {
+        return daoRelItemInspecaoEvento.qtdItensPorEvento(evento);
     }
 
     public RelItemInspecaoEventoVO obterRelItemInspecaoEventoPorCodigo(int cod) throws Exception {

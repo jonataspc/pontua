@@ -87,6 +87,32 @@ public class RelEntidadeEventoDAO {
 
     }
 
+    public int qtdEntidadesPorEvento(EventoVO evento) throws SQLException {
+        try {
+
+            Conexao.validarConn(conn);
+
+            PreparedStatement st;
+            st = conn.prepareStatement("SELECT COUNT(*) AS qtd FROM rel_entidade_evento WHERE id_evento=? ORDER BY id;");
+            st.setInt(1, evento.getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            int result=0;
+
+            while (resultado.next()) {
+                result = resultado.getInt("qtd");
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public List<RelEntidadeEventoVO> listarPorEvento(EventoVO evento) throws SQLException {
         try {
 

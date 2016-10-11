@@ -83,6 +83,32 @@ public class RelItemInspecaoEventoDAO {
 
     }
 
+    public int qtdItensPorEvento(EventoVO evento) throws SQLException {
+        try {
+
+            Conexao.validarConn(conn);
+
+            PreparedStatement st;
+            st = conn.prepareStatement("SELECT COUNT(*) AS qtd FROM rel_item_inspecao_evento WHERE id_evento=? ORDER BY id;");
+            st.setInt(1, evento.getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            int result=0;
+
+            while (resultado.next()) {
+                result = resultado.getInt("qtd");
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public List<RelItemInspecaoEventoVO> listarPorEvento(EventoVO evento) throws SQLException {
         try {
 

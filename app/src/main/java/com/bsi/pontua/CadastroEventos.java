@@ -26,13 +26,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import controle.CadastrosControle;
 import utils.SoftRadioButton;
 import utils.Utils;
 import vo.EventoVO;
 import vo.EventoVO;
+import vo.RelEntidadeEventoVO;
 
 public class CadastroEventos extends AppCompatActivity {
 
@@ -45,6 +49,10 @@ public class CadastroEventos extends AppCompatActivity {
 
     //lista de eventos exibidos
     List<EventoVO> listaEventos;
+
+    Map<Integer, Integer> mapRelEntidadeEvento = new HashMap<Integer, Integer>();
+    Map<Integer, Integer> mapRelItemInspecaoEvento = new HashMap<Integer, Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,14 +271,14 @@ public class CadastroEventos extends AppCompatActivity {
         tr.addView(ncol2); // Adding textView to tablerow.
 
         TextView ncol3 = new TextView(this);
-        ncol3.setText("Data/Hora");
+        ncol3.setText("Qtd Entidades");
         ncol3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         ncol3.setPadding(5, 5, 5, 0);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
 
         TextView ncol4 = new TextView(this);
-        ncol4.setText("Autor");
+        ncol4.setText("Qtd Itens");
         ncol4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         ncol4.setPadding(5, 5, 5, 0);
         ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -347,23 +355,15 @@ public class CadastroEventos extends AppCompatActivity {
             tr.addView(col1);
 
             col2 = new TextView(this);
-            col2.setText(Utils.formatarData(e.getDataHoraCriacao()));
+            col2.setText(mapRelEntidadeEvento.get(e.getId()).toString());
             col2.setTextColor(Color.BLACK);
             col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             col2.setPadding(5, 5, 5, 5);
             tr.addView(col2);
 
 
-            String nome;
-            if(e.getUsuario()!=null){
-                nome = e.getUsuario().getNome();
-            } else {
-                nome = "";
-            }
-
-
             col3 = new TextView(this);
-            col3.setText(nome);
+            col3.setText(mapRelItemInspecaoEvento.get(e.getId()).toString());
             col3.setTextColor(Color.BLACK);
             col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             col3.setPadding(5, 5, 5, 5);
@@ -417,6 +417,22 @@ public class CadastroEventos extends AppCompatActivity {
                 try {
 
                     List<EventoVO> lista = cc.listarEvento("");
+
+                    for (EventoVO item : lista){
+                        //preenche totais..
+
+                        int totalEntidades = 0;
+                        int totalItens = 0;
+
+                        totalEntidades = cc.obterQtdEntidadesPorEvento(item);
+                        totalItens = cc.obterQtdItensPorEvento(item);
+
+                        mapRelEntidadeEvento.put(item.getId(), totalEntidades);
+                        mapRelItemInspecaoEvento.put(item.getId(), totalItens);
+                    }
+
+
+
                     return lista;
 
                 } catch (Exception e) {
