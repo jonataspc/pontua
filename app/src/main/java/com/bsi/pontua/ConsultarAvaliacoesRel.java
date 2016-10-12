@@ -1,5 +1,6 @@
 package com.bsi.pontua;
 
+import android.content.SharedPreferences;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -25,6 +28,7 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -40,13 +44,61 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.UsuarioVO;
 
-public class ConsultarAvaliacoesRel extends AppCompatActivity {
+public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.OnClickListener {
 
     TableLayout tl;
     TableRow tr;
     TextView col1, col2, col3, col4, col5, col6, col7, col8;
 
     ProgressDialog progress;
+
+    private boolean hasChecked = false;
+
+    private final String TXT_MENU_EXC_AVAL = "Excluir avaliações";
+    private final int ID_MENU_EXC_AVAL = 998;
+
+    //itens a remover
+    private List<AvaliacaoVO> lstExcluir = null;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        if (hasChecked )
+        {
+            menu.add(Menu.NONE, ID_MENU_EXC_AVAL, Menu.NONE, TXT_MENU_EXC_AVAL).setIcon(android.R.drawable.ic_delete)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+
+        return true;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        hasChecked = false;
+
+        if(v instanceof CheckBox && v.getTag()!=null && v.getTag() instanceof AvaliacaoVO  ){
+            //usr clicou no checkbox
+
+            //zera lst
+            lstExcluir = new ArrayList<>();
+
+            //checa se tem preeenchidos
+            checkAvalExcl(tl);
+
+            if(lstExcluir.size()!=0){
+                //tem algum marcado, habilita opcao no menu
+                hasChecked = true;
+            }
+
+        }
+
+        //recria menu
+        invalidateOptionsMenu();
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,77 +133,28 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
 
 
 
-/*
-        ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //atualiza grid
-                refresh();
-            }
-        });
-*/
-
-
-//        btnExcluir.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                registro = -1;
-//                selectedRadio(tl);
-//                if (registro != -1) {
-//                    new AlertDialog.Builder(ConsultarAvaliacoesRel.this)
-//                            .setIcon(android.R.drawable.ic_dialog_alert)
-//                            .setTitle("")
-//                            .setMessage("Deseja realmente excluir o registro selecionado?")
-//                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                    //remove
-//                                    String[] paramns = new String[]{String.valueOf(registro)};
-//                                    new excluirRegistroTask().execute(paramns);
-//                                }
-//
-//                            })
-//                            .setNegativeButton("Não", null)
-//                            .show();
-//                }
-//            }
-//        });
-
-        refresh();
-    }
-
-    void refresh(){
         //atualiza
-
         popularGridTask o = new popularGridTask();
         o.execute("");
+
     }
 
-    int registro = -1;
-
-    public void selectedRadio(ViewGroup layout) {
+    public void checkAvalExcl(ViewGroup layout) {
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             View v = layout.getChildAt(i);
 
             if (v instanceof ViewGroup) {
-                selectedRadio((ViewGroup) v);
+                checkAvalExcl((ViewGroup) v);
             } else if (v instanceof TableRow) {
-                selectedRadio((TableRow) v);
-            } else if (v instanceof SoftRadioButton) {
+                checkAvalExcl((TableRow) v);
+            } else if (v instanceof CheckBox) {
 
-                if (((SoftRadioButton) v).isChecked()) {
-                    registro = Integer.parseInt(((SoftRadioButton) v).getText().toString());
+                if (((CheckBox) v).isChecked()) {
+                    lstExcluir.add( (AvaliacaoVO) v.getTag()  );
                 }
-
-
             }
-
         }
-
     }
 
     @Override
@@ -343,8 +346,10 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
             }else {
                 //adm, pode excluir
 
-                final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
+                final CheckBox chk = new CheckBox(this);
                 chk.setText(String.valueOf(e.getId()));
+                chk.setTag(e);
+                chk.setOnClickListener(this);
                 chk.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
                 chk.setPadding(5, 5, 5, 5);
                 chk.setTextColor(Color.GRAY);
@@ -437,9 +442,34 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
                 setResult(1, new Intent().putExtra("teste", "from c"));
                 this.finish();
                 return true;
+
+            case ID_MENU_EXC_AVAL:
+                //remove
+                removerItens();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    void removerItens(){
+        new AlertDialog.Builder(ConsultarAvaliacoesRel.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("")
+                .setMessage("Deseja realmente excluir o(s) registro(s) selecionado(s)?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //remove
+                        excluirRegistroTask o = new excluirRegistroTask();
+                        o.execute("");
+                    }
+
+                })
+                .setNegativeButton("Não", null)
+                .show();
     }
 
     class popularGridTask extends AsyncTask<String, Integer, List> {
@@ -448,7 +478,10 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            if(!isSwipe){
+            if(isSwipe) {
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(true);
+            } else {
                 inicializaProgressBar();
                 progress.show();
             }
@@ -564,15 +597,23 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
     class excluirRegistroTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... param) {
+        protected void onPreExecute() {
+            inicializaProgressBar();
+            progress.show();
+        }
 
-            //            try(CadastrosControle cc = new CadastrosControle()){
+
+        @Override
+        protected Boolean doInBackground(String... param) {
 
             try {
 
-                AvaliacaoVO o = new AvaliacaoVO();
-                o.setId(Integer.parseInt(param[0]));
-//                cc.excluirAvaliacao(o);
+                try(CadastrosControle cc = new CadastrosControle()){
+
+                    for(AvaliacaoVO item : lstExcluir){
+                        cc.excluirAvaliacao(item);
+                    }
+                }
 
                 return true;
 
@@ -586,13 +627,21 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
 
+
+            if (progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
+
+
             if (result) {
+
+                Toast.makeText(getApplicationContext(), "Registro(s) removido(s) com sucesso!", Toast.LENGTH_SHORT).show();
+
                 //atualiza lista de ItemInspecao
-                refresh();
+                popularGridTask o = new popularGridTask();
+                o.isSwipe = true;
+                o.execute("");
 
-
-
-                Toast.makeText(getApplicationContext(), "Registro removido com sucesso!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Erro ao realizar a exclusão!", Toast.LENGTH_SHORT).show();
             }
