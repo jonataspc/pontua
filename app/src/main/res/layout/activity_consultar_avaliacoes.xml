@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:scrollbars="none"
+    android:id="@+id/scrollView"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="com.bsi.pontua.ConsultarAvaliacoes">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Consultar Avaliações"
-            android:id="@+id/tvwTitle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        tools:context="com.bsi.pontua.Avaliacao">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Evento:"
-            android:id="@+id/txtEvento"
+            android:id="@+id/tvwEvento"
             android:layout_below="@+id/tvwTitle"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="1dp" />
 
         <Spinner
             android:id="@+id/spnEventos"
@@ -40,7 +35,7 @@
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtEvento"
+            android:layout_below="@+id/tvwEvento"
             android:layout_alignParentLeft="true" />
 
         <TextView
@@ -48,10 +43,29 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Entidade:"
-            android:id="@+id/txtArea"
+            android:id="@+id/tvwEntidade"
             android:layout_below="@+id/spnEventos"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="5dp" />
+
+        <Spinner
+            android:id="@+id/spnEntidades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/tvwEntidade"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Área:"
+            android:id="@+id/tvwArea"
+            android:layout_below="@+id/spnEntidades"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
 
         <Spinner
             android:id="@+id/spnAreas"
@@ -59,17 +73,40 @@
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
-            android:layout_below="@+id/txtArea"
+            android:layout_below="@+id/tvwArea"
             android:layout_alignParentStart="true" />
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Consultar"
-            android:id="@+id/btnConsAvaliacoes"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Item:"
+            android:id="@+id/tvwItem"
             android:layout_below="@+id/spnAreas"
-            android:layout_centerHorizontal="true"
-            android:enabled="false" />
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
+
+        <Spinner
+            android:id="@+id/spnItens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/tvwItem"
+            android:layout_alignParentStart="true" />
+
+
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consultar"
+            android:id="@+id/btnConsultar"
+            android:layout_below="@+id/spnItens"
+            android:layout_marginTop="10dp"/>
+
 
 
     </RelativeLayout>
