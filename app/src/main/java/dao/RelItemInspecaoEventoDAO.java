@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.AreaVO;
 import vo.EventoVO;
+import vo.ItemInspecaoVO;
 import vo.RelItemInspecaoEventoVO;
 
 /**
@@ -106,6 +108,68 @@ public class RelItemInspecaoEventoDAO {
             e.printStackTrace();
             throw e;
         }
+
+    }
+
+    public List<ItemInspecaoVO> listarItensPorEvento(EventoVO e, AreaVO a, boolean somentePendentes) throws SQLException {
+        try {
+            //retorna itens pendentes para um evento
+
+            Conexao.validarConn(conn);
+
+            PreparedStatement st;
+
+            String strSQLAux = "";
+
+            if(somentePendentes){
+                strSQLAux = " AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ ";
+            }
+
+
+            String strSQL = "SELECT ii.id FROM rel_entidade_evento ree " +
+                    " " +
+                    "JOIN rel_item_inspecao_evento rii USING(id_evento) " +
+                    "JOIN item_inspecao ii ON ii.id = rii.id_item_inspecao " +
+                    "JOIN `area` a ON a.id = ii.id_area " +
+                    "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
+                    " " +
+                    "WHERE ree.id_evento=? " + strSQLAux +
+                    "" ;
+
+
+            if(a!=null){
+                strSQL += " AND a.id=? ";
+            }
+
+            strSQL += " GROUP BY ii.id;";
+
+
+            st = conn.prepareStatement(strSQL);
+            st.setInt(1, e.getId());
+
+            if(a!=null){
+                st.setInt(2, a.getId());
+            }
+
+            ResultSet resultado = st.executeQuery();
+
+            ItemInspecaoDAO iiDao = new ItemInspecaoDAO(conn);
+
+            List<ItemInspecaoVO> lista = new ArrayList<>(0);
+            while (resultado.next()) {
+                ItemInspecaoVO i;
+                i = iiDao.obterPorCodigo(resultado.getInt("id"));
+                lista.add(i);
+            }
+
+
+            return lista;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+
 
     }
 

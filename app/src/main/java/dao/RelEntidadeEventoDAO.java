@@ -203,13 +203,20 @@ public class RelEntidadeEventoDAO {
 
     }
 
-    public List<AreaVO> listarAreasPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o) throws SQLException {
+    public List<AreaVO> listarAreasPorRelEntidadeEvento(RelEntidadeEventoVO o, boolean somentePendentes) throws SQLException {
         try {
             //retorna areas pendentes para uma entidade/evento
 
             Conexao.validarConn(conn);
 
             PreparedStatement st;
+
+            String strAux01 = "";
+
+            if(somentePendentes){
+                strAux01 = " AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ ";
+            }
+
 
             String strSQL = "SELECT a.nome, a.id FROM rel_entidade_evento ree " +
                     " " +
@@ -219,7 +226,7 @@ public class RelEntidadeEventoDAO {
                     "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
                     " " +
                     "WHERE ree.id_entidade=? AND ree.id_evento=? " +
-                    "AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ " +
+                    strAux01 +
                     "GROUP BY a.id ORDER BY a.nome";
 
 
@@ -249,13 +256,19 @@ public class RelEntidadeEventoDAO {
 
     }
 
-    public List<AreaVO> listarAreasPendentesPorEvento(EventoVO o) throws SQLException {
+    public List<AreaVO> listarAreasPorEvento(EventoVO o, boolean somentePendentes) throws SQLException {
         try {
             //retorna areas pendentes para um evento
 
             Conexao.validarConn(conn);
 
             PreparedStatement st;
+
+            String strSQLAux01 = "";
+
+            if(somentePendentes){
+                strSQLAux01 = " AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ ";
+            }
 
             String strSQL = "SELECT a.nome, a.id FROM rel_entidade_evento ree " +
                     " " +
@@ -265,7 +278,7 @@ public class RelEntidadeEventoDAO {
                     "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
                     " " +
                     "WHERE ree.id_evento=? " +
-                    "AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ " +
+                    strSQLAux01 +
                     "GROUP BY a.id ORDER BY a.nome";
 
 
@@ -293,68 +306,19 @@ public class RelEntidadeEventoDAO {
 
     }
 
-    public List<ItemInspecaoVO> listarItensPendentesPorEvento(EventoVO e, AreaVO a) throws SQLException {
-        try {
-            //retorna itens pendentes para um evento
-
-            Conexao.validarConn(conn);
-
-            PreparedStatement st;
-
-            String strSQL = "SELECT ii.id FROM rel_entidade_evento ree " +
-                    " " +
-                    "JOIN rel_item_inspecao_evento rii USING(id_evento) " +
-                    "JOIN item_inspecao ii ON ii.id = rii.id_item_inspecao " +
-                    "JOIN `area` a ON a.id = ii.id_area " +
-                    "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
-                    " " +
-                    "WHERE ree.id_evento=? " +
-                    "AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ " ;
-
-
-            if(a!=null){
-                strSQL += " AND a.id=? ";
-            }
-
-            strSQL += " GROUP BY ii.id;";
-
-
-            st = conn.prepareStatement(strSQL);
-            st.setInt(1, e.getId());
-
-            if(a!=null){
-                st.setInt(2, a.getId());
-            }
-
-            ResultSet resultado = st.executeQuery();
-
-            ItemInspecaoDAO iiDao = new ItemInspecaoDAO(conn);
-
-            List<ItemInspecaoVO> lista = new ArrayList<>(0);
-            while (resultado.next()) {
-                ItemInspecaoVO i;
-                i = iiDao.obterPorCodigo(resultado.getInt("id"));
-                lista.add(i);
-            }
-
-
-            return lista;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-
-
-    }
-
-    public List<ItemInspecaoVO> listarItensPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a) throws SQLException {
+    public List<ItemInspecaoVO> listarItensPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a, boolean somentePendentes) throws SQLException {
         try {
             //retorna itens pendentes para uma entidade/evento
 
             Conexao.validarConn(conn);
 
             PreparedStatement st;
+
+            String strAux01="";
+
+            if(somentePendentes){
+                strAux01 = " AND av.id IS NULL  /* somente os nao avaliados (pendentes) */  ";
+            }
 
             String strSQL = "SELECT ii.id FROM rel_entidade_evento ree " +
                     " " +
@@ -364,7 +328,7 @@ public class RelEntidadeEventoDAO {
                     "LEFT JOIN avaliacao av ON av.id_rel_entidade_evento = ree.id AND av.id_rel_item_inspecao_evento = rii.id /* join com lancamentos */ " +
                     " " +
                     "WHERE ree.id_entidade=? AND ree.id_evento=? " +
-                    "AND av.id IS NULL  /* somente os nao avaliados (pendentes) */ " +
+                     strAux01 +
                     "";
 
             if(a!=null){
