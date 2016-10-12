@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
@@ -318,6 +319,93 @@ public class AvaliacaoDAO {
 
             }
 
+
+            return lista;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
+
+    public List<AvaliacaoVO> listar(EventoVO evt, EntidadeVO ent, AreaVO area, ItemInspecaoVO item, UsuarioVO usuario) throws SQLException {
+        try {
+
+            Conexao.validarConn(conn);
+
+            PreparedStatement st;
+
+            String strSQL = "SELECT a.* FROM avaliacao a JOIN rel_entidade_evento ree ON ree.id = a.id_rel_entidade_evento JOIN rel_item_inspecao_evento rie ON rie.id = a.id_rel_item_inspecao_evento JOIN item_inspecao ii ON ii.id = rie.id_item_inspecao JOIN `area` ar ON ar.id = ii.id_area JOIN evento e ON e.id = ree.id_evento JOIN usuario u ON u.id = a.id_usuario WHERE 1=1 ";
+
+            //evento
+            if(evt!=null && evt.getId() > 0 ){
+                strSQL += " AND ree.id_evento = " + evt.getId() + " "  ;
+            }
+
+            //entidade
+            if(ent!=null && ent.getId() > 0 ){
+                strSQL += " AND ree.id_entidade = " + ent.getId() + " "  ;
+            }
+
+            //area
+            if(area!=null && area.getId() > 0 ){
+                strSQL += " AND ii.id_area = " + area.getId() + " "  ;
+            }
+
+            //item
+            if(item!=null && item.getId() > 0 ){
+                strSQL += " AND rie.id_item_inspecao = " + item.getId() + " "  ;
+            }
+
+            //usuario
+            if(usuario!=null && usuario.getId() > 0 ){
+                strSQL += " AND a.id_usuario = " + usuario.getId() + " "  ;
+            }
+
+
+            st = conn.prepareStatement(strSQL);
+
+
+            ResultSet resultado = st.executeQuery();
+
+            RelEntidadeEventoDAO oRelEntidadeEventoDAO = new RelEntidadeEventoDAO(conn);
+            RelItemInspecaoEventoDAO oRelItemInspecaoEventoDAO = new RelItemInspecaoEventoDAO(conn);
+
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            List<AvaliacaoVO> lista = new ArrayList<AvaliacaoVO>(0);
+            while (resultado.next()) {
+
+                AvaliacaoVO o = new AvaliacaoVO();
+                o.setId(resultado.getInt("id"));
+
+                try {
+                    o.setDataHora(  new java.sql.Date(format.parse(resultado.getString("data_hora")).getTime())  );
+                }catch (Exception e){
+                    o.setDataHora(null);
+                }
+
+                o.setRelEntidadeEvento(oRelEntidadeEventoDAO.obterPorCodigo(resultado.getInt("id_rel_entidade_evento")));
+                o.setRelItemInspecaoEvento(oRelItemInspecaoEventoDAO.obterPorCodigo(resultado.getInt("id_rel_item_inspecao_evento")));
+                o.setUsuario(usuarioDAO.obterPorCodigo(resultado.getInt("id_usuario")));
+                o.setPontuacao(new BigDecimal(resultado.getDouble("pontuacao")));
+
+                AvaliacaoVO.EnumMetodoAvaliacao metodo = null;
+
+                if(resultado.getInt("metodo") == 0){
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.Manual;
+                } else {
+                    metodo = AvaliacaoVO.EnumMetodoAvaliacao.NFC;
+                }
+
+                o.setMetodo(metodo);
+
+                lista.add(o);
+            }
 
             return lista;
 

@@ -253,6 +253,7 @@ public class Menu3 extends AppCompatActivity {
         ((Button) findViewById(R.id.btnAvaliacaoNFC)).setOnClickListener(m06);
 
         //Consultar Avaliacoes
+        //TODO: qdo for entidade devera ir direto para o relatoio
         View.OnClickListener m07 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

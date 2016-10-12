@@ -97,6 +97,46 @@
 
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Avaliador:"
+            android:id="@+id/tvwAvaliador"
+            android:layout_below="@+id/spnItens"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
+
+        <Spinner
+            android:id="@+id/spnUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/tvwAvaliador"
+            android:layout_alignParentStart="true" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Ordenar por:"
+            android:id="@+id/tvwOrderby"
+            android:layout_below="@+id/spnUsuarios"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:textStyle="normal|bold|italic" />
+
+        <Spinner
+            android:id="@+id/spnOrderBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/tvwOrderby"
+            android:layout_alignParentStart="true" />
+
 
 
         <Button
@@ -104,7 +144,7 @@
             android:layout_height="wrap_content"
             android:text="Consultar"
             android:id="@+id/btnConsultar"
-            android:layout_below="@+id/spnItens"
+            android:layout_below="@+id/spnOrderBy"
             android:layout_marginTop="10dp"/>
 
 

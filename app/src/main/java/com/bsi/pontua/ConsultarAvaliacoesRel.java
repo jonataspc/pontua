@@ -1,5 +1,6 @@
 package com.bsi.pontua;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,21 +25,22 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import controle.CadastrosControle;
 import dao.EntidadeDAO;
 import utils.SoftRadioButton;
 import utils.Utils;
+import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
+import vo.UsuarioVO;
 
 public class ConsultarAvaliacoesRel extends AppCompatActivity {
-/*
-
-    Bundle b=null;
 
     TableLayout tl;
     TableRow tr;
@@ -49,12 +52,36 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_avaliacoes_rel);
-getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle("Consultar Avaliações");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
         final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
+
+        // Lookup the swipe container view
+        final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //atualiza
+                popularGridTask task = new popularGridTask();
+                task.isSwipe = true;
+                task.execute("");
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_green_light,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+
+/*
         ibtCadRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,67 +89,45 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 refresh();
             }
         });
+*/
 
 
-        //recupera usuario
-        b = getIntent().getExtras();
-
-        if(b==null){
-            finish();
-        }
-
-        btnExcluir.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                registro = -1;
-                selectedRadio(tl);
-                if (registro != -1) {
-                    new AlertDialog.Builder(ConsultarAvaliacoesRel.this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("")
-                            .setMessage("Deseja realmente excluir o registro selecionado?")
-                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    //remove
-                                    String[] paramns = new String[]{String.valueOf(registro)};
-                                    new excluirRegistroTask().execute(paramns);
-                                }
-
-                            })
-                            .setNegativeButton("Não", null)
-                            .show();
-                }
-            }
-        });
+//        btnExcluir.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                registro = -1;
+//                selectedRadio(tl);
+//                if (registro != -1) {
+//                    new AlertDialog.Builder(ConsultarAvaliacoesRel.this)
+//                            .setIcon(android.R.drawable.ic_dialog_alert)
+//                            .setTitle("")
+//                            .setMessage("Deseja realmente excluir o registro selecionado?")
+//                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    //remove
+//                                    String[] paramns = new String[]{String.valueOf(registro)};
+//                                    new excluirRegistroTask().execute(paramns);
+//                                }
+//
+//                            })
+//                            .setNegativeButton("Não", null)
+//                            .show();
+//                }
+//            }
+//        });
 
         refresh();
     }
 
     void refresh(){
-
-
         //atualiza
 
-        String objEnt=null;
-
-        //todos?
-        if(b.getInt("id_entidade") != -2 ){
-            objEnt = String.valueOf(b.getInt("id_entidade"));
-        }
-
-        if(b.getString("perfil").equals("ENT")){
-            final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
-            btnExcluir.setVisibility(View.INVISIBLE);
-        }
-
-        String[] paramns = new String[]{ String.valueOf(b.getInt("id_evento")), objEnt  };
-
-        new popularGridTask().execute(paramns);
-
+        popularGridTask o = new popularGridTask();
+        o.execute("");
     }
 
     int registro = -1;
@@ -183,16 +188,14 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     public void addHeaders() {
 
-        */
-/** Create a TableRow **//*
+// * Create a TableRow *
 
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(
                 LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT));
 
-        */
-/** Creating a TextView to add to the row **//*
+
 
         TextView col1 = new TextView(this);
         col1.setText("Cód");
@@ -201,8 +204,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         col1.setPadding(5, 5, 15, 0);
         tr.addView(col1);  // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView col2 = new TextView(this);
         col2.setText("Evento");
@@ -211,8 +213,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(col2); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol2 = new TextView(this);
         ncol2.setText("Área");
@@ -221,8 +222,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ncol2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol2); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol3 = new TextView(this);
         ncol3.setText("Item");
@@ -231,8 +231,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol4 = new TextView(this);
         ncol4.setText("Entidade");
@@ -241,8 +240,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol4); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol5 = new TextView(this);
         ncol5.setText("Pontuação");
@@ -253,8 +251,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
-        */
-/** Creating another textview **//*
+// * Creating another textview *
 
         TextView ncol6 = new TextView(this);
         ncol6.setText("Método");
@@ -263,8 +260,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ncol6.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol6); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol7 = new TextView(this);
         ncol7.setText("Usuário");
@@ -273,8 +269,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ncol7.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol7); // Adding textView to tablerow.
 
-        */
-/** Creating another textview **//*
+
 
         TextView ncol8 = new TextView(this);
         ncol8.setText("Data/Hora");
@@ -291,26 +286,21 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tr = new TableRow(this);
         tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-*/
-/*
-        *//*
-*/
-/** Creating another textview **//*
-*/
-/*
-        TextView divider = new TextView(this);
-        divider.setText("-----------------");
-        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        divider.setPadding(5, 0, 0, 0);
-        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider); // Adding textView to tablerow.
 
-        TextView divider2 = new TextView(this);
-        divider2.setText("-------------------------");
-        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
-        divider2.setPadding(5, 0, 0, 0);
-        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(divider2); // Adding textView to tablerow.*//*
+
+//        TextView divider = new TextView(this);
+//        divider.setText("-----------------");
+//        divider.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//        divider.setPadding(5, 0, 0, 0);
+//        divider.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(divider); // Adding textView to tablerow.
+//
+//        TextView divider2 = new TextView(this);
+//        divider2.setText("-------------------------");
+//        divider2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+//        divider2.setPadding(5, 0, 0, 0);
+//        divider2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(divider2); // Adding textView to tablerow.
 
 
         // Add the TableRow to the TableLayout
@@ -333,18 +323,16 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         for (AvaliacaoVO e : obj) {
 
-            */
-/** Create a TableRow dynamically **//*
+//* Create a TableRow dynamically *
 
             tr = new TableRow(this);
             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-            */
-/** Creating a TextView to add to the row **//*
+//* Creating a TextView to add to the row *
 
 
-            if(b.getString("perfil").equals("ENT")){
-                //entidade
+            if(Utils.usuarioCorrente.getNivelAcesso() == UsuarioVO.EnumNivelAcesso.Entidade){
+                //entidade, apenas visualiza
 
                 final TextView chk = new TextView(this);
                 chk.setText(String.valueOf(e.getId()));
@@ -353,7 +341,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 chk.setTextColor(Color.GRAY);
                 tr.addView(chk);  // Adding textView to tablerow.
             }else {
-                //adm
+                //adm, pode excluir
 
                 final SoftRadioButton chk = new SoftRadioButton(this, "RadioBtn1");
                 chk.setText(String.valueOf(e.getId()));
@@ -366,29 +354,29 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
             col1 = new TextView(this);
-            col1.setText(e.getItemInspecao().getEvento().getNome());
+            col1.setText(e.getRelEntidadeEvento().getEvento().getNome().toUpperCase().trim());
             col1.setTextColor(Color.BLACK);
             col1.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col1.setPadding(5, 5, 5, 5);
             tr.addView(col1);
 
             col2 = new TextView(this);
-            col2.setText(e.getItemInspecao().getArea());
+            col2.setText(e.getRelItemInspecaoEvento().getItemInspecao().getArea().getNome().toUpperCase().trim());
             col2.setTextColor(Color.GRAY);
             col2.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col2.setPadding(5, 5, 5, 5);
             tr.addView(col2);
 
             col3 = new TextView(this);
-            col3.setText(e.getItemInspecao().getNome());
+            col3.setText(e.getRelItemInspecaoEvento().getItemInspecao().getNome().toUpperCase().trim());
             col3.setTextColor(Color.BLACK);
             col3.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col3.setPadding(5, 5, 5, 5);
             tr.addView(col3);
 
             col4 = new TextView(this);
-            col4.setText(e.getEntidade().getNome());
-            col4.setTextColor(Color.BLUE);
+            col4.setText(e.getRelEntidadeEvento().getEntidade().getNome().toUpperCase().trim());
+            col4.setTextColor(Color.GRAY);
             col4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col4.setPadding(5, 5, 5, 5);
             tr.addView(col4);
@@ -400,23 +388,12 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             col5.setPadding(5, 5, 5, 5);
             tr.addView(col5);
 
-
-
-
-
             col6 = new TextView(this);
-
-            if(e.getForma_automatica()==0){
-                col6.setText("Manual");
-            }else{
-                col6.setText("NFC");
-            }
-
+            col6.setText(e.getMetodo().toString());
             col6.setTextColor(Color.GRAY);
             col6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col6.setPadding(5, 5, 5, 5);
             tr.addView(col6);
-
 
             col7 = new TextView(this);
             col7.setText(e.getUsuario().getNome());
@@ -437,8 +414,6 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 
-
-
             //separator
             TableRow tr = new TableRow(this);
             tr.setBackgroundColor(Color.GRAY);
@@ -454,33 +429,48 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //here
+                setResult(1, new Intent().putExtra("teste", "from c"));
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     class popularGridTask extends AsyncTask<String, Integer, List> {
+
+        boolean isSwipe = false;
 
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            if(!isSwipe){
+                inicializaProgressBar();
+                progress.show();
+            }
         }
 
         @Override
         protected List<AvaliacaoVO> doInBackground(String... param) {
 
-            //            try(CadastrosControle cc = new CadastrosControle()){
-
             try {
 
-                if(param[1] == null){
-                    List<AvaliacaoVO> lista = cc.listarAvaliacao(  (EventoVO) cc.obterEventoPorId(Integer.parseInt(param[0])) , null);
+                try(CadastrosControle cc = new CadastrosControle()){
+
+                    EventoVO evt = (EventoVO) getIntent().getSerializableExtra(EventoVO.class.getName());
+                    EntidadeVO ent = (EntidadeVO) getIntent().getSerializableExtra(EntidadeVO.class.getName());
+                    AreaVO area = (AreaVO) getIntent().getSerializableExtra(AreaVO.class.getName());
+                    ItemInspecaoVO item = (ItemInspecaoVO) getIntent().getSerializableExtra(ItemInspecaoVO.class.getName());
+                    UsuarioVO usuario = (UsuarioVO) getIntent().getSerializableExtra(UsuarioVO.class.getName());
+
+                    List<AvaliacaoVO> lista = cc.listarAvaliacao(evt, ent, area, item, usuario);
                     return lista;
-                }else{
-                    List<AvaliacaoVO> lista = cc.listarAvaliacao(  (EventoVO) cc.obterEventoPorId(Integer.parseInt(param[0])) ,
-                                                                   (EntidadeVO) cc.obterEntidadePorId(Integer.parseInt(param[1]))     );
-                    return lista;
+
                 }
-
-
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -491,6 +481,61 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         @Override
         protected void onPostExecute(List result) {
+
+            //order by
+            switch (getIntent().getSerializableExtra("OrderBy").toString()){
+                case Utils.lstPrderByEntidade:
+
+                    Collections.sort (result, new Comparator<AvaliacaoVO>() {
+                        public int compare (AvaliacaoVO p1, AvaliacaoVO p2) {
+                            return p1.getRelEntidadeEvento().getEntidade().getNome().compareTo(p2.getRelEntidadeEvento().getEntidade().getNome());
+                        }
+                    });
+
+                    break;
+
+                case Utils.lstPrderByArea :
+
+                    Collections.sort (result, new Comparator<AvaliacaoVO>() {
+                        public int compare (AvaliacaoVO p1, AvaliacaoVO p2) {
+                            return p1.getRelItemInspecaoEvento().getItemInspecao().getArea().getNome().compareTo(p2.getRelItemInspecaoEvento().getItemInspecao().getArea().getNome());
+                        }
+                    });
+
+                    break;
+
+                case Utils.lstPrderByItem:
+
+                    Collections.sort (result, new Comparator<AvaliacaoVO>() {
+                        public int compare (AvaliacaoVO p1, AvaliacaoVO p2) {
+                            return p1.getRelItemInspecaoEvento().getItemInspecao().getNome().compareTo(p2.getRelItemInspecaoEvento().getItemInspecao().getNome());
+                        }
+                    });
+
+                    break;
+
+                case Utils.lstPrderByUsuario :
+
+                    Collections.sort (result, new Comparator<AvaliacaoVO>() {
+                        public int compare (AvaliacaoVO p1, AvaliacaoVO p2) {
+                            return p1.getUsuario().getNome().compareTo(p2.getUsuario().getNome());
+                        }
+                    });
+
+                    break;
+
+                case Utils.lstPrderByDataHora :
+
+                    Collections.sort (result, new Comparator<AvaliacaoVO>() {
+                        public int compare (AvaliacaoVO p1, AvaliacaoVO p2) {
+                            return p1.getDataHora().compareTo(p2.getDataHora());
+                        }
+                    });
+
+                    break;
+
+            }
+
 
             tl = (TableLayout) findViewById(R.id.maintable);
             tl.removeAllViewsInLayout();
@@ -503,6 +548,16 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             if (progress != null && progress.isShowing()) {
                 progress.dismiss();
             }
+
+            if(isSwipe){
+                final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(false);
+            }
+
+            if(result.size()==0){
+                Toast.makeText(getApplicationContext(), "Não foram localizados resultados", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -517,7 +572,7 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
                 AvaliacaoVO o = new AvaliacaoVO();
                 o.setId(Integer.parseInt(param[0]));
-                cc.excluirAvaliacao(o);
+//                cc.excluirAvaliacao(o);
 
                 return true;
 
@@ -545,6 +600,5 @@ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
     }
-*/
 
 }

@@ -172,7 +172,7 @@ public class EventoDAO {
 
             PreparedStatement st = conn.prepareStatement("INSERT INTO evento (Nome, datahora_criacao, usuario) VALUES (?,?,?) ;", Statement.RETURN_GENERATED_KEYS);
 
-            st.setString(1, c.getNome());
+            st.setString(1, c.getNome().toUpperCase().trim());
             st.setTimestamp(2, new java.sql.Timestamp(c.getDataHoraCriacao().getTime()));
             st.setInt(3, c.getUsuario().getId());
 
@@ -202,7 +202,7 @@ public class EventoDAO {
 
             PreparedStatement st = conn.prepareStatement("UPDATE evento SET nome=?, datahora_criacao=?, usuario=? WHERE id=?");
 
-            st.setString(1, c.getNome());
+            st.setString(1, c.getNome().toUpperCase().trim());
             st.setTimestamp(2, new java.sql.Timestamp(c.getDataHoraCriacao().getTime()));
             st.setInt(3, c.getUsuario().getId());
             st.setInt(4, c.getId());

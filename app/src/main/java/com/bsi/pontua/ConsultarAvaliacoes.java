@@ -116,10 +116,6 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
     private ItemInspecaoVO _itemInspecaoAtual = null;
     private AreaVO _areaAtual = null;
 
-//    private AreaVO areaSelecionadaNoLancamento = null;
-
-    Bundle b=null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +154,8 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
     class carregarEventosTask extends AsyncTask<String, Integer, List> {
 
+        private List listausuarios=null;
+
         @Override
         protected void onPreExecute() {
             inicializaProgressBar();
@@ -173,6 +171,10 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
                 try {
 
                     List<EventoVO> lista = cc.listarEvento("");
+
+                    //usuarios
+                    listausuarios = cc.listarUsuario("");
+
                     return lista;
 
                 } catch (Exception e) {
@@ -186,6 +188,47 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List result) {
+
+            //usuarios
+            if(listausuarios!=null){
+                //popula o spinner
+                Spinner spnUsuarios = (Spinner) findViewById(R.id.spnUsuarios);
+
+                //ordena
+                Collections.sort (listausuarios, new Comparator<UsuarioVO>() {
+                    public int compare (UsuarioVO p1, UsuarioVO p2) {
+                        return p1.getNome().compareTo(p2.getNome());
+                    }
+                });
+
+                UsuarioVO newItem = new UsuarioVO();
+                newItem.setNome(TXT_TODOS);
+                newItem.setId(ID_TODAS);
+                listausuarios.add(0, newItem);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, listausuarios);
+                spnUsuarios.setAdapter(adapter);
+                spnUsuarios.requestFocus();
+
+
+
+
+                //order by
+                Spinner spnOrderBy = (Spinner) findViewById(R.id.spnOrderBy);
+
+                List<String> lstPrderBy = new ArrayList<>();
+                lstPrderBy.add(Utils.lstPrderByEntidade);
+                lstPrderBy.add(Utils.lstPrderByArea );
+                lstPrderBy.add(Utils.lstPrderByItem);
+                lstPrderBy.add(Utils.lstPrderByUsuario);
+                lstPrderBy.add(Utils.lstPrderByDataHora);
+
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, lstPrderBy);
+                spnOrderBy.setAdapter(adapter2);
+            }
+
+
+
 
             //popula o spinner
             Spinner spnEventos = (Spinner) findViewById(R.id.spnEventos);
@@ -640,15 +683,39 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
             return;
         }
 
-        String txt="Evt: " + _eventoAtual.toString() + "\nEntid: " + _entidadeAtual.toString() + "\nArea: " + _areaAtual.toString() + "\nItem: " + _itemInspecaoAtual.toString();
+        //String txt="Evt: " + _eventoAtual.toString() + "\nEntid: " + _entidadeAtual.toString() + "\nArea: " + _areaAtual.toString() + "\nItem: " + _itemInspecaoAtual.toString();
+        //Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_SHORT).show();
+        //avaliador - usuario
+        UsuarioVO avaliador = (UsuarioVO) ((Spinner) findViewById(R.id.spnUsuarios)).getSelectedItem();
 
+        //orderby
+        String orderBy =  ((Spinner) findViewById(R.id.spnOrderBy)).getSelectedItem().toString();
 
+        //abre nova activity com relatoio
+        Intent myIntent = new Intent(ConsultarAvaliacoes.this, ConsultarAvaliacoesRel.class);
 
+        myIntent.putExtra(EventoVO.class.getName(), _eventoAtual);
+        myIntent.putExtra(EntidadeVO.class.getName(), _entidadeAtual);
+        myIntent.putExtra(AreaVO.class.getName(), _areaAtual);
+        myIntent.putExtra(ItemInspecaoVO.class.getName(), _itemInspecaoAtual);
+        myIntent.putExtra(UsuarioVO.class.getName(), avaliador);
+        myIntent.putExtra("OrderBy", orderBy);
 
-
+        startActivityForResult(myIntent, 1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            /*if (resultCode == Activity.RESULT_OK) {
+                //atualiza lista
+                new popularGridTask().execute("");
+            }*/
+        }
+    }
+
 
 
 }

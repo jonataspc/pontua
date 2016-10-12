@@ -11,6 +11,14 @@ public class Utils {
 
     public static UsuarioVO usuarioCorrente=null;
 
+    public static final String lstPrderByEntidade = "Entidade";
+    public static final String lstPrderByArea = "Área";
+    public static final String lstPrderByItem = "Item";
+    public static final String lstPrderByUsuario = "Usuário";
+    public static final String lstPrderByDataHora = "Data/hora";
+
+
+
     /**
      * Retorna double arredondado em 2 casas decimais
      * @param val valor a ser arredondado

@@ -59,4 +59,8 @@ public class UsuarioVO implements Serializable {
         Entidade
     }
 
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }

@@ -354,6 +354,10 @@ public class CadastrosControle implements Closeable {
         return daoAvaliacao.listar(evt, ent);
     }
 
+    public List<AvaliacaoVO> listarAvaliacao(EventoVO evt, EntidadeVO ent, AreaVO area, ItemInspecaoVO item, UsuarioVO usuario) throws Exception {
+        return daoAvaliacao.listar(evt, ent, area, item, usuario);
+    }
+
     public boolean excluirAvaliacao(AvaliacaoVO o) throws Exception {
         return daoAvaliacao.excluir(o);
     }
