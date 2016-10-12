@@ -635,6 +635,11 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
             if (result) {
 
+                //zera
+                hasChecked = false;
+                lstExcluir.clear();
+                invalidateOptionsMenu();
+
                 Toast.makeText(getApplicationContext(), "Registro(s) removido(s) com sucesso!", Toast.LENGTH_SHORT).show();
 
                 //atualiza lista de ItemInspecao
