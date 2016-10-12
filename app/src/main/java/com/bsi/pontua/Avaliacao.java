@@ -76,7 +76,10 @@ public class Avaliacao extends AppCompatActivity {
     }
 
     private String TXT_MSG_SELECIONE = "[Selecione]";
+    private int ID_MSG_SELECIONE = -1;
+
     private String TXT_AREA_QUALQUER = "[Todas]";
+    private int ID_AREA_QUALQUER = -2;
 
     private EventoVO _eventoAtual = null;
     private EntidadeVO _entidadeAtual = null;
@@ -236,7 +239,7 @@ public class Avaliacao extends AppCompatActivity {
 
             EventoVO newItem = new EventoVO();
             newItem.setNome(TXT_MSG_SELECIONE);
-            newItem.setId(-1);
+            newItem.setId(ID_MSG_SELECIONE);
             result.add(0, newItem);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
@@ -249,7 +252,7 @@ public class Avaliacao extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega entidades
 
-                    if (((EventoVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
+                    if (((EventoVO) parentView.getSelectedItem()).getId() == ID_MSG_SELECIONE) {
                         resetaUi();
 
                         _eventoAtual = null;
@@ -277,8 +280,7 @@ public class Avaliacao extends AppCompatActivity {
 
 
                         //carrega entidades em spinner
-                        String[] paramns = new String[]{String.valueOf(((EventoVO) parentView.getSelectedItem()).getId())};
-                        new carregarEntidadesTask().execute(paramns);
+                        new carregarEntidadesTask().execute("");
                     }
 
                 }
@@ -312,7 +314,7 @@ public class Avaliacao extends AppCompatActivity {
 
                 try {
 
-                    List<RelEntidadeEventoVO> lista = cc.listarRelEntidadesPendentesPorEvento(cc.obterEventoPorId(Integer.parseInt(param[0])));
+                    List<RelEntidadeEventoVO> lista = cc.listarRelEntidadesPendentesPorEvento(_eventoAtual);
 
                     return lista;
 
@@ -347,7 +349,7 @@ public class Avaliacao extends AppCompatActivity {
             if(result.size()!=0){
                 EntidadeVO newItem = new EntidadeVO();
                 newItem.setNome(TXT_MSG_SELECIONE);
-                newItem.setId(-1);
+                newItem.setId(ID_MSG_SELECIONE);
 
                 RelEntidadeEventoVO o = new RelEntidadeEventoVO();
                 o.setEntidade(newItem);
@@ -367,7 +369,7 @@ public class Avaliacao extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega areas
 
-                    if (((RelEntidadeEventoVO) parentView.getSelectedItem()).getEntidade().getNome().equals(TXT_MSG_SELECIONE)) {
+                    if (((RelEntidadeEventoVO) parentView.getSelectedItem()).getEntidade().getId() == ID_MSG_SELECIONE) {
                         resetaUi();
 
                         _entidadeAtual = null;
@@ -464,9 +466,11 @@ public class Avaliacao extends AppCompatActivity {
             if(result.size()!=0){
                 AreaVO a1 = new AreaVO();
                 a1.setNome(TXT_AREA_QUALQUER);
+                a1.setId(ID_AREA_QUALQUER);
 
                 AreaVO a2 = new AreaVO();
                 a2.setNome(TXT_MSG_SELECIONE);
+                a2.setId(ID_MSG_SELECIONE);
 
                 result.add(0, a1);
                 result.add(0, a2);
@@ -479,8 +483,7 @@ public class Avaliacao extends AppCompatActivity {
                 //recarrega entidades
                 //TODO
                 //carrega entidades (ainda pendentes) em spinner
-                String[] paramns = new String[]{String.valueOf(_eventoAtual.getId())};
-                new carregarEntidadesTask().execute(paramns);
+                new carregarEntidadesTask().execute("");
             }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Avaliacao.this, android.R.layout.simple_spinner_dropdown_item, result);
@@ -493,7 +496,7 @@ public class Avaliacao extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega itens
 
-                    if (((AreaVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
+                    if (((AreaVO) parentView.getSelectedItem()).getId() == ID_MSG_SELECIONE) {
                         resetaUi();
 
                         //zera itens
@@ -544,17 +547,21 @@ public class Avaliacao extends AppCompatActivity {
     void atualizarItens(){
 
         //carrega itens em spinner
-        String strArea = ((Spinner) findViewById(R.id.spnAreas)).getSelectedItem().toString();
+        AreaVO area = (AreaVO)((Spinner) findViewById(R.id.spnAreas)).getSelectedItem();
 
-        if (strArea.equals(TXT_AREA_QUALQUER)) {
-            strArea = null;
+        if (area.getId() == ID_AREA_QUALQUER) {
+            area = null;
         }
 
-        new carregarItensTask().execute(strArea);
+        carregarItensTask x = new carregarItensTask();
+        x.area = area;
+        x.execute("");
 
     }
 
     class carregarItensTask extends AsyncTask<String, Integer, List> {
+
+        public AreaVO area=null;
 
         @Override
         protected void onPreExecute() {
@@ -571,13 +578,6 @@ public class Avaliacao extends AppCompatActivity {
                     RelEntidadeEventoVO o = new RelEntidadeEventoVO();
                     o.setEntidade(_entidadeAtual);
                     o.setEvento(_eventoAtual);
-
-                    AreaVO area = null;
-
-                    //só manda area caso nao seja QUALQUER
-                    if(param[0] != null){
-                        area = cc.obterAreaPorNome(param[0]);
-                    }
 
                     List<ItemInspecaoVO> lista = cc.listarItensPendentesPorRelEntidadeEvento(o, area);
 
