@@ -447,8 +447,8 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            //inicializaProgressBar();
+            //progress.show();
         }
 
         @Override
@@ -598,8 +598,8 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            inicializaProgressBar();
-            progress.show();
+            //inicializaProgressBar();
+            //progress.show();
         }
 
         @Override
