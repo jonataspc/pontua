@@ -266,25 +266,42 @@ public class CadastrosControle implements Closeable {
     }
 
     public List<AreaVO> listarAreasPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
-        return daoRelEntidadeEvento.listarAreasPendentesPorRelEntidadeEvento(o);
+        return daoRelEntidadeEvento.listarAreasPorRelEntidadeEvento(o, true);
+    }
+
+    public List<AreaVO> listarAreasPorRelEntidadeEvento(RelEntidadeEventoVO o) throws Exception {
+        return daoRelEntidadeEvento.listarAreasPorRelEntidadeEvento(o, false);
     }
 
     public List<AreaVO> listarAreasPendentesPorEvento(EventoVO o) throws Exception {
-        return daoRelEntidadeEvento.listarAreasPendentesPorEvento(o);
+        return daoRelEntidadeEvento.listarAreasPorEvento(o, true);
+    }
+
+    public List<AreaVO> listarAreasPorEvento(EventoVO o) throws Exception {
+        return daoRelEntidadeEvento.listarAreasPorEvento(o, false);
     }
 
     public List<ItemInspecaoVO> listarItensPendentesPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a) throws Exception {
-        return daoRelEntidadeEvento.listarItensPendentesPorRelEntidadeEvento(o, a);
+        return daoRelEntidadeEvento.listarItensPorRelEntidadeEvento(o, a, true);
     }
 
-    public List<ItemInspecaoVO> listarItensPendentesPorEvento(EventoVO o, AreaVO a) throws Exception {
-        return daoRelEntidadeEvento.listarItensPendentesPorEvento(o, a);
+    public List<ItemInspecaoVO> listarItensPorRelEntidadeEvento(RelEntidadeEventoVO o, AreaVO a) throws Exception {
+        return daoRelEntidadeEvento.listarItensPorRelEntidadeEvento(o, a, false);
     }
+
 
 
 
 
     //RelItemInspecaoEvento
+    public List<ItemInspecaoVO> listarItensPendentesPorEvento(EventoVO o, AreaVO a) throws Exception {
+        return daoRelItemInspecaoEvento.listarItensPorEvento(o, a, true);
+    }
+
+    public List<ItemInspecaoVO> listarItensPorEvento(EventoVO o, AreaVO a) throws Exception {
+        return daoRelItemInspecaoEvento.listarItensPorEvento(o, a, false);
+    }
+
     public boolean incluirRelItemInspecaoEvento(RelItemInspecaoEventoVO a) throws Exception {
         return daoRelItemInspecaoEvento.incluir(a);
     }
