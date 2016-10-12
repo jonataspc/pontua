@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.Conexao;
+import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.UsuarioVO;
 
@@ -103,6 +104,66 @@ public class EventoDAO {
         }
 
     }
+
+    public List<EventoVO> listar(EntidadeVO entidadeVO) throws SQLException {
+        try {
+
+            if(entidadeVO==null){
+                throw new IllegalArgumentException();
+            }
+
+            Conexao.validarConn(conn);
+
+            PreparedStatement st;
+            st = conn.prepareStatement("SELECT e.* FROM evento e JOIN rel_entidade_evento ree ON ree.id_evento = e.id WHERE ree.id_entidade = ? GROUP BY e.id ORDER BY e.nome;");
+            st.setInt(1, entidadeVO.getId());
+
+            ResultSet resultado = st.executeQuery();
+
+            UsuarioDAO oUsuarioVO = new UsuarioDAO(conn);
+
+
+            List<EventoVO> lista = new ArrayList<EventoVO>(0);
+            while (resultado.next()) {
+
+                EventoVO o = new EventoVO();
+                o.setId(resultado.getInt("id"));
+                o.setNome(resultado.getString("Nome"));
+
+
+                try {
+                    o.setDataHoraCriacao(  new java.sql.Date(format.parse(resultado.getString("datahora_criacao")).getTime())  );
+                }catch (Exception e){
+                    o.setDataHoraCriacao(null);
+                }
+
+                int usuarioID = resultado.getInt("usuario");
+
+                if(usuarioID != 0){
+                    UsuarioVO usuario = oUsuarioVO.obterPorCodigo(usuarioID);
+
+                    if(usuario!=null){
+                        o.setUsuario(usuario);
+                    }
+                }
+
+
+                lista.add(o);
+
+            }
+
+
+
+
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+    }
+
 
     public List<EventoVO> listar(String nomePesquisa) throws SQLException {
         try {

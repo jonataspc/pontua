@@ -104,6 +104,10 @@ public class CadastrosControle implements Closeable {
         return daoEvento.listar(nomePesquisa);
     }
 
+    public List<EventoVO> listarEventoEntidade(EntidadeVO ent) throws Exception {
+        return daoEvento.listar(ent);
+    }
+
     public boolean excluirEvento(EventoVO o) throws Exception {
         return daoEvento.excluir(o);
     }
@@ -244,7 +248,11 @@ public class CadastrosControle implements Closeable {
     }
 
     public List<RelEntidadeEventoVO> listarRelEntidadeEventoPorEvento(EventoVO evento) throws Exception {
-        return daoRelEntidadeEvento.listarPorEvento(evento);
+        return daoRelEntidadeEvento.listarPorEvento(evento, null);
+    }
+
+    public List<RelEntidadeEventoVO> listarRelEntidadeEventoPorEventoEntidade(EventoVO evento, EntidadeVO entidadeVO) throws Exception {
+        return daoRelEntidadeEvento.listarPorEvento(evento, entidadeVO);
     }
 
     public int obterQtdEntidadesPorEvento(EventoVO evento) throws Exception {

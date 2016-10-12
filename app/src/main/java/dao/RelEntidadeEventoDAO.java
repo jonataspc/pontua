@@ -8,9 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import utils.Conexao;
 import vo.AreaVO;
+import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.RelEntidadeEventoVO;
@@ -113,17 +115,25 @@ public class RelEntidadeEventoDAO {
 
     }
 
-    public List<RelEntidadeEventoVO> listarPorEvento(EventoVO evento) throws SQLException {
+    public List<RelEntidadeEventoVO> listarPorEvento(EventoVO evento, EntidadeVO entidadeVO) throws SQLException {
         try {
 
             Conexao.validarConn(conn);
 
             PreparedStatement st;
 
+
+            String strSQLAux = "";
+
+            if(entidadeVO!=null){
+                strSQLAux = " AND id_entidade=" + entidadeVO.getId() + " ";
+            }
+
+
             if(evento==null) {
-                st = conn.prepareStatement("SELECT * FROM rel_entidade_evento ORDER BY id;");
+                st = conn.prepareStatement("SELECT * FROM rel_entidade_evento WHERE 1=1 " + strSQLAux + " ORDER BY id;");
             } else {
-                st = conn.prepareStatement("SELECT * FROM rel_entidade_evento WHERE id_evento=? ORDER BY id;");
+                st = conn.prepareStatement("SELECT * FROM rel_entidade_evento WHERE id_evento=? " + strSQLAux + " ORDER BY id;");
                 st.setInt(1, evento.getId());
             }
 

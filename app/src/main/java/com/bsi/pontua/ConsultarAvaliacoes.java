@@ -170,7 +170,14 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
                 try {
 
-                    List<EventoVO> lista = cc.listarEvento("");
+                    List<EventoVO> lista = null;
+
+                    //se for entidade, exibe apenas os eventos em que ela participa
+                    if(Utils.usuarioCorrente.getNivelAcesso()== UsuarioVO.EnumNivelAcesso.Entidade){
+                        lista = cc.listarEventoEntidade(Utils.usuarioCorrente.getEntidade());
+                    } else {
+                        lista = cc.listarEvento("");
+                    }
 
                     //usuarios
                     listausuarios = cc.listarUsuario("");
@@ -331,7 +338,14 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
                 try {
 
-                    List<RelEntidadeEventoVO> lista = cc.listarRelEntidadeEventoPorEvento(_eventoAtual);
+                    List<RelEntidadeEventoVO> lista = null;
+
+                    //se for entidade, exibe apenas os eventos em que ela participa
+                    if(Utils.usuarioCorrente.getNivelAcesso()== UsuarioVO.EnumNivelAcesso.Entidade){
+                        lista = cc.listarRelEntidadeEventoPorEventoEntidade(_eventoAtual, Utils.usuarioCorrente.getEntidade());
+                    } else {
+                        lista = cc.listarRelEntidadeEventoPorEvento(_eventoAtual);
+                    }
 
                     return lista;
 
@@ -363,7 +377,8 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
                 }
             });
 
-            if(result.size()!=0){
+
+            if(result.size()!=0 && Utils.usuarioCorrente.getNivelAcesso() != UsuarioVO.EnumNivelAcesso.Entidade ){
                 //todas
                 EntidadeVO newItem2 = new EntidadeVO();
                 newItem2.setNome(TXT_TODAS);
