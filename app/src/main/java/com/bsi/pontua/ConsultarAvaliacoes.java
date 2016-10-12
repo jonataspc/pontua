@@ -114,6 +114,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
     private EventoVO _eventoAtual = null;
     private EntidadeVO _entidadeAtual = null;
     private ItemInspecaoVO _itemInspecaoAtual = null;
+    private AreaVO _areaAtual = null;
 
 //    private AreaVO areaSelecionadaNoLancamento = null;
 
@@ -150,6 +151,9 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 
         //disable btn
         ((Button) findViewById(R.id.btnConsultar)).setEnabled(false);
+
+        //esvazia spinners
+
     }
 
     class carregarEventosTask extends AsyncTask<String, Integer, List> {
@@ -209,7 +213,7 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     //carrega entidades
 
-                    if (((EventoVO) parentView.getSelectedItem()).getNome().equals(TXT_MSG_SELECIONE)) {
+                    if (((EventoVO) parentView.getSelectedItem()).getId() == ID_MSG_SELECIONE) {
                         resetaUi();
 
                         _eventoAtual = null;
@@ -234,6 +238,19 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
                         _eventoAtual = ((EventoVO) parentView.getSelectedItem());
                         _entidadeAtual = null;
                         _itemInspecaoAtual = null;
+
+                        //zera entidade
+                        Spinner spnEntidades = (Spinner) findViewById(R.id.spnEntidades);
+                        spnEntidades.setAdapter(new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+
+                        //zera area
+                        Spinner spnAreas = (Spinner) findViewById(R.id.spnAreas);
+                        spnAreas.setAdapter(new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+
+                        //zera itens
+                        Spinner spnItens = (Spinner) findViewById(R.id.spnItens);
+                        spnItens.setAdapter(new ArrayAdapter<String>(ConsultarAvaliacoes.this, android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>()));
+
 
 
                         //carrega entidades em spinner
@@ -460,7 +477,14 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
 //
 //
 //                    } else {
-                        atualizarItens();
+
+
+                    AreaVO item = (AreaVO) parentView.getSelectedItem();
+
+                    _areaAtual = item;
+
+
+                    atualizarItens();
 //                    }
 
                 }
@@ -611,11 +635,14 @@ public class ConsultarAvaliacoes extends AppCompatActivity {
     void gotoRel() {
 
         //valida se spinners estao selecionados
-        if (_eventoAtual==null || _entidadeAtual==null || _itemInspecaoAtual==null) {
-            Toast.makeText(getApplicationContext(), "Selecione um evento, entidade e item a pontuar!", Toast.LENGTH_SHORT).show();
+        if (_eventoAtual==null || _entidadeAtual==null || _areaAtual==null || _itemInspecaoAtual==null) {
+            Toast.makeText(getApplicationContext(), "Selecione filtros suficientes para realizar a consulta!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        String txt="Evt: " + _eventoAtual.toString() + "\nEntid: " + _entidadeAtual.toString() + "\nArea: " + _areaAtual.toString() + "\nItem: " + _itemInspecaoAtual.toString();
+
+        Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_SHORT).show();
 
 
 
