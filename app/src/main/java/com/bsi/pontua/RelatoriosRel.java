@@ -23,6 +23,8 @@ public class RelatoriosRel extends AppCompatActivity {
 
     ProgressDialog progress;
     EventoVO eventoVO = null;
+    private final String TAG_FRAG = "tagFrag";
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,13 +66,16 @@ public class RelatoriosRel extends AppCompatActivity {
                     case "Relatório de ranking":
                         RelatoriosRelRanking f = new RelatoriosRelRanking();
                         f.evento = eventoVO;
-                        fragmentTransaction.add(R.id.frag_container, f, "tagFrag");
+                        fragmentTransaction.add(R.id.frag_container, f, TAG_FRAG);
                         break;
                     case "Relatório de evolução":
+                        RelatoriosRelEvolucao f2 = new RelatoriosRelEvolucao();
+                        f2.evento = eventoVO;
+                        fragmentTransaction.add(R.id.frag_container, f2, TAG_FRAG);
                         break;
                     default:
                         //remove..
-                        android.support.v4.app.Fragment frag = fm.findFragmentByTag("tagFrag");
+                        android.support.v4.app.Fragment frag = fm.findFragmentByTag(TAG_FRAG);
                         if(frag!=null) {
                             fragmentTransaction.remove(frag);
                         }

@@ -1,6 +1,5 @@
 package com.bsi.pontua;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,41 +9,30 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 
 import controle.CadastrosControle;
 import vo.EntidadeVO;
 import vo.EventoVO;
-import vo.RelEntidadeEventoVO;
+import vo.RepEvolucaoVO;
 import vo.RepRankingVO;
 
 
-public class RelatoriosRelRanking extends Fragment {
+public class RelatoriosRelEvolucao extends Fragment {
 
     TableLayout tl;
     TableRow tr;
     TextView col1, col2, col3, col4;
+
 
     ProgressDialog progress;
 
@@ -122,9 +110,6 @@ public class RelatoriosRelRanking extends Fragment {
     }
 
 
-
-
-
     public void addHeaders() {
 
         /** Create a TableRow **/
@@ -135,7 +120,7 @@ public class RelatoriosRelRanking extends Fragment {
 
         /** Creating a TextView to add to the row **/
         TextView col1 = new TextView(getActivity());
-        col1.setText("Entidade");
+        col1.setText("Total de Avaliações");
         col1.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         col1.setPadding(5, 5, 15, 0);
@@ -143,7 +128,7 @@ public class RelatoriosRelRanking extends Fragment {
 
 
         TextView col2 = new TextView(getActivity());
-        col2.setText("Saldo Pontuação");
+        col2.setText("Avaliações pendentes");
         col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         col2.setPadding(5, 5, 15, 0);
         col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -151,19 +136,19 @@ public class RelatoriosRelRanking extends Fragment {
 
 
         TextView ncol3 = new TextView(getActivity());
-        ncol3.setText("Máx. Possível");
+        ncol3.setText("% Concluído");
         ncol3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         ncol3.setPadding(5, 5, 15, 0);
         ncol3.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol3); // Adding textView to tablerow.
-
-
-        TextView ncol4 = new TextView(getActivity());
-        ncol4.setText("# Posição");
-        ncol4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        ncol4.setPadding(5, 5, 15, 0);
-        ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tr.addView(ncol4); // Adding textView to tablerow.
+//
+//
+//        TextView ncol4 = new TextView(getActivity());
+//        ncol4.setText("# Posição");
+//        ncol4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+//        ncol4.setPadding(5, 5, 15, 0);
+//        ncol4.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//        tr.addView(ncol4); // Adding textView to tablerow.
 
 
         // Add the TableRow to the TableLayout
@@ -181,7 +166,7 @@ public class RelatoriosRelRanking extends Fragment {
         //separator
         TableRow tr = new TableRow(getActivity());
         tr.setBackgroundColor(Color.GRAY);
-        tr.setPadding(0, 0, 0, 2 ); //Border between rows
+        tr.setPadding(0, 0, 0, 2); //Border between rows
 
         TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 0, 2, 0);//2px right-margin
@@ -190,72 +175,71 @@ public class RelatoriosRelRanking extends Fragment {
 
     }
 
-    public void addData(List<RepRankingVO> obj) {
+    public void addData(RepEvolucaoVO e) {
 
-        for (RepRankingVO e : obj) {
-
-            /** Create a TableRow dynamically **/
-            tr = new TableRow(getActivity());
-            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        /** Create a TableRow dynamically **/
+        tr = new TableRow(getActivity());
+        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
 
-            col1 = new TextView(getActivity());
-            col1.setText(e.getEntidade().getNome());
-            col1.setTextColor(Color.BLACK);
-            col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            col1.setPadding(5, 5, 5, 5);
-            tr.addView(col1);
+        col1 = new TextView(getActivity());
+        col1.setText(String.valueOf(e.getTotalLancamentos()));
+        col1.setTextColor(Color.BLACK);
+        col1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        col1.setPadding(5, 5, 5, 5);
+        tr.addView(col1);
 
-            col2 = new TextView(getActivity());
-            col2.setText(String.valueOf(e.getSaldoPontuacao().doubleValue()));
-            col2.setTextColor(Color.BLACK);
-            col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            col2.setPadding(5, 5, 5, 5);
-            tr.addView(col2);
+        col2 = new TextView(getActivity());
+        col2.setText(String.valueOf(e.getTotalLancamentosPendentes()));
+        col2.setTextColor(Color.BLACK);
+        col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        col2.setPadding(5, 5, 5, 5);
+        tr.addView(col2);
 
+        BigDecimal perc = new BigDecimal(0);
 
-
-            double d = 100 * e.getSaldoPontuacao().doubleValue() / e.getPontuacaoMaximaPossivel().doubleValue();
-            BigDecimal perc = new BigDecimal(d).setScale(2, RoundingMode.HALF_EVEN);
-
-
-            col3 = new TextView(getActivity());
-            col3.setText(String.valueOf(e.getPontuacaoMaximaPossivel().doubleValue()) + " (" + String.valueOf(perc.doubleValue()) + "%)" );
-            col3.setTextColor(Color.BLACK);
-            col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            col3.setPadding(5, 5, 5, 5);
-            tr.addView(col3);
-
-            col4 = new TextView(getActivity());
-            col4.setText(String.valueOf(e.getPosicao()) + "/" + obj.size() );
-            col4.setTextColor(Color.BLACK);
-            col4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            col4.setPadding(5, 5, 5, 5);
-            tr.addView(col4);
-
-
-            // Add the TableRow to the TableLayout
-            tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
-
-
-
-            //separator
-            TableRow tr = new TableRow(getActivity());
-            tr.setBackgroundColor(Color.GRAY);
-            tr.setPadding(0, 0, 0, 2); //Border between rows
-
-            TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(0, 0, 2, 0);//2px right-margin
-
-            tl.addView(tr);
-
-
+        try {
+            double d = 0;
+            d = 100 * (e.getTotalLancamentos() - e.getTotalLancamentosPendentes()) / e.getTotalLancamentos() ;
+            perc = new BigDecimal(d).setScale(2, RoundingMode.HALF_EVEN);
+        } catch (Exception exc){
 
         }
-     }
 
-    class popularGridTask extends AsyncTask<String, Integer, List> {
+
+        col3 = new TextView(getActivity());
+        col3.setText(String.valueOf(perc.doubleValue()) + "%");
+        col3.setTextColor(Color.BLACK);
+        col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        col3.setPadding(5, 5, 5, 5);
+        tr.addView(col3);
+
+//            col4 = new TextView(getActivity());
+//            col4.setText(String.valueOf(e.getPosicao()) + "/" + obj.size() );
+//            col4.setTextColor(Color.BLACK);
+//            col4.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+//            col4.setPadding(5, 5, 5, 5);
+//            tr.addView(col4);
+
+
+        // Add the TableRow to the TableLayout
+        tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+
+        //separator
+        TableRow tr = new TableRow(getActivity());
+        tr.setBackgroundColor(Color.GRAY);
+        tr.setPadding(0, 0, 0, 2); //Border between rows
+
+        TableRow.LayoutParams llp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0, 0, 2, 0);//2px right-margin
+
+        tl.addView(tr);
+
+
+    }
+
+    class popularGridTask extends AsyncTask<String, Integer, RepEvolucaoVO> {
 
         @Override
         protected void onPreExecute() {
@@ -264,14 +248,12 @@ public class RelatoriosRelRanking extends Fragment {
         }
 
         @Override
-        protected List<RepRankingVO> doInBackground(String... param) {
+        protected RepEvolucaoVO doInBackground(String... param) {
 
             CadastrosControle cc = new CadastrosControle();
 
             try {
-
-                List<RepRankingVO> lista = cc.listarRelRanking(evento);
-                return lista;
+                return cc.consultarEvolucao(evento);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -281,13 +263,13 @@ public class RelatoriosRelRanking extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List result) {
+        protected void onPostExecute(RepEvolucaoVO result) {
 
             tl = (TableLayout) getActivity().findViewById(R.id.maintable);
             tl.removeAllViewsInLayout();
 
             addHeaders();
-            if(result != null){
+            if (result != null) {
                 addData(result);
             }
 
@@ -296,7 +278,6 @@ public class RelatoriosRelRanking extends Fragment {
             }
         }
     }
-
 
 
 }

@@ -20,6 +20,7 @@ import dao.EventoDAO;
 import dao.ItemInspecaoDAO;
 import dao.RelEntidadeEventoDAO;
 import dao.RelItemInspecaoEventoDAO;
+import dao.RepEvolucaoDAO;
 import dao.RepRankingDAO;
 import dao.UsuarioDAO;
 import utils.Conexao;
@@ -30,6 +31,7 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.RelEntidadeEventoVO;
 import vo.RelItemInspecaoEventoVO;
+import vo.RepEvolucaoVO;
 import vo.RepRankingVO;
 import vo.UsuarioVO;
 
@@ -41,6 +43,7 @@ public class CadastrosControle implements Closeable {
     private ItemInspecaoDAO daoItemInspecao;
     private AvaliacaoDAO daoAvaliacao;
     private RepRankingDAO daoRepRanking;
+    private RepEvolucaoDAO daoRepEvolucao;
     private AreaDAO daoArea;
     private RelEntidadeEventoDAO daoRelEntidadeEvento;
     private RelItemInspecaoEventoDAO daoRelItemInspecaoEvento;
@@ -83,6 +86,7 @@ public class CadastrosControle implements Closeable {
         daoItemInspecao = new ItemInspecaoDAO(conn);
         daoAvaliacao = new AvaliacaoDAO(conn);
         daoRepRanking = new RepRankingDAO(conn);
+        daoRepEvolucao =  new RepEvolucaoDAO(conn);
         daoArea= new AreaDAO(conn);
         daoRelEntidadeEvento = new RelEntidadeEventoDAO(conn);
         daoRelItemInspecaoEvento = new RelItemInspecaoEventoDAO(conn);
@@ -92,6 +96,11 @@ public class CadastrosControle implements Closeable {
     //relatorio rkg
     public List<RepRankingVO> listarRelRanking(EventoVO e) throws Exception {
         return daoRepRanking.relatorioRanking(e);
+    }
+
+    //relatorio evolucao
+    public RepEvolucaoVO consultarEvolucao(EventoVO e) throws Exception {
+        return daoRepEvolucao.consultarEvolucao(e);
     }
 
 
