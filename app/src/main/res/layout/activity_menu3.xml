@@ -260,14 +260,14 @@
                 <ImageButton
                     android:layout_width="72dp"
                     android:layout_height="63dp"
-                    android:id="@+id/imgRelatorioRanking"
+                    android:id="@+id/imgRelatorios"
                     android:src="@drawable/rkg" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
-                    android:text="Relatorio de ranking"
-                    android:id="@+id/btnRelatorioRanking"
+                    android:text="Relatórios"
+                    android:id="@+id/btnRelatorios"
                     android:gravity="center_vertical"
                     android:textSize="16dp" />
             </LinearLayout>

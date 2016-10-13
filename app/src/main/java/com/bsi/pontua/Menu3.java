@@ -5,22 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import utils.Utils;
@@ -175,7 +168,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroUsuarios.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -190,7 +182,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroEntidades.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -204,7 +195,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroEventos.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -218,7 +208,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, CadastroItensInspecao.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -231,7 +220,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, Avaliacao.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -244,7 +232,6 @@ public class Menu3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, AvaliacaoNfc.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
@@ -253,18 +240,28 @@ public class Menu3 extends AppCompatActivity {
         ((Button) findViewById(R.id.btnAvaliacaoNFC)).setOnClickListener(m06);
 
         //Consultar Avaliacoes
-        //TODO: qdo for entidade devera ir direto para o relatoio
         View.OnClickListener m07 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Menu3.this, ConsultarAvaliacoes.class);
-                //myIntent.putExtras(b);
                 startActivity(myIntent);
             }
         };
 
         ((ImageButton) findViewById(R.id.imgConsultarAvaliacao)).setOnClickListener(m07);
         ((Button) findViewById(R.id.btnConsultarAvaliacao)).setOnClickListener(m07);
+
+        //relatorios
+        View.OnClickListener m08 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Menu3.this, Relatorios.class);
+                startActivity(myIntent);
+            }
+        };
+
+        ((ImageButton) findViewById(R.id.imgRelatorios)).setOnClickListener(m08);
+        ((Button) findViewById(R.id.btnRelatorios)).setOnClickListener(m08);
 
     }
 }
