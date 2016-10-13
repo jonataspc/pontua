@@ -30,6 +30,7 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.RelEntidadeEventoVO;
 import vo.RelItemInspecaoEventoVO;
+import vo.RepRankingVO;
 import vo.UsuarioVO;
 
 public class CadastrosControle implements Closeable {
@@ -87,11 +88,11 @@ public class CadastrosControle implements Closeable {
         daoRelItemInspecaoEvento = new RelItemInspecaoEventoDAO(conn);
     }
 
-//
-//    //relatorio rkg
-//    public List<RelRankingVO> listarRelRanking(EventoVO e) throws Exception {
-//        return daoRepRanking.relatorioRanking(e);
-//    }
+
+    //relatorio rkg
+    public List<RepRankingVO> listarRelRanking(EventoVO e) throws Exception {
+        return daoRepRanking.relatorioRanking(e);
+    }
 
 
     //evento

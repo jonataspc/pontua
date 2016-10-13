@@ -10,7 +10,15 @@ public class RepRankingVO implements Serializable {
     private EntidadeVO entidade;
     private BigDecimal saldoPontuacao;
     private int posicao;
+    private BigDecimal pontuacaoMaximaPossivel;
 
+    public BigDecimal getPontuacaoMaximaPossivel() {
+        return pontuacaoMaximaPossivel;
+    }
+
+    public void setPontuacaoMaximaPossivel(BigDecimal pontuacaoMaximaPossivel) {
+        this.pontuacaoMaximaPossivel = pontuacaoMaximaPossivel;
+    }
 
     public EntidadeVO getEntidade() {
         return entidade;
@@ -35,4 +43,10 @@ public class RepRankingVO implements Serializable {
     public void setSaldoPontuacao(BigDecimal saldoPontuacao) {
         this.saldoPontuacao = saldoPontuacao;
     }
+
+    @Override
+    public String toString() {
+        return this.entidade.getNome() + " - " + String.valueOf(this.saldoPontuacao.doubleValue()) ;
+    }
+
 }
