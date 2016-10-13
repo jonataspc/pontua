@@ -48,7 +48,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
     TableLayout tl;
     TableRow tr;
-    TextView col1, col2, col3, col4, col5, col6, col7, col8;
+    TextView col1, col2, col3, col4, col5, col6, col7, col8, col9;
 
     ProgressDialog progress;
 
@@ -110,7 +110,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
 
         final Button btnExcluir = (Button) findViewById(R.id.btnExcluir);
-        final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
+        //final ImageButton ibtCadRefresh = (ImageButton) findViewById(R.id.ibtRefresh);
 
 
         // Lookup the swipe container view
@@ -253,11 +253,8 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
         tr.addView(ncol5); // Adding textView to tablerow.
 
 
-
-// * Creating another textview *
-
         TextView ncol6 = new TextView(this);
-        ncol6.setText("Método");
+        ncol6.setText("Range Possível");
         ncol6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol6.setPadding(5, 5, 15, 0);
         ncol6.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -266,21 +263,26 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
 
         TextView ncol7 = new TextView(this);
-        ncol7.setText("Usuário");
+        ncol7.setText("Método");
         ncol7.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol7.setPadding(5, 5, 15, 0);
         ncol7.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol7); // Adding textView to tablerow.
 
 
-
         TextView ncol8 = new TextView(this);
-        ncol8.setText("Data/Hora");
+        ncol8.setText("Usuário");
         ncol8.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol8.setPadding(5, 5, 15, 0);
         ncol8.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         tr.addView(ncol8); // Adding textView to tablerow.
 
+        TextView ncol9 = new TextView(this);
+        ncol9.setText("Data/Hora");
+        ncol9.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        ncol9.setPadding(5, 5, 15, 0);
+        ncol9.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        tr.addView(ncol9); // Adding textView to tablerow.
 
         // Add the TableRow to the TableLayout
         tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -393,15 +395,16 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
             col5.setPadding(5, 5, 5, 5);
             tr.addView(col5);
 
+
             col6 = new TextView(this);
-            col6.setText(e.getMetodo().toString());
+            col6.setText(  String.valueOf(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMinima().doubleValue()) + " - " + String.valueOf(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMaxima().doubleValue())  );
             col6.setTextColor(Color.GRAY);
             col6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col6.setPadding(5, 5, 5, 5);
             tr.addView(col6);
 
             col7 = new TextView(this);
-            col7.setText(e.getUsuario().getNome());
+            col7.setText(e.getMetodo().toString());
             col7.setTextColor(Color.BLACK);
             col7.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col7.setPadding(5, 5, 5, 5);
@@ -409,11 +412,20 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
 
             col8 = new TextView(this);
-            col8.setText( Utils.formatarData(e.getDataHora()));
+            col8.setText( e.getUsuario().getNome());
             col8.setTextColor(Color.GRAY);
             col8.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col8.setPadding(5, 5, 5, 5);
             tr.addView(col8);
+
+            col9 = new TextView(this);
+            col9.setText( Utils.formatarData(e.getDataHora()));
+            col9.setTextColor(Color.BLACK);
+            col9.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            col9.setPadding(5, 5, 5, 5);
+            tr.addView(col9);
+
+
 
             // Add the TableRow to the TableLayout
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
