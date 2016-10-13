@@ -86,16 +86,16 @@
                 android:value=".ConsultarAvaliacoes" />
         </activity>
         <activity
-            android:name=".RelatorioRanking"
+            android:name=".Relatorios"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-        <activity android:name=".RelatorioRankingRel">
+        <activity android:name=".RelatoriosRel">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RelatorioRanking" />
+                android:value=".Relatorios" />
         </activity>
         <activity
             android:name=".AvaliacaoNfc"

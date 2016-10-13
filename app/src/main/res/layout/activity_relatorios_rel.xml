@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.bsi.pontua.RelatoriosRel">
+
+
+    <LinearLayout
+        android:id="@+id/lin1"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="0dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Tipo:"
+            android:id="@+id/txtEvento"
+            android:layout_below="@+id/tvwTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />-->
+
+        <Spinner
+            android:id="@+id/spnRelatorios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            android:layout_below="@+id/txtEvento"
+             android:entries="@array/RelatorioItems"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lin1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:background="#f4f4f4"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/frag_container">
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
