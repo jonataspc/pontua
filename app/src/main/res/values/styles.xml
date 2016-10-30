@@ -18,4 +18,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/bp_color</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.MenuButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@android:color/transparent</item>
+        <item name="android:textColor">@color/bp_color_dark</item>
+    </style>
+
 </resources>
