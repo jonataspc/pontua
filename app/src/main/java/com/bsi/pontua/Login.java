@@ -139,17 +139,7 @@ public class Login extends AppCompatActivity {
 
         //new testexx().execute("");
         final Button btnLogar = (Button) findViewById(R.id.btnLogar);
-        final Button btnSair = (Button) findViewById(R.id.btnSair);
 
-
-        btnSair.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        });
 
         btnLogar.setOnClickListener(new View.OnClickListener() {
 
