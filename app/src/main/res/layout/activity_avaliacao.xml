@@ -157,6 +157,7 @@
         </RelativeLayout>
 
         <Button
+            android:theme="@style/AppTheme.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pontuar"
@@ -174,20 +175,21 @@
             android:id="@+id/linLay2">
 
             <Button
+                android:theme="@style/AppTheme.ButtonMin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lançar Mínimo"
-                android:textColor="#ff0000"
                 android:id="@+id/btnMinimo"
                 android:layout_weight="0.5" />
 
             <Button
+                android:theme="@style/AppTheme.ButtonMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lançar Máximo"
                 android:id="@+id/btnMaximo"
                 android:layout_weight="0.5"
-                android:textColor="#378127" />
+                 />
 
         </LinearLayout>
 

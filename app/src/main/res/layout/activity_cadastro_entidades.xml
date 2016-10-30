@@ -25,6 +25,7 @@
             android:id="@+id/linLay2">
 
             <Button
+                android:theme="@style/AppTheme.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nova"
@@ -32,6 +33,7 @@
                 android:layout_weight="0.33" />
 
             <Button
+                android:theme="@style/AppTheme.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Editar"
@@ -39,6 +41,7 @@
                 android:layout_weight="0.33" />
 
             <Button
+                android:theme="@style/AppTheme.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Excluir"
@@ -55,6 +58,7 @@
             android:layout_below="@+id/linLay2">
 
             <Button
+                android:theme="@style/AppTheme.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gravar TAG NFC"

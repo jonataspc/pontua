@@ -108,20 +108,18 @@
                 android:layout_height="wrap_content"
                 android:weightSum="1">
 
-                <ImageButton
-
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgCadUsuarios"
-                    android:src="@drawable/cad_usr2" />
 
                 <Button
+                    android:drawableLeft="@drawable/cad_usr2"
+                    android:drawablePadding="5dp"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
-                    android:text="Cadastro de usuários"
+                    android:text="   Cadastro de usuários"
                     android:id="@+id/btnCadUsuarios"
                     android:gravity="center_vertical"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    />
 
             </LinearLayout>
 
@@ -133,13 +131,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m3">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgCadEntidades"
-                    android:src="@drawable/cad_usr" />
 
                 <Button
+                    android:drawablePadding="14dp"
+                    android:drawableLeft="@drawable/cad_usr"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Cadastro de entidades"
@@ -154,13 +150,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m4">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgCadItensPontuacao"
-                    android:src="@drawable/doaval" />
-
                 <Button
+                    android:drawablePadding="14dp"
+                    android:drawableLeft="@drawable/doaval"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Cadastro de itens de pontuação"
@@ -174,13 +167,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m2">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgCadEventos"
-                    android:src="@drawable/cad_event" />
-
                 <Button
+                    android:drawablePadding="18dp"
+                    android:drawableLeft="@drawable/cad_event"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Cadastro de Eventos"
@@ -194,13 +184,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m5">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgRealizarAvaliacao"
-                    android:src="@drawable/doaval2" />
-
                 <Button
+                    android:drawablePadding="14dp"
+                    android:drawableLeft="@drawable/doaval2"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Realizar avaliação"
@@ -215,13 +202,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m6">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgAvaliacaoNFC"
-                    android:src="@drawable/nfc" />
-
                 <Button
+                    android:drawablePadding="16dp"
+                    android:drawableLeft="@drawable/nfc"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Avaliação por NFC"
@@ -236,13 +220,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m7">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgConsultarAvaliacao"
-                    android:src="@drawable/relaval" />
-
                 <Button
+                    android:drawablePadding="14dp"
+                    android:drawableLeft="@drawable/relaval"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Consultar avaliações"
@@ -257,13 +238,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/m8">
 
-                <ImageButton
-                    android:layout_width="72dp"
-                    android:layout_height="63dp"
-                    android:id="@+id/imgRelatorios"
-                    android:src="@drawable/rkg" />
 
                 <Button
+                    android:drawablePadding="14dp"
+                    android:drawableLeft="@drawable/rkg"
+                    android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:text="Relatórios"

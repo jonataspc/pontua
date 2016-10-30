@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/bp_color_dark</item>
         <item name="colorPrimary">@color/bp_color</item>
+        <!--<item name="colorAccent">@color/bp_color_dark</item>-->
 
     </style>
 
@@ -26,6 +27,16 @@
     <style name="AppTheme.MenuButton" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@android:color/transparent</item>
         <item name="android:textColor">@color/bp_color_dark</item>
+    </style>
+
+    <style name="AppTheme.ButtonMin" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/LancMin</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.ButtonMax" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/LancMax</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
 </resources>

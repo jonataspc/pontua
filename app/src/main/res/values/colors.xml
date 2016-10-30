@@ -7,4 +7,7 @@
     <color name="bp_color">#1565C0</color>
     <color name="bp_color_dark">#0D47A1</color>
 
+    <color name="LancMin">#ff6d6d</color>
+    <color name="LancMax">#64e766</color>
+
 </resources>

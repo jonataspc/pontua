@@ -134,6 +134,7 @@
             android:layout_below="@+id/relLayPontMaxima" >
 
             <Button
+                android:theme="@style/AppTheme.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Salvar"
