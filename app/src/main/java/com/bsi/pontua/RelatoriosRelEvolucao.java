@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +20,18 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 import controle.CadastrosControle;
@@ -27,13 +41,15 @@ import vo.EventoVO;
 import vo.RepEvolucaoVO;
 import vo.RepRankingVO;
 
+import static android.R.attr.type;
+
 
 public class RelatoriosRelEvolucao extends Fragment {
 
     TableLayout tl;
     TableRow tr;
     TextView col1, col2, col3, col4;
-
+    private PieChart mChart;
 
     ProgressDialog progress;
 
@@ -62,7 +78,7 @@ public class RelatoriosRelEvolucao extends Fragment {
                 android.R.color.holo_red_light);*/
 
 
-        View vw = inflater.inflate(R.layout.fragment_relatorios_rel_ranking, container, false);
+        View vw = inflater.inflate(R.layout.fragment_relatorios_rel_evolucao, container, false);
 
         //atualiza lista
         popularGridTask task = new popularGridTask();
@@ -201,7 +217,7 @@ public class RelatoriosRelEvolucao extends Fragment {
 
         try {
             double d = 0;
-            d = 100 * (e.getTotalLancamentos() - e.getTotalLancamentosPendentes()) / e.getTotalLancamentos() ;
+            d = 100 * ( Double.valueOf(e.getTotalLancamentos()) - Double.valueOf(e.getTotalLancamentosPendentes())) / Double.valueOf(e.getTotalLancamentos()) ;
             perc = new BigDecimal(d).setScale(2, RoundingMode.HALF_EVEN);
         } catch (Exception exc){
 
@@ -272,6 +288,112 @@ public class RelatoriosRelEvolucao extends Fragment {
             addHeaders();
             if (result != null) {
                 addData(result);
+
+
+                /////
+
+                mChart = (PieChart) getActivity().findViewById(R.id.chart1);
+                mChart.setVisibility(View.VISIBLE);
+                mChart.setUsePercentValues(true);
+                mChart.getDescription().setEnabled(false);
+                mChart.setExtraOffsets(5, 10, 5, 5);
+
+                mChart.setDragDecelerationFrictionCoef(0.95f);
+
+                //mChart.setCenterTextTypeface(mTfLight);
+                //mChart.setCenterText(generateCenterSpannableText());
+
+                mChart.setDrawHoleEnabled(false);
+                //mChart.setHoleColor(Color.WHITE);
+
+                mChart.setTransparentCircleColor(Color.WHITE);
+                mChart.setTransparentCircleAlpha(110);
+
+                //mChart.setHoleRadius(58f);
+                mChart.setTransparentCircleRadius(61f);
+
+                mChart.setDrawCenterText(true);
+
+                mChart.setRotationAngle(0);
+                // enable rotation of the chart by touch
+                mChart.setRotationEnabled(true);
+                mChart.setHighlightPerTapEnabled(true);
+
+                // mChart.setUnit(" €");
+                // mChart.setDrawUnitsInChart(true);
+
+                // add a selection listener
+                //mChart.setOnChartValueSelectedListener(getActivity());
+
+
+
+
+                ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+
+
+                entries.add(new PieEntry((float) result.getTotalLancamentosPendentes(), "Pendentes"));
+                entries.add(new PieEntry((float) (result.getTotalLancamentos() -  result.getTotalLancamentosPendentes()), "Realizadas"));
+
+
+                PieDataSet dataSet = new PieDataSet(entries, "");
+                dataSet.setSliceSpace(3f);
+                dataSet.setSelectionShift(5f);
+
+                // add a lot of colors
+
+                ArrayList<Integer> colors = new ArrayList<Integer>();
+
+                for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                    colors.add(c);
+
+                for (int c : ColorTemplate.JOYFUL_COLORS)
+                    colors.add(c);
+
+                for (int c : ColorTemplate.COLORFUL_COLORS)
+                    colors.add(c);
+
+                for (int c : ColorTemplate.LIBERTY_COLORS)
+                    colors.add(c);
+
+                for (int c : ColorTemplate.PASTEL_COLORS)
+                    colors.add(c);
+
+                colors.add(ColorTemplate.getHoloBlue());
+
+                dataSet.setColors(colors);
+                //dataSet.setSelectionShift(0f);
+
+                PieData data = new PieData(dataSet);
+                data.setValueFormatter(new PercentFormatter());
+                data.setValueTextSize(16f);
+                data.setValueTextColor(Color.BLUE);
+                //data.setValueTypeface(mTfLight);
+                mChart.setData(data);
+
+                // undo all highlights
+                mChart.highlightValues(null);
+
+                //mChart.invalidate();
+                ///
+
+
+                mChart.getLegend().setEnabled(false);
+
+
+                mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+// entry label styling
+                mChart.setEntryLabelColor(Color.BLUE);
+                //mChart.setEntryLabelTypeface(mTfRegular);
+                mChart.setEntryLabelTextSize(18f);
+
+
+
+
+                /////
+
+
+
             }
 
             if (progress != null && progress.isShowing()) {

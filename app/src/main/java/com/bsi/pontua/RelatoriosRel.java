@@ -66,12 +66,14 @@ public class RelatoriosRel extends AppCompatActivity {
                     case "Relatório de ranking":
                         RelatoriosRelRanking f = new RelatoriosRelRanking();
                         f.evento = eventoVO;
-                        fragmentTransaction.add(R.id.frag_container, f, TAG_FRAG);
+                        //fragmentTransaction.add(R.id.frag_container, f, TAG_FRAG);
+                        fragmentTransaction.replace(R.id.frag_container, f, TAG_FRAG);
                         break;
                     case "Relatório de evolução":
                         RelatoriosRelEvolucao f2 = new RelatoriosRelEvolucao();
                         f2.evento = eventoVO;
-                        fragmentTransaction.add(R.id.frag_container, f2, TAG_FRAG);
+                        //fragmentTransaction.add(R.id.frag_container, f2, TAG_FRAG);
+                        fragmentTransaction.replace(R.id.frag_container, f2, TAG_FRAG);
                         break;
                     default:
                         //remove..

@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Login"
-            android:label="@string/app_name">
+            android:screenOrientation="portrait"
+        android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -92,7 +93,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Menu3" />
         </activity>
-        <activity android:name=".RelatoriosRel">
+        <activity android:name=".RelatoriosRel"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Relatorios" />
