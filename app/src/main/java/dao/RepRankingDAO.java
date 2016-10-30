@@ -33,7 +33,7 @@ public class RepRankingDAO {
             PreparedStatement st;
 
 
-            st = conn.prepareStatement("SELECT id_entidade, SUM(pontuacao) AS saldoPontos, ( SELECT SUM(pontuacao_maxima) FROM item_inspecao ii JOIN rel_item_inspecao_evento riie ON riie.id_item_inspecao = ii.id WHERE riie.id_evento=ree.id_evento) AS pontuacao_maxima FROM avaliacao a JOIN rel_entidade_evento ree ON ree.id = a.id_rel_entidade_evento JOIN evento e ON e.id = ree.id_evento WHERE ree.id_evento = ? GROUP BY id_entidade ORDER BY saldoPontos DESC;");
+            st = conn.prepareStatement("SELECT id_entidade, SUM(pontuacao) AS saldoPontos, (SELECT SUM(pontuacao_maxima) FROM item_inspecao ii JOIN rel_item_inspecao_evento riie ON riie.id_item_inspecao = ii.id WHERE riie.id_evento = ree.id_evento) AS pontuacao_maxima FROM rel_entidade_evento ree LEFT JOIN avaliacao a ON ree.id = a.id_rel_entidade_evento JOIN evento e ON e.id = ree.id_evento WHERE ree.id_evento = ? GROUP BY id_entidade ORDER BY saldoPontos DESC ;");
             st.setInt(1, evt.getId());
 
             ResultSet resultado = st.executeQuery();

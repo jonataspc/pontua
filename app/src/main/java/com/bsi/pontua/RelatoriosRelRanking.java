@@ -143,7 +143,7 @@ public class RelatoriosRelRanking extends Fragment {
 
 
         TextView col2 = new TextView(getActivity());
-        col2.setText("Saldo Pontuação");
+        col2.setText("Saldo");
         col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         col2.setPadding(5, 5, 15, 0);
         col2.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
