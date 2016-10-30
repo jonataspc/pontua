@@ -83,7 +83,8 @@
                 android:layout_gravity="center"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:inputType="numberDecimal"
+                android:inputType="number"
+                android:digits="01234567890,."
                 android:layout_marginRight="5dp"
                 android:layout_alignParentEnd="false"
                 android:gravity="center" />
@@ -122,7 +123,8 @@
                 android:layout_gravity="center"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:inputType="numberDecimal"
+                android:inputType="number"
+                android:digits="01234567890,."
                 android:gravity="center"
                 android:layout_marginRight="5dp" />
         </RelativeLayout>

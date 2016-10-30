@@ -131,7 +131,8 @@
                 android:layout_alignParentRight="true"
                 android:id="@+id/txtPontuacao"
                 android:layout_gravity="center"
-                android:inputType="numberDecimal"
+                android:inputType="number"
+                android:digits="01234567890,."
                 android:gravity="center" />
         </RelativeLayout>
 

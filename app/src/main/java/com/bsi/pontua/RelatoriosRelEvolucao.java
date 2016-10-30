@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 import controle.CadastrosControle;
+import utils.Utils;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.RepEvolucaoVO;
@@ -208,7 +209,7 @@ public class RelatoriosRelEvolucao extends Fragment {
 
 
         col3 = new TextView(getActivity());
-        col3.setText(String.valueOf(perc.doubleValue()) + "%");
+        col3.setText(Utils.formatarDoubleDecimal(perc.doubleValue()) + "%");
         col3.setTextColor(Color.BLACK);
         col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         col3.setPadding(5, 5, 5, 5);

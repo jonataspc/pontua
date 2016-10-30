@@ -44,6 +44,8 @@ import vo.EventoVO;
 import vo.ItemInspecaoVO;
 import vo.UsuarioVO;
 
+import static utils.Utils.formatarDoubleDecimal;
+
 public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.OnClickListener {
 
     TableLayout tl;
@@ -389,7 +391,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
             tr.addView(col4);
 
             col5 = new TextView(this);
-            col5.setText(String.valueOf(e.getPontuacao().doubleValue()));
+            col5.setText(Utils.formatarDoubleDecimal(e.getPontuacao().doubleValue()));
             col5.setTextColor(Color.BLACK);
             col5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col5.setPadding(5, 5, 5, 5);
@@ -397,7 +399,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
 
             col6 = new TextView(this);
-            col6.setText(  String.valueOf(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMinima().doubleValue()) + " - " + String.valueOf(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMaxima().doubleValue())  );
+            col6.setText(  Utils.formatarDoubleDecimal(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMinima().doubleValue()) + " - " + Utils.formatarDoubleDecimal(e.getRelItemInspecaoEvento().getItemInspecao().getPontuacaoMaxima().doubleValue())  );
             col6.setTextColor(Color.GRAY);
             col6.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col6.setPadding(5, 5, 5, 5);

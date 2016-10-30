@@ -174,13 +174,13 @@ public class AvaliacaoNfc extends AppCompatActivity {
         }
 
         //valida pontuacao maxima/minima
-        if( Double.parseDouble(txtPontuacao.getText().toString()) < Double.parseDouble(_itemInspecaoAtual.getPontuacaoMinima().toString())){
+        if( Double.parseDouble(txtPontuacao.getText().toString().replace(".","").replace(",",".")) < Double.parseDouble(_itemInspecaoAtual.getPontuacaoMinima().toString())){
             Toast.makeText(getApplicationContext(), "Pontuação informada deve ser superior/igual à mínima!", Toast.LENGTH_SHORT).show();
             txtPontuacao.requestFocus();
             return;
         }
 
-        if( Double.parseDouble(txtPontuacao.getText().toString()) > Double.parseDouble(_itemInspecaoAtual.getPontuacaoMaxima().toString())){
+        if( Double.parseDouble(txtPontuacao.getText().toString().replace(".","").replace(",",".")) > Double.parseDouble(_itemInspecaoAtual.getPontuacaoMaxima().toString())){
             Toast.makeText(getApplicationContext(), "Pontuação informada deve ser inferior/igual à máxima!", Toast.LENGTH_SHORT).show();
             txtPontuacao.requestFocus();
             return;
@@ -202,7 +202,7 @@ public class AvaliacaoNfc extends AppCompatActivity {
         AvaliacaoVO o = new AvaliacaoVO();
         o.setMetodo(AvaliacaoVO.EnumMetodoAvaliacao.NFC);
         o.setDataHora(new Date());
-        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
+        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString().replace(".","").replace(",","."))));
         o.setRelEntidadeEvento(oRelEntidadeEvento);
         o.setRelItemInspecaoEvento(oRelItemInspecaoEvento);
         o.setUsuario(Utils.usuarioCorrente);
@@ -478,8 +478,8 @@ public class AvaliacaoNfc extends AppCompatActivity {
                     //habilita campos
 
                     //instr
-                    lblInstrucoes.setText("Pontuação mínima: " + item.getPontuacaoMinima().doubleValue() +
-                            "\nPontuação máxima: " + item.getPontuacaoMaxima().doubleValue());
+                    lblInstrucoes.setText("Pontuação mínima: " + Utils.formatarDoubleDecimal(item.getPontuacaoMinima().doubleValue()) +
+                            "\nPontuação máxima: " + Utils.formatarDoubleDecimal(item.getPontuacaoMaxima().doubleValue()));
 
                     //zera e disable txtPont
                     txtPontuacao.setText("");

@@ -3,6 +3,8 @@ package vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import utils.Utils;
+
 public class RepRankingVO implements Serializable {
 
     private static final long serialVersionUID = 5L;
@@ -46,7 +48,7 @@ public class RepRankingVO implements Serializable {
 
     @Override
     public String toString() {
-        return this.entidade.getNome() + " - " + String.valueOf(this.saldoPontuacao.doubleValue()) ;
+        return this.entidade.getNome() + " - " + Utils.formatarDoubleDecimal(this.saldoPontuacao.doubleValue()) ;
     }
 
 }

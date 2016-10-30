@@ -2,8 +2,10 @@ package utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import vo.UsuarioVO;
 
@@ -44,6 +46,12 @@ public class Utils {
 
         SimpleDateFormat dt1 = new SimpleDateFormat("HH:mm:ss");
         return (dt1.format(dt));
+
+    }
+
+    public static String formatarDoubleDecimal( Double vlr) {
+
+        return String.format( "%.2f", vlr);
 
     }
 

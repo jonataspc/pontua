@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 import controle.CadastrosControle;
 import utils.DecimalDigitsInputFilter;
+import utils.Utils;
 import vo.AreaVO;
 import vo.ItemInspecaoVO;
 
@@ -426,8 +427,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                 //UsuarioVO u = result.getUsuario();
 
                 txtNome.setText(result.getNome());
-                txtPontMin.setText(String.valueOf(result.getPontuacaoMinima().doubleValue()));
-                txtPontMax.setText(String.valueOf(result.getPontuacaoMaxima().doubleValue()));
+                txtPontMin.setText(Utils.formatarDoubleDecimal(result.getPontuacaoMinima().doubleValue()));
+                txtPontMax.setText(Utils.formatarDoubleDecimal(result.getPontuacaoMaxima().doubleValue()));
 
 
                 try {
@@ -505,13 +506,13 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
             return;
         }
 
-        if( Double.parseDouble(txtPontMax.getText().toString()) == 0   ){
+        if( Double.parseDouble(txtPontMax.getText().toString().replace(".","").replace(",",".")) == 0   ){
             Toast.makeText(getApplicationContext(), "Pontuação máxima deve ser maior que zero!", Toast.LENGTH_SHORT).show();
             txtPontMax.requestFocus();
             return;
         }
 
-        if( Double.parseDouble(txtPontMax.getText().toString()) <= Double.parseDouble(txtPontMin.getText().toString())    ){
+        if( Double.parseDouble(txtPontMax.getText().toString().replace(".","").replace(",",".")) <= Double.parseDouble(txtPontMin.getText().toString().replace(".","").replace(",","."))    ){
             Toast.makeText(getApplicationContext(), "Pontuação máxima deve ser superior à mínima!", Toast.LENGTH_SHORT).show();
             txtPontMax.requestFocus();
             return;
@@ -532,8 +533,8 @@ public class CadastroItensInspecaoNovoEditar extends AppCompatActivity {
                     txtNome.getText().toString().trim(),
                     null , //spnEventos.getSelectedItem().toString().substring(1, 6),
                     spnArea.getSelectedItem().toString(),
-                    txtPontMin.getText().toString(),
-                    txtPontMax.getText().toString()
+                    txtPontMin.getText().toString().replace(".","").replace(",","."),
+                    txtPontMax.getText().toString().replace(".","").replace(",",".")
             };
 
 

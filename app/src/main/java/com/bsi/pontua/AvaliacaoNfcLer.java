@@ -186,7 +186,7 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
         lblItem.setText(objAvaliacao.getRelItemInspecaoEvento().getItemInspecao().getArea().getNome() + " -  " + objAvaliacao.getRelItemInspecaoEvento().getItemInspecao().getNome() );
 
         final TextView lblValor = (TextView) findViewById(R.id.lblValor);
-        lblValor.setText(String.valueOf(objAvaliacao.getPontuacao().doubleValue()));
+        lblValor.setText(Utils.formatarDoubleDecimal(objAvaliacao.getPontuacao().doubleValue()));
 
 
         startLeitura();

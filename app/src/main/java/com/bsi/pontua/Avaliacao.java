@@ -39,6 +39,8 @@ import vo.RelEntidadeEventoVO;
 import vo.RelItemInspecaoEventoVO;
 import vo.UsuarioVO;
 
+import static utils.Utils.formatarDoubleDecimal;
+
 public class Avaliacao extends AppCompatActivity {
 
     ProgressDialog progress;
@@ -156,7 +158,7 @@ public class Avaliacao extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                txtPontuacao.setText(String.valueOf(_itemInspecaoAtual.getPontuacaoMinima().doubleValue()));
+                txtPontuacao.setText(formatarDoubleDecimal(_itemInspecaoAtual.getPontuacaoMinima().doubleValue()));
                 lancarPontuacao();
             }
 
@@ -167,7 +169,7 @@ public class Avaliacao extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                txtPontuacao.setText(String.valueOf(_itemInspecaoAtual.getPontuacaoMaxima().doubleValue()));
+                txtPontuacao.setText(formatarDoubleDecimal(_itemInspecaoAtual.getPontuacaoMaxima().doubleValue()));
                 lancarPontuacao();
             }
 
@@ -626,8 +628,8 @@ public class Avaliacao extends AppCompatActivity {
                     //habilita campos
 
                     //instr
-                    lblInstrucoes.setText("Pontuação mínima: " + item.getPontuacaoMinima().doubleValue() +
-                            "\nPontuação máxima: " + item.getPontuacaoMaxima().doubleValue());
+                    lblInstrucoes.setText("Pontuação mínima: " + Utils.formatarDoubleDecimal(item.getPontuacaoMinima().doubleValue()) +
+                            "\nPontuação máxima: " + Utils.formatarDoubleDecimal(item.getPontuacaoMaxima().doubleValue()));
 
                     //zera e disable txtPont
                     txtPontuacao.setText("");
@@ -685,7 +687,7 @@ public class Avaliacao extends AppCompatActivity {
         AvaliacaoVO o = new AvaliacaoVO();
         o.setMetodo(AvaliacaoVO.EnumMetodoAvaliacao.Manual);
         o.setDataHora(new Date());
-        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString())));
+        o.setPontuacao(new BigDecimal(Double.parseDouble(txtPontuacao.getText().toString().replace(".","").replace(",","."))));
         o.setRelEntidadeEvento(oRelEntidadeEvento);
         o.setRelItemInspecaoEvento(oRelItemInspecaoEvento);
         o.setUsuario(Utils.usuarioCorrente);

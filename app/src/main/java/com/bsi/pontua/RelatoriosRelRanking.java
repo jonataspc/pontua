@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controle.CadastrosControle;
+import utils.Utils;
 import vo.EntidadeVO;
 import vo.EventoVO;
 import vo.RelEntidadeEventoVO;
@@ -207,7 +208,7 @@ public class RelatoriosRelRanking extends Fragment {
             tr.addView(col1);
 
             col2 = new TextView(getActivity());
-            col2.setText(String.valueOf(e.getSaldoPontuacao().doubleValue()));
+            col2.setText(Utils.formatarDoubleDecimal(e.getSaldoPontuacao().doubleValue()));
             col2.setTextColor(Color.BLACK);
             col2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             col2.setPadding(5, 5, 5, 5);
@@ -220,7 +221,7 @@ public class RelatoriosRelRanking extends Fragment {
 
 
             col3 = new TextView(getActivity());
-            col3.setText(String.valueOf(e.getPontuacaoMaximaPossivel().doubleValue()) + " (" + String.valueOf(perc.doubleValue()) + "%)" );
+            col3.setText(Utils.formatarDoubleDecimal(e.getPontuacaoMaximaPossivel().doubleValue()) + " (" + Utils.formatarDoubleDecimal(perc.doubleValue()) + "%)" );
             col3.setTextColor(Color.BLACK);
             col3.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             col3.setPadding(5, 5, 5, 5);

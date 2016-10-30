@@ -28,6 +28,7 @@ import java.util.List;
 
 import controle.CadastrosControle;
 import utils.SoftRadioButton;
+import utils.Utils;
 import vo.ItemInspecaoVO;
 
 public class CadastroItensInspecao extends AppCompatActivity {
@@ -351,14 +352,14 @@ public class CadastroItensInspecao extends AppCompatActivity {
             tr.addView(col3);
 
             col4 = new TextView(this);
-            col4.setText(String.valueOf(e.getPontuacaoMinima().doubleValue()));
+            col4.setText(Utils.formatarDoubleDecimal(e.getPontuacaoMinima().doubleValue()));
             col4.setTextColor(Color.RED);
             col4.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col4.setPadding(50, 5, 5, 5);
             tr.addView(col4);
 
             col5 = new TextView(this);
-            col5.setText(String.valueOf(e.getPontuacaoMaxima().doubleValue()));
+            col5.setText(Utils.formatarDoubleDecimal(e.getPontuacaoMaxima().doubleValue()));
             col5.setTextColor(Color.GREEN);
             col5.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             col5.setPadding(50, 5, 5, 5);
