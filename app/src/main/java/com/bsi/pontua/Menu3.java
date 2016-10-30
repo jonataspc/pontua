@@ -172,7 +172,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgCadUsuarios)).setOnClickListener(m01);
+
         ((Button) findViewById(R.id.btnCadUsuarios)).setOnClickListener(m01);
 
 
@@ -186,7 +186,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgCadEntidades)).setOnClickListener(m02);
+
         ((Button) findViewById(R.id.btnCadEntidades)).setOnClickListener(m02);
 
 
@@ -199,7 +199,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgCadEventos)).setOnClickListener(m03);
+
         ((Button) findViewById(R.id.btnCadEventos)).setOnClickListener(m03);
 
 
@@ -212,7 +212,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgCadItensPontuacao)).setOnClickListener(m04);
+
         ((Button) findViewById(R.id.btnCadItensPontuacao)).setOnClickListener(m04);
 
         //lancar pontuacao
@@ -224,7 +224,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgRealizarAvaliacao)).setOnClickListener(m05);
+
         ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(m05);
 
         //NFC
@@ -236,7 +236,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgAvaliacaoNFC)).setOnClickListener(m06);
+
         ((Button) findViewById(R.id.btnAvaliacaoNFC)).setOnClickListener(m06);
 
         //Consultar Avaliacoes
@@ -248,7 +248,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgConsultarAvaliacao)).setOnClickListener(m07);
+
         ((Button) findViewById(R.id.btnConsultarAvaliacao)).setOnClickListener(m07);
 
         //relatorios
@@ -260,7 +260,7 @@ public class Menu3 extends AppCompatActivity {
             }
         };
 
-        ((ImageButton) findViewById(R.id.imgRelatorios)).setOnClickListener(m08);
+
         ((Button) findViewById(R.id.btnRelatorios)).setOnClickListener(m08);
 
     }
