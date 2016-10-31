@@ -80,7 +80,7 @@ tools:context=".Menu3">
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:text="Logar"
             android:id="@+id/btnLogar"
             android:layout_weight="1"

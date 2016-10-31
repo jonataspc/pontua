@@ -111,7 +111,7 @@
 
                 <Button
                     android:drawableLeft="@drawable/cad_usr2"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="-6dp"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
@@ -133,7 +133,7 @@
 
 
                 <Button
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="6dp"
                     android:drawableLeft="@drawable/cad_usr"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                 android:id="@+id/m4">
 
                 <Button
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="5dp"
                     android:drawableLeft="@drawable/doaval"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                 android:id="@+id/m2">
 
                 <Button
-                    android:drawablePadding="18dp"
+                    android:drawablePadding="4dp"
                     android:drawableLeft="@drawable/cad_event"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -185,7 +185,7 @@
                 android:id="@+id/m5">
 
                 <Button
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="04dp"
                     android:drawableLeft="@drawable/doaval2"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -203,7 +203,7 @@
                 android:id="@+id/m6">
 
                 <Button
-                    android:drawablePadding="16dp"
+                    android:drawablePadding="4dp"
                     android:drawableLeft="@drawable/nfc"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -221,7 +221,7 @@
                 android:id="@+id/m7">
 
                 <Button
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="4dp"
                     android:drawableLeft="@drawable/relaval"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
@@ -240,7 +240,7 @@
 
 
                 <Button
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="4dp"
                     android:drawableLeft="@drawable/rkg"
                     android:theme="@style/AppTheme.MenuButton"
                     android:layout_width="match_parent"
