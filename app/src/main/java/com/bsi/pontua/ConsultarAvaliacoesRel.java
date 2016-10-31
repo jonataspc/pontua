@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -37,6 +38,7 @@ import controle.CadastrosControle;
 import dao.EntidadeDAO;
 import utils.SoftRadioButton;
 import utils.Utils;
+import utils.controls.VerticalScrollLayout;
 import vo.AreaVO;
 import vo.AvaliacaoVO;
 import vo.EntidadeVO;
@@ -132,6 +134,22 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+
+        //apenas habilita swipe caso o scroll esteja no topo
+        ((VerticalScrollLayout) findViewById(R.id.customScrollView)).setOnScrollListener(new VerticalScrollLayout.OnScrollListener() {
+            private  int _y=0;
+            @Override
+            public void onScrollChanged(int x, int y, int oldx, int oldy) {
+                _y = y;
+                swipeContainer.setEnabled(_y == 0);
+            }
+
+            @Override
+            public void onScrollEnded() {
+                swipeContainer.setEnabled(_y == 0);
+            }
+        });
 
 
 

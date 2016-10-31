@@ -79,10 +79,11 @@
             android:layout_marginTop="5dp"
             android:layout_below="@+id/linLay3" >
 
-            <ScrollView
+            <utils.controls.VerticalScrollLayout
+                android:id="@+id/customScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:scrollbars="vertical|horizontal">
 
 
                 <HorizontalScrollView
@@ -98,7 +99,7 @@
                 </TableLayout>
                 </HorizontalScrollView>
 
-            </ScrollView>
+            </utils.controls.VerticalScrollLayout>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

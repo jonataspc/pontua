@@ -79,17 +79,18 @@
             android:layout_marginTop="5dp"
             android:layout_below="@+id/linLay3" >
 
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
+            <utils.controls.VerticalScrollLayout
+                android:id="@+id/customScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical|horizontal">
                 <TableLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:stretchColumns="1"
                     android:id="@+id/maintable" >
                 </TableLayout>
-            </ScrollView>
+            </utils.controls.VerticalScrollLayout>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

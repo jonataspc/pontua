@@ -20,14 +20,15 @@
         android:id="@+id/linLay1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView3"
+
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:background="#f4f4f4"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp">
 
-        <ScrollView
+        <utils.controls.VerticalScrollLayout
+            android:id="@+id/customScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical|horizontal">
@@ -43,7 +44,7 @@
                     android:id="@+id/maintable" >
                 </TableLayout>
             </HorizontalScrollView>
-        </ScrollView>
+        </utils.controls.VerticalScrollLayout>
     </LinearLayout>
 
     <!--<Button

@@ -29,6 +29,7 @@ import java.util.List;
 import controle.CadastrosControle;
 import utils.SoftRadioButton;
 import utils.Utils;
+import utils.controls.VerticalScrollLayout;
 import vo.ItemInspecaoVO;
 
 public class CadastroItensInspecao extends AppCompatActivity {
@@ -70,6 +71,20 @@ public class CadastroItensInspecao extends AppCompatActivity {
                 android.R.color.holo_red_light);
 
 
+        //apenas habilita swipe caso o scroll esteja no topo
+        ((VerticalScrollLayout) findViewById(R.id.customScrollView)).setOnScrollListener(new VerticalScrollLayout.OnScrollListener() {
+            private  int _y=0;
+            @Override
+            public void onScrollChanged(int x, int y, int oldx, int oldy) {
+                _y = y;
+                swipeContainer.setEnabled(_y == 0);
+            }
+
+            @Override
+            public void onScrollEnded() {
+                swipeContainer.setEnabled(_y == 0);
+            }
+        });
 
 
 
