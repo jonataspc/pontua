@@ -2,23 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context="com.bsi.pontua.RelatoriosRelRanking">
 
 
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="horizontal|vertical">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
         <TableLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:stretchColumns="*"
             android:id="@+id/maintable" >
         </TableLayout>
 
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:visibility="invisible"
+                android:layout_marginTop="20dp"
+                />
+
+
+
+
+        </LinearLayout>
 
 
     </ScrollView>

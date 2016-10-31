@@ -332,8 +332,9 @@ public class RelatoriosRelEvolucao extends Fragment {
 
 
 
-                entries.add(new PieEntry((float) result.getTotalLancamentosPendentes(), "Pendentes"));
+
                 entries.add(new PieEntry((float) (result.getTotalLancamentos() -  result.getTotalLancamentosPendentes()), "Realizadas"));
+                entries.add(new PieEntry((float) result.getTotalLancamentosPendentes(), "Pendentes"));
 
 
                 PieDataSet dataSet = new PieDataSet(entries, "");
@@ -361,7 +362,9 @@ public class RelatoriosRelEvolucao extends Fragment {
 
                 colors.add(ColorTemplate.getHoloBlue());
 
-                dataSet.setColors(colors);
+                //dataSet.setColors(colors);
+                dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
                 //dataSet.setSelectionShift(0f);
 
                 PieData data = new PieData(dataSet);
