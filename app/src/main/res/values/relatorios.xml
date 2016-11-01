@@ -1,8 +1,8 @@
 <resources>
     <string-array name="RelatorioItems">
 
-        <item>Relatório de ranking</item>
-        <item>Relatório de evolução</item>
+        <item>Ranking de entidades</item>
+        <item>Evolução do evento</item>
 
     </string-array>
 </resources>

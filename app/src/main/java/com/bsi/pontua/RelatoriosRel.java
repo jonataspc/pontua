@@ -63,13 +63,13 @@ public class RelatoriosRel extends AppCompatActivity {
 
                 //carrega fragments
                 switch (parentView.getSelectedItem().toString()){
-                    case "Relatório de ranking":
+                    case "Ranking de entidades":
                         RelatoriosRelRanking f = new RelatoriosRelRanking();
                         f.evento = eventoVO;
                         //fragmentTransaction.add(R.id.frag_container, f, TAG_FRAG);
                         fragmentTransaction.replace(R.id.frag_container, f, TAG_FRAG);
                         break;
-                    case "Relatório de evolução":
+                    case "Evolução do evento":
                         RelatoriosRelEvolucao f2 = new RelatoriosRelEvolucao();
                         f2.evento = eventoVO;
                         //fragmentTransaction.add(R.id.frag_container, f2, TAG_FRAG);

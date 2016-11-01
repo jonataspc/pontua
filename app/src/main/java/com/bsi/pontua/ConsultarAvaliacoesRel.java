@@ -291,7 +291,7 @@ public class ConsultarAvaliacoesRel extends AppCompatActivity implements View.On
 
 
         TextView ncol8 = new TextView(this);
-        ncol8.setText("Usuário");
+        ncol8.setText("Avaliador");
         ncol8.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         ncol8.setPadding(5, 5, 15, 0);
         ncol8.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
