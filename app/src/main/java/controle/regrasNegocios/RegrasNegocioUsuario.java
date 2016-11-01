@@ -18,7 +18,7 @@ public class RegrasNegocioUsuario {
         //2.5.1. [RN01] O campo “Nome” deve conter entre 5 e 15 caracteres;
         //2.5.3. [RN03] Nomes de usuários não podem conter acentuação nem pontuação;
         if(!Pattern.compile("^[a-zA-Z0-9]{5,15}$").matcher(i.getNome()).find()){
-            throw new Exception("Nome de usuário deve conter de 5 a 15 caracteres (sem acentos ou pontuação)");
+            throw new Exception("Nome de usuário deve conter de 5 a 15 caracteres (sem acentos, pontuação ou espaços)");
         }
 
         if(isInclusao){
