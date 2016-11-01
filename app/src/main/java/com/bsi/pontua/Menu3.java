@@ -1,10 +1,12 @@
 package com.bsi.pontua;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import utils.Utils;
 
@@ -242,9 +245,35 @@ public class Menu3 extends AppCompatActivity {
         ((Button) findViewById(R.id.btnRealizarAvaliacao)).setOnClickListener(m05);
 
         //NFC
+        final Activity ctx = this;
+
         View.OnClickListener m06 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //valida NFC
+
+                //start nfc
+                final NfcAdapter mNfcAdapter;
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(ctx);
+
+
+                if (mNfcAdapter == null) {
+                    // Stop here, we definitely need NFC
+                    Toast.makeText(getApplicationContext(), "Este dispositivo não suporta NFC.", Toast.LENGTH_LONG).show();
+                    return;
+
+                }
+
+                if (!mNfcAdapter.isEnabled()) {
+                    Toast.makeText(getApplicationContext(), "NFC está desativado. Ligue-o e tente novamente.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                mNfcAdapter.disableForegroundDispatch(ctx);
+
+
+
                 Intent myIntent = new Intent(Menu3.this, AvaliacaoNfc.class);
                 startActivity(myIntent);
             }
