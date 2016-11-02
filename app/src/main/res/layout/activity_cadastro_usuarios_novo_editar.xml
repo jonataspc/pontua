@@ -28,7 +28,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:hint="Usuário"
-                android:maxLength="25"
+                android:maxLength="15"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="5dp" />
 
