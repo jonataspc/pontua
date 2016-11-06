@@ -3,8 +3,10 @@ Aplicativo para avaliação de clubes de desbravadores em acampamentos
 
 Projeto desenvolvido pelos bacharelandos Daniel Silva, Flávio Proche, João Paulo Moreira e Jônatas Cruz para o Trabalho de Conclusão de Curso de Bacharelado em Sistemas de Informação das Faculdades Santa Cruz 
 
-
-
+ 
+  
+   
+    
 
 Copyright 2016 Equipe DFJJ
 
