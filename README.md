@@ -5,6 +5,11 @@ Projeto desenvolvido pelos bacharelandos Daniel Silva, Flávio Proche, João Pau
 
  
   
+Banco de Dados
+-----
+MySQL 5.5 ou superior.
+
+ - [Estrutura] (EstruturaBancoDados.sql): Estrutura dos objetos a serem criados no banco de dados.
    
     
 
