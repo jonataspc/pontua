@@ -459,6 +459,8 @@ public class AvaliacaoNfcLer extends AppCompatActivity {
                     Boolean retorno=false;
 
                     //preenche entidade
+                    //zera ID
+                    objAvaliacao.getRelEntidadeEvento().setId(0);
                     objAvaliacao.getRelEntidadeEvento().setEntidade(cc.obterEntidadePorId(param[0]));
 
                     //verifica se existe avaliacao...
